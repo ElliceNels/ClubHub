@@ -1,6 +1,7 @@
 import sqlite3
 conn = sqlite3.connect('Clubhub.db')
 print('Database connected')
+cursor = conn.cursor()
 
 sql = """ 
 -- tables
@@ -21,6 +22,25 @@ CREATE TABLE EVENT_ATTENDEES (
     PRIMARY KEY (Uid, Eid)
 );
 
+CREATE TABLE IF NOT EXISTS CLUBS (
+               Cid INTEGER PRIMARY KEY,
+               Club_name VARCHAR(40),
+               Uid INTEGER,
+               Description TEXT,
+               Validity_status VARCHAR(20),
+               Created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+               Updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+               FOREIGN KEY (Uid) REFERENCES USER_LOGIN(Uid)
+        );
+
+
+CREATE TABLE IF NOT EXISTS USER_TYPE (
+               Uid INTEGER PRIMARY KEY,
+               Type VARCHAR(20),
+               Created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+               Updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        
 --triggers
 
 CREATE TRIGGER updated_trigger_club_memberships AFTER UPDATE ON CLUB_MEMBERSHIP
@@ -36,6 +56,63 @@ BEGIN
     SET Updated = CURRENT_TIMESTAMP
     WHERE Uid = OLD.Uid AND Eid = OLD.Eid;
 END;
+<<<<<<< HEAD
+
+CREATE TABLE USER_LOGIN(
+  Uid INTEGER (8),
+  Firstname VARCHAR (50),
+  Lastname VARCHAR (50),
+  Contactnumber INTEGER (10),
+  Email VARCHAR (80),
+  Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Created DATETIME DEFAULT CURRENT_TIMESTAMP, 
+  CONSTRAINT ULPK PRIMARY KEY (Uid)
+ );
+ 
+ CREATE TABLE USER_DETAILS(
+  Uid INTEGER (8),
+  Username VARCHAR(50),
+  Password VARCHAR(16),
+  Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Created DATETIME DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT UDPK PRIMARY KEY (Uid),
+  CONSTRAINT UDFK FOREIGN KEY (Uid) REFERENCES USER_LOGIN (Uid)
+);
+
+ CREATE TRIGGER updatelogin AFTER UPDATE ON USER_LOGIN
+BEGIN
+    UPDATE USER_LOGIN
+    SET Updated = CURRENT_TIMESTAMP
+    WHERE Uid = OLD.Uid;
+END;
+
+ CREATE TRIGGER updatedetails AFTER UPDATE ON USER_DETAILS
+BEGIN
+    UPDATE USER_DETAILS
+    SET Updated = CURRENT_TIMESTAMP
+    WHERE Uid = OLD.Uid;
+END;
+
+"""
+=======
+
+ CREATE TRIGGER update_clubs AFTER UPDATE ON CLUB_LIST
+            BEGIN
+               UPDATE CLUB_LIST
+               SET Updated_at = CURRENT_TIMESTAMP
+               WHERE Cid = OLD.Cid;
+            END;
+        );
+
+CREATE TRIGGER update_user_type AFTER UPDATE ON USER_TYPE
+            BEGIN
+               UPDATE USER_TYPE
+               SET Updated_at = CURRENT_TIMESTAMP
+               WHERE Uid = OLD.Uid;
+            END;
 """
 
-cursor = conn.cursor()
+
+cursor.close()
+conn.close()
+>>>>>>> dcaa62baa0b5e455e0e5d08465d04d7daa4d2ce6
