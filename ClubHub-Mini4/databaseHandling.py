@@ -1,7 +1,7 @@
 import sqlite3
 conn = sqlite3.connect('Clubhub.db')
 print('Database connected')
-
+cursor = conn.cursor()
 sql = """ 
 -- tables
 
@@ -36,6 +36,40 @@ BEGIN
     SET Updated = CURRENT_TIMESTAMP
     WHERE Uid = OLD.Uid AND Eid = OLD.Eid;
 END;
-"""
 
-cursor = conn.cursor()
+CREATE TABLE USER_LOGIN(
+  Uid INTEGER (8),
+  Firstname VARCHAR (50),
+  Lastname VARCHAR (50),
+  Contactnumber INTEGER (10),
+  Email VARCHAR (80),
+  Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Created DATETIME DEFAULT CURRENT_TIMESTAMP, 
+  CONSTRAINT ULPK PRIMARY KEY (Uid)
+ );
+ 
+ CREATE TABLE USER_DETAILS(
+  Uid INTEGER (8),
+  Username VARCHAR(50),
+  Password VARCHAR(16),
+  Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Created DATETIME DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT UDPK PRIMARY KEY (Uid),
+  CONSTRAINT UDFK FOREIGN KEY (Uid) REFERENCES USER_LOGIN (Uid)
+);
+
+ CREATE TRIGGER updatelogin AFTER UPDATE ON USER_LOGIN
+BEGIN
+    UPDATE USER_LOGIN
+    SET Updated = CURRENT_TIMESTAMP
+    WHERE Uid = OLD.Uid;
+END;
+
+ CREATE TRIGGER updatedetails AFTER UPDATE ON USER_DETAILS
+BEGIN
+    UPDATE USER_DETAILS
+    SET Updated = CURRENT_TIMESTAMP
+    WHERE Uid = OLD.Uid;
+END;
+
+"""
