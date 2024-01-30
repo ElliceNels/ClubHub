@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<!--  Load CSS in Flask with html-->
-    <link rel="stylesheet" href='/staticFiles/main.css' />
-  <title>ClubHub</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ClubHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Files/index.css') }}">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/68718d5c4f.js" crossorigin="anonymous"></script>
+  </head>
+  <body>  
+    <div class="container">
+            <h1 id="clubhub">ClubHub</h1>
+            <a href="login.html" id="login">Login</a>
+            <a href="signup.html" id="signup">Sign Up</a>
+            <i class="fa-regular fa-registered"></i>
+            <i class="fa-regular fa-copyright"></i>
 
-</head>
-  <body>
-    <h1>Clubs hubs</h1>
-    <h2><strong>Inbox</strong></h2>
-    <p>New Mail</p>
-  </body>
+    </div>
+ </body>
 </html>

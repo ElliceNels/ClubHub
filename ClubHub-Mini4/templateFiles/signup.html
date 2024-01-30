@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SignUp</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Files/signup.css') }}">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/68718d5c4f.js" crossorigin="anonymous"></script>
+  </head>
+  <body>  
+        <div class ="container"> 
+          <header class="header"> ClubHub </header>
+          <div id="leftside"></div>
+          <div id="MainBox">
+              <div id="sidebox">
+              <h1 id="already">Already have an account?</h1>
+              <a id="login" href="login.html">Login</a>
+              </div>
+              <h1 id="signup">Sign Up</h1>
+              <form class="formlayout">
+                <input type="text" id="firstnamebar" name="firstnamebar" placeholder="First Name" required>
+                <input type="text" id="lastnamebar" name="lastnamebar" placeholder="Last Name" required>
+                <input type="text" id="IDbar" name="IDbar" placeholder="ID Number" required>
+                <input type="text" id="emailbar" name="emailbar" placeholder="Email" required>
+                <input type="text" id="usernamebar" name="usernamebar" placeholder="Username" required>
+                <input type="password" id="password1bar" name="password1bar" placeholder="Password" required>
+                <input type="password" id="password2bar" name="password2bar" placeholder="Re-enter Password" required>
+                <label id="Studentlabel" Student">Student <input type="radio" id="Student" name="usertype" value="Student" required></label>
+                <label id="Coordinatorlabel" for="Coordinator">Coordinator<input type="radio" id="Coordinator" name="usertype" value="Coordinator" required></label>
+                <input type="submit" id="submitbutton" name="submitbutton" placeholder="submit" >submitS
+              </form>
+          </div>
+          <div id="rightside"></div>
+          <footer class="footer"></i></footer>
+          <a href="index.html" id="homelink"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+ </body>
+</html>
