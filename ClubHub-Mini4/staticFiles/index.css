@@ -15,24 +15,24 @@
 #clubhub{
     grid-area: 3/1/5/11;
     font-family: "Fjalla One";
-    font-size: 120px;
-    color: #D9C4AF;
+    font-size: 7.5rem;
+    color: #FA991C ;
     justify-self: center;
 }
 
 #login, #signup{
     font-family: "Nobile";
     font-weight: 500;
-    background-color: #D9C4AF;;
+    background-color: #1C768F;;
     color: white;
-    border: 5px solid #BE8E8C;
-    border-radius: 25px;
-    height: 90px;
-    font-size: 60px;
-    width: 300px;
+    border: .313rem solid #032539;
+    border-radius: 4rem;
+    height: 5.25rem;
+    font-size: 3.75rem;
+    width: 18.75rem;
     justify-self: center;
-    margin: 5px;
-    box-shadow: -10px 10px 5px rgb(166, 166, 166);
+    margin: .313rem;
+    box-shadow: -.625rem .625rem .313rem rgb(166, 166, 166);
     text-align: center;
     text-decoration: none;
 
@@ -44,9 +44,9 @@
     grid-area: 6/6/8/9;
 }
 .fa-copyright, .fa-registered{
-    font-size: 50px ;
-    color: #BE8E8C;
-    margin: 10px;
+    font-size: 3.125rem ;
+    color: #FA991C ;
+    margin: .625rem;
 }
 .fa-copyright{
     grid-area: 10/5/11/5;
@@ -55,4 +55,15 @@
 .fa-registered{
     grid-area: 10/6/11/6;
     justify-self: start;
+}
+.fa-circle-nodes{
+    color: #032539;
+    font-size: 100px;
+    padding-left: 20px;
+    transition: transform 300ms ease-in-out;
+   
+}
+.fa-circle-nodes:hover{
+    transform: rotate(45deg);
+
 }

@@ -14,8 +14,8 @@
 }
 
 #MainBox {
-    background-color: #82A09E;
-    box-shadow: 10px 10px 5px #62917F;
+    background-color: #1C768F;
+    box-shadow: .625rem .625rem .313rem #032539;
     grid-area: 2 / 2 / 3 / 3;
     display: grid;
     grid-template-rows: repeat(10, 1fr);
@@ -24,9 +24,9 @@
 
 .header {
     grid-area: 1 / 1 / 2 / 4;
-    color: #62917F;
+    color: #FA991C;
     font-family: "Fjalla One" ;
-    font-size: 70px;
+    font-size: 4.375rem;
     text-align: center;
 
 }
@@ -35,7 +35,7 @@
     grid-area: 3 / 1 / 4 / 4;
 }
 .fa-arrow-left{
-    font-size: 100px;
+    font-size: 6.25rem;
     grid-area: 10/1/11/2;
     display: inline-flex;
 }
@@ -45,7 +45,7 @@
     text-decoration:  none;
     grid-area: 10/1/11/2;
     align-self: center;
-    color:#62917F ;
+    color:#FA991C;
 }
 #leftside {
     grid-area: 1 / 1 / 4 / 2;
@@ -56,63 +56,64 @@
 }
 
 #firstnamebar, #lastnamebar{
-    border:5px#62917F;
-    border-radius: 2px;
+    border:.313rem solid #032539;
+    border-radius: .125rem;
     background-color: white;
-    color: #62917F;
-    height: 30px;
-    width:  200px;
-    margin: 5px;
+    color: #032539;
+    height: 1.875rem;
+    width:  12rem;
+    margin: .313rem;
     font-family: "Signika Negative";
 
 }
 #IDbar, #usernamebar, #password1bar, #password2bar, #emailbar{
-    margin: 5px;
-    border:5px#62917F;
-    border-radius: 2px;
+    margin: .313rem;
+    border:.313rem solid#032539;
+    border-radius: .125rem;
     background-color: white;
-    color: #62917F;
-    height: 30px;
-    width:  418px;
+    color: #032539;
+    height: 1.875rem;
+    width:  25.75rem;
     font-family: "Signika Negative";
 }
 .formlayout{
-    grid-area: 4/7/9/11;
+    grid-area: 4/6/9/11;
+    padding-left: 4.6875rem;
     
 }
 #Studentlabel, #Coordinatorlabel{
     font-family: "Signika Negative";
-    font-size: 20px;
-    margin-left: 70px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 199px;
+    font-size: 1.25rem;
+    margin-left: 4.375rem;
+    margin-top: .313rem;
+    margin-bottom: .313rem;
+    width: 12.438rem;
     text-align: right;
 }
 #signup{
     grid-area: 3/7/4/11;
     font-family: "Nobile";
     font-weight: 500;
-    font-size: 100px;
+    font-size: 6.253rem;
     justify-self: start;
-    color:  #62917F;
+    color:  #ffffff;
 }
-#submitbutton{
-    background-color:  #62917F;
+#submit{
+    background-color:  #FA991C;
     color: white;
-    height: 30px;
-    width: 125px;
-    margin-left: 146.5px;
-    margin-right: 146.5px;
-    border-radius: 25px;
-    border: 3px solid #62917F;
+    height: 1.875rem;
+    width: 7.813rem;
+    margin-left: 9.156rem;
+    margin-right: 9.156rem;
+    border-radius: 1.563rem;
+    border: .188rem solid #FA991C;
     font-family: "Signika Negative";
 
 }
 
 #sidebox{
     grid-area: 1/1/11/6;
-    border-right: 10px solid white;
+    border-right: .625rem solid white;
     z-index: 3;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -122,7 +123,7 @@
 #already{
     font-family: "Nobile";
     font-weight: 500;
-    font-size: 90px;
+    font-size: 5.625rem;
     color: white;
     grid-area: 2/2/5/6;
     align-self:start;
@@ -130,10 +131,10 @@
 }
 
 #login{
-    height: 60px;
-    width: 200px;
-    background-color: #62917F;
-    border-radius: 25px;
+    height: 3.75rem;
+    width: 12.5rem;
+    background-color: #FA991C;
+    border-radius: 1.563rem;
     grid-area: 4/2/6/5;
      align-self: center;
     justify-self: center;
@@ -141,15 +142,33 @@
     border-color: transparent;
     font-family: "Signika Negative";
     color: #ffffff;
-    font-size: 40px;
+    font-size: 2.5rem;
     text-decoration: none;
 }
 
-#login:hover, #submitbutton:hover{ 
-    background-color: #598373;
+.fa-circle-nodes{
+    color: #032539;
+    font-size: 60px;
+    padding-left: 20px;
+    transition: transform 300ms ease-in-out;
+   
+}
+.fa-circle-nodes:hover{
+    transform: rotate(45deg);
+
+}
+#login:hover, #submit:hover{ 
+    background-color: #E18A19;
 }
 
-#login:active, #submitbutton:active{
+#login:active, #submit:active{
     cursor: grabbing;
-    background-color:#456659;
+    background-color:#C87B16;
+}
+#warningbox{
+    color: #FA991C;
+    grid-area: 1/3/4/4;
+    justify-self: end;
+    margin-left: 1.25rem;
+    align-self: center;
 }

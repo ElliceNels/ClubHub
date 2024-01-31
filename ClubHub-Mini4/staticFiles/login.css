@@ -14,15 +14,15 @@
 }
 
 #MainBox {
-    background-color: #82A09E;
-    box-shadow: -10px 10px 5px #62917F;
+    background-color: #1C768F;
+    box-shadow: -.625rem .625rem .313rem #032539;
     grid-area: 2 / 2 / 3 / 3;
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(10, 1fr);
 }
 .fa-arrow-left{
-    font-size: 100px;
+    font-size: 6.25rem;
     grid-area: 10/1/11/2;
     display: inline-flex;
 }
@@ -32,14 +32,14 @@
     text-decoration:  none;
     grid-area: 10/1/11/2;
     align-self: center;
-    color:#62917F ;
+    color:#FA991C ;
 }
 
 .header {
     grid-area: 1 / 1 / 2 / 4;
-    color: #62917F;
+    color: #FA991C;
     font-family: "Fjalla One" ;
-    font-size: 70px;
+    font-size: 4.375rem;
     text-align: center;
 
 }
@@ -57,17 +57,17 @@
 
 #sidebox{
     grid-area: 1/1/11/6;
-    border-right: 5px solid white;
+    border-right: .313rem solid white;
 }
 
 #usernamebar, #password1bar, #password2bar{
-    margin: 5px;
-    border:5px#62917F;
-    border-radius: 2px;
+    margin: .313rem;
+    border:.313rem solid #032539;
+    border-radius: .125rem;
     background-color: white;
-    color: #62917F;
-    height: 30px;
-    width:  418px;
+    color: #032539;
+    height: 1.875rem;
+    width:  26.125rem;
     font-family: "Signika Negative";
 }
 .formlayout{
@@ -76,33 +76,33 @@
     /2/10/5;
     align-self: flex-end;
     justify-self: center;
-    margin: 30px;
+    margin: 1.875rem;
 }
 #login{
     grid-area: 5/2/6/5;
     font-family: "Nobile";
     font-weight: 500;
-    font-size: 100px;
+    font-size: 6.25rem;
     justify-self: center;
     align-self: flex-end;
-    color:  #62917F;
+    color:  #FFFFFF;
 }
 #submitbutton{
-    background-color:  #62917F;
+    background-color:  #FA991C;
     color: white;
-    height: 30px;
-    width: 125px;
-    margin-left: 146.5px;
-    margin-right: 146.5px;
-    border-radius: 25px;
-    border: 3px solid #62917F;
+    height: 1.875rem;
+    width: 7.813rem;
+    margin-left: 9.156rem;
+    margin-right: 9.156rem;
+    border-radius: 1.563rem;
+    border: .188rem solid #FA991C;
     font-family: "Signika Negative";
 
 }
 
 #sidebox{
     grid-area: 1/6/11/11;
-    border-left: 10px solid white;
+    border-left: .625rem solid white;
     z-index: 3;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -112,7 +112,7 @@
 #already{
     font-family: "Nobile";
     font-weight: 500;
-    font-size: 90px;
+    font-size: 5.625rem;
     color: white;
     grid-area: 2/2/5/6;
     align-self:start;
@@ -120,10 +120,10 @@
 }
 
 #signup{
-    height: 60px;
-    width: 200px;
-    background-color: #62917F;
-    border-radius: 25px;
+    height: 3.75rem;
+    width: 12.5rem;
+    background-color: #FA991C;
+    border-radius: 1.563rem;
     grid-area: 4/2/6/5;
      align-self: center;
     justify-self: center;
@@ -131,18 +131,29 @@
     border-color: transparent;
     font-family: "Signika Negative";
     color: #ffffff;
-    font-size: 40px;
+    font-size: 2.5rem;
     text-decoration: none;
 }
 
+.fa-circle-nodes{
+    color: #032539;
+    font-size: 60px;
+    padding-left: 20px;
+    transition: transform 300ms ease-in-out;
+   
+}
 #signup:hover, #submitbutton:hover{
-    background-color: #598373
+    background-color: #E18A19
 
     ;
+}
+.fa-circle-nodes:hover{
+    transform: rotate(45deg);
+
 }
 
 #signup:active, #submitbutton:active{
     cursor: grabbing;
-    background-color: #456659
+    background-color: #C87B16
     ;
 }
