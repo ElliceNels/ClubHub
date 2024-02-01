@@ -11,6 +11,10 @@ app = Flask(__name__, template_folder='templateFiles', static_folder='staticFile
 def index():
     return render_template('index.html')
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error404.html'), 404
+
 @app.route('/signup.html')
 def signUp():
     return render_template('signup.html')
@@ -34,7 +38,7 @@ def signupValidation():
             usertype = request.form.get("usertype") 
         
         loginValidator = Login()
-        alerts = loginValidator.signupValidation( "Kelly", "Abidoye", "23365412", "Kelly", "Kelly@2211","1234567aK!", "1234567aK!", "Coordinator")
+        alerts = loginValidator.signupValidation( firstname, lastname, userId, email, username,password1, password2, usertype)
         if alerts == []:
             return(render_template("index.html"))
         else:
