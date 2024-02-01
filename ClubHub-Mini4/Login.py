@@ -19,6 +19,9 @@ class Login:
             self.alert.append("First name and last name must both be at least 2 characters long")
 
     def accountTypeValidator(self, userId, usertype):
+        if str(userId).isdigit() == False:
+            self.alert.append("User id must only contain numbers")
+            return
         identifier = str(userId)[:3]
         print(f" the first three are: {identifier}")
         if identifier == "233" and usertype != "Student":
@@ -45,19 +48,16 @@ class Login:
                 self.alert.append("Your password needs both upper and lowercase letters")
     
     def emailValidator(self, email):
-        regex = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'
+        regex = r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Za-z]{2,})+'
         
-        if not re.match(regex, email):
+        if not re.search(regex, email):
             self.alert.append("Invalid email")
         
     def usernameValidator(self, username):
-        numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-        username = str(username)
+        regex = "^[A-Za-z0-9_-]*$"
         if len(username) < 8:
             self.alert.append("Username must be at least 8 characters long")
             return
-        
-        for c in username:
-            if c in numbers:
-                return
-        self.alert.append("Username must contain at least one number")
+
+        if not re.search(regex, username):
+            self.alert.append("Username must contain at least one number")
