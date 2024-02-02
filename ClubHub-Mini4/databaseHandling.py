@@ -54,28 +54,32 @@ CREATE TABLE IF NOT EXISTS USER_TYPE (
 conn.commit()
 
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS USER_LOGIN(
-    Uid INTEGER (8),
-    Firstname VARCHAR (50),
-    Lastname VARCHAR (50),
-    Contactnumber INTEGER (10),
-    Email VARCHAR (80),
-    Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Created DATETIME DEFAULT CURRENT_TIMESTAMP, 
-    CONSTRAINT ULPK PRIMARY KEY (Uid)
-); ''')
-conn.commit()
- 
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS USER_DETAILS(
+CREATE TABLE USER_LOGIN(
   Uid INTEGER (8),
-  Username VARCHAR(50),
+  Username VARCHAR(50) UNIQUE,
   Password VARCHAR(16),
   Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
   Created DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Pending INT(1) DEFAULT 1,
+  Status INT(1) DEFAULT 0,
   CONSTRAINT UDPK PRIMARY KEY (Uid),
-  CONSTRAINT UDFK FOREIGN KEY (Uid) REFERENCES USER_LOGIN (Uid)
-); ''')
+  CONSTrAINT UDFK FOREIGN KEY (Uid) REFERENCES USER_LOGIN (Uid)
+);  ''')
+conn.commit()
+ 
+cursor.execute('''
+CREATE TABLE USER_DETAILS(
+  login_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  Uid INTEGER (8) UNIQUE,
+  Firstname VARCHAR (50),
+  Lastname VARCHAR (50),
+  Contactnumber INTEGER (10),
+  Email VARCHAR (80),
+  Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Created DATETIME DEFAULT CURRENT_TIMESTAMP, 
+  Pending INT(1) DEFAULT 1,
+  Status INT(1) DEFAULT 0
+ );  ''')
 conn.commit()
 
 cursor.execute('''
