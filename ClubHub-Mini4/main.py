@@ -24,7 +24,7 @@ def signUp():
 def login():
     return render_template('login.html')
 
-@app.route('/process_form', methods=["POST"])
+@app.route('/SignUpProcess_Form', methods=["POST"])
 def signupValidation():
     
         if request.method == "POST":
@@ -37,13 +37,26 @@ def signupValidation():
             password2 = request.form.get("password2bar")
             usertype = request.form.get("usertype") 
         
-        loginValidator = Login()
-        alerts = loginValidator.signupValidation( firstname, lastname, userId, email, username,password1, password2, usertype)
+        SignUpValidator = Login()
+        alerts = SignUpValidator.signupValidation( firstname, lastname, userId, email, username,password1, password2, usertype)
         if alerts == []:
             return(render_template("index.html"))
         else:
             return(render_template('signup.html', warning=alerts))
-        return(render_template('signup.html', warning=""))
+        
+@app.route('/LoginProcess_Form', methods=["POST"])
+def LoginValidation():
+    password1 = request.form.get("password1bar")
+    password2 = request.form.get("password2bar")
+    LoginValidator = Login()
+    alerts = LoginValidator.doPasswordsMatch(password1, password2)
+    print(password1, password2)
+    if alerts == None:
+         return(render_template('login.html', warning=""))
+    else:
+        return(render_template('login.html', warning=alerts))
+
+    
         
 
 if __name__ == '__main__':

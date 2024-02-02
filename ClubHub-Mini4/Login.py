@@ -61,3 +61,8 @@ class Login:
 
         if not re.search(regex, username):
             self.alert.append("Username must contain at least one number")
+            
+    def doPasswordsMatch(self, password1, password2):
+        if password1 != password2:
+            self.alert.append("Passwords dont match")
+        return

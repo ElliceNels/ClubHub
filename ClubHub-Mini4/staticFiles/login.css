@@ -151,6 +151,13 @@
     transform: rotate(45deg);
 
 }
+#warningbox{
+    color: #FA991C;
+    grid-area: 1/1/4/2;
+    justify-self: end;
+    margin-left: 1.25rem;
+    align-self: center;
+}
 
 #signup:active, #submitbutton:active{
     cursor: grabbing;
