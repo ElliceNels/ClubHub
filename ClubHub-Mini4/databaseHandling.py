@@ -32,6 +32,21 @@ CREATE TABLE IF NOT EXISTS EVENT_ATTENDEES (
 conn.commit()
 
 cursor.execute('''
+CREATE TABLE IF NOT EXISTS EVENTS(
+  Event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  EventTitle VARCHAR(20),
+  Description TEXT,
+  EventDate DATE,
+  EventTime TIMESTAMP,
+  Venue VARCHAR(50),
+  Club_id INTEGER,
+  Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Created DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN Key(Club_id) REFERENCES CLUBS(Club_id)
+); ''')
+conn.commit()
+
+cursor.execute('''
 CREATE TABLE IF NOT EXISTS CLUBS (
     Club_id INTEGER PRIMARY KEY AUTOINCREMENT,
     Club_name VARCHAR(40),
@@ -126,6 +141,15 @@ BEGIN
     UPDATE USER_DETAILS
     SET Updated = CURRENT_TIMESTAMP
     WHERE User_id = OLD.User_id;
+END; ''')
+conn.commit()
+
+cursor.execute('''
+CREATE TRIGGER updateevents AFTER UPDATE ON EVENTS
+BEGIN 
+    UPDATE EVENTS
+    SET Updated = CURRENT_TIMESTAMP
+    WHERE Event_id = OLD.Event_id;
 END; ''')
 conn.commit()
 
