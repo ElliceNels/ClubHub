@@ -60,7 +60,7 @@
     border-right: .313rem solid white;
 }
 
-#usernamebar, #password1bar, #password2bar{
+#useridbar, #usernamebar, #passwordbar, #confirmpasswordbar{
     margin: .313rem;
     border:.313rem solid #032539;
     border-radius: .125rem;
@@ -79,7 +79,7 @@
     margin: 1.875rem;
 }
 #login{
-    grid-area: 5/2/6/5;
+    grid-area: 4/2/5/5;
     font-family: "Nobile";
     font-weight: 500;
     font-size: 6.25rem;

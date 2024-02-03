@@ -28,17 +28,18 @@ def login():
 def signupValidation():
     
         if request.method == "POST":
-            firstname = request.form.get("firstnamebar")
-            lastname  = request.form.get("lastnamebar")
-            userId = request.form.get("IDbar")
-            email = request.form.get("emailbar")
-            username = request.form.get("usernamebar")
-            password1 = request.form.get("password1bar")
-            password2 = request.form.get("password2bar")
-            usertype = request.form.get("usertype") 
+            firstname = request.form.get("firstnamebar").strip()
+            lastname  = request.form.get("lastnamebar").strip()
+            userId = request.form.get("IDbar").strip()
+            email = request.form.get("emailbar").strip()
+            phonenumber = request.form.get("phonenumberbar").strip()
+            username = request.form.get("usernamebar").strip()
+            password1 = request.form.get("password1bar").strip()
+            password2 = request.form.get("password2bar").strip()
+            usertype = request.form.get("usertype").strip()
         
         SignUpValidator = Login()
-        alerts = SignUpValidator.signupValidation( firstname, lastname, userId, email, username,password1, password2, usertype)
+        alerts = SignUpValidator.signupValidation( firstname, lastname, userId, email, phonenumber, username,password1, password2, usertype)
         if alerts == []:
             return(render_template("index.html"))
         else:
@@ -46,15 +47,18 @@ def signupValidation():
         
 @app.route('/LoginProcess_Form', methods=["POST"])
 def LoginValidation():
-    password1 = request.form.get("password1bar")
-    password2 = request.form.get("password2bar")
-    LoginValidator = Login()
-    alerts = LoginValidator.doPasswordsMatch(password1, password2)
-    print(password1, password2)
-    if alerts == None:
-         return(render_template('login.html', warning=""))
-    else:
-        return(render_template('login.html', warning=alerts))
+    if request.method == "POST":
+        password1 = request.form.get("passwordbar").strip()
+        password2 = request.form.get("confirmpasswordbar").strip()
+
+        LoginValidator = Login()
+        alerts = LoginValidator.doPasswordsMatch(password1, password2)
+        print(password1, password2)
+        print(alerts)
+        if alerts == []:
+             return render_template('index.html')
+        else:
+            return render_template('login.html', warning=alerts)
 
     
         

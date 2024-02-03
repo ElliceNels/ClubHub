@@ -66,7 +66,7 @@
     font-family: "Signika Negative";
 
 }
-#IDbar, #usernamebar, #password1bar, #password2bar, #emailbar{
+#phonenumberbar, #IDbar, #usernamebar, #password1bar, #password2bar, #emailbar{
     margin: .313rem;
     border:.313rem solid#032539;
     border-radius: .125rem;
@@ -77,7 +77,7 @@
     font-family: "Signika Negative";
 }
 .formlayout{
-    grid-area: 4/6/9/11;
+    grid-area: 3/6/8/11;
     padding-left: 4.6875rem;
     
 }
@@ -91,7 +91,7 @@
     text-align: right;
 }
 #signup{
-    grid-area: 3/7/4/11;
+    grid-area: 2/7/3/11;
     font-family: "Nobile";
     font-weight: 500;
     font-size: 6.253rem;

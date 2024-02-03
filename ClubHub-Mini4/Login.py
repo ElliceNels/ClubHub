@@ -4,12 +4,13 @@ class Login:
     def __init__(self):
         self.alert = []
 
-    def signupValidation(self, firstname, lastname, userId, email, username, password1, password2, usertype):
+    def signupValidation(self, firstname, lastname, userId, email, phonenumber, username, password1, password2, usertype):
         self.nameValidator(firstname, lastname)
         self.accountTypeValidator(userId, usertype)
         self.usernameValidator(username)
         self.passwordValidator(password1, password2)
         self.emailValidator(email)
+        self.phonenumberValidator(phonenumber)
         return self.alert
 
     def nameValidator(self, firstname, lastname):
@@ -61,8 +62,17 @@ class Login:
 
         if not re.search(regex, username):
             self.alert.append("Username must contain at least one number")
+    def phonenumberValidator(self, phonenumber):
+        try:
+            phonenumber = int(phonenumber)
+        except ValueError as e:
+            self.alert.append("Phone number must be a number")
+            return
+        if len(str(phonenumber)) != 10:
+            self.alert.append("Irish phone numbers must be 10 digits long")
             
     def doPasswordsMatch(self, password1, password2):
+        print(f"pre comparison: {password1}, {password2}")
         if password1 != password2:
             self.alert.append("Passwords dont match")
-        return
+        return self.alert
