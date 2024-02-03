@@ -1,30 +1,13 @@
-from flask import Flask
+from flask import Flask, render_template
 
-app = Flask(__name__)
+# Provide template folder name
+app = Flask(__name__, template_folder='TemplateFiles', static_folder='StaticFiles')
 
-@app.route("/")
-def hello_world():
-    return """
-    <html>
-    <head>
-        <style>
-            h1 {
-            color: #996633;
-            text-align: center;
-            font-size: 28px;
-            }
 
-            p {
-            font-family: verdana;
-            font-size: 18px;
-            text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>ClubHub Online</h1>
-        <p>This is the Offical webpage of ClubHub.<p>
-        <p>Rights of this website are accredited to 'Ellice', 'Michelle', 'Kelly', 'Alisia'.
-    </body>
-    </html>
-    """
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
