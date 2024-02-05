@@ -1,8 +1,9 @@
 import sqlite3
-conn = sqlite3.connect('Clubhub.db')
+conn = sqlite3.connect('D:\ClubHub\ClubHub-Mini4\Clubhub.db')
 print('Database connected')
 cursor = conn.cursor()
 
+## tables
 cursor.execute('''CREATE TABLE IF NOT EXISTS CLUB_MEMBERSHIP (
     Membership_id INTEGER PRIMARY KEY AUTOINCREMENT,
     User_id INTEGER,
@@ -78,7 +79,7 @@ CREATE TABLE IF NOT EXISTS USER_LOGIN(
   Login_id INTEGER PRIMARY KEY AUTOINCREMENT,
   User_id INTEGER,
   Username VARCHAR(50) Unique,
-  Password VARCHAR(16),
+  Password VARCHAR(70),
   Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
   Created DATETIME DEFAULT CURRENT_TIMESTAMP,
   Is_pending INT(1) DEFAULT 1,
@@ -177,6 +178,7 @@ BEGIN
 END; ''')
 conn.commit()
 print("Update event attendees trigger created successfullly")
+
 
 
 cursor.close()
