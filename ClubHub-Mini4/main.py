@@ -16,5 +16,9 @@ def index():
     return render_template('clubs_display.html', clubs=clubs)
 
 
+@app.route('/create_club')
+def create_club():
+    return render_template('create_club.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
