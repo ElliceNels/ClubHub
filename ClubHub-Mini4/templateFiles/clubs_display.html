@@ -6,6 +6,30 @@
     <title>Clubs Display</title>
 </head>
 <body>
-    
+    <button id="back-button">
+        Go Back
+    </button>
+    <h1 id="clubs_header"> 
+        CLUBS
+    </h1>
+    <div class="club-list">
+        {% for club in clubs %}
+        <div class="club-box">
+            <div class="club-name">
+                <a class="link" href="">
+                    {{club.name}}
+                </a>
+            </div>
+        </div>
+        <div class="coordinator-name">
+            {{club.coordinator_name}}
+            <br>
+            <br>
+        </div>
+        <div class="club-description">
+            <p>{{club.description}}</p>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
