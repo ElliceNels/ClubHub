@@ -8,18 +8,26 @@ app = Flask(__name__, template_folder='templateFiles', static_folder='staticFile
 def index():
     return render_template('ProfileStud.html')
 
-#@app.route("/Profile")
-#def Clubs():
-#    return render_template('ProfileStud.html')
+@app.route('/ProfileStud')
+def ProfileStud():
+    return render_template('ProfileStud.html')
+
+@app.route("/ProfileCoord")
+def ProfileCoord():
+    return render_template('ProfileCoord.html')
 
 @app.route('/Inbox')
 def Inbox():
     return render_template('Inbox.html')
 
-@app.route('/UpdateProfile')
-def UpdateProfile():
-    return render_template('UpdateProfile.html')
+@app.route('/UpdateProfileStud')
+def UpdateProfileStud():
+    return render_template('UpdateProfileStud.html')
 
+
+@app.route('/UpdateProfileCoord')
+def UpdateProfileCoord():
+    return render_template('UpdateProfileCoord.html')
 
 @app.route("/Clubs")
 def Clubs():

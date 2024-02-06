@@ -33,23 +33,34 @@
         <h1>Profile</h1>
 
         <!-- Profile -->
-        <div class="profile">
+        <div class="updatedprofile">
 
             <div class="left">
 
-                <h2>Person's Name and Surname</h2>
+                <h2><input type="text" placeholder="Firstname Lastname" id="names" minlength="4" maxlength="30" required></h2>
 
-                <p>@Username</p>
+                <p>@<input type="text" placeholder="Username" id="username" minlength="8" maxlength="20" required></p>
                 <br>
                 <br>
-                <p>Email: theiremail@student.ul.ie</p>
-                <p>Phone Number: 0894293287</p>
+                <p>Email: <input type="text" placeholder="Email" id="email" minlength="8" maxlength="30" required></p>
+                <p>Phone Number: <input type="text" placeholder="Phone Number" id="phoneNum" minlength="10" maxlength="10" required> </p>
+
                 <br>
                 <br>
                 <p>Club:</p>
                 <p>Club name 1</p>
                 <p>Club name 2</p>
                 <p>Club name 3</p>
+
+            </div>
+
+            <div class="right">
+
+                <a type="button" class="button" href="/ProfileStud" onclick="alert('Aborted')">Discard changes</a>
+                <br>
+                <br>
+                <a type="button" class="button" href="/ProfileStud" onclick="alert('Profile details updated')">Save changes</a>
+
 
             </div>
 
