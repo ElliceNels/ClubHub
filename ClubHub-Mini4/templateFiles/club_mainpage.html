@@ -10,11 +10,24 @@
         Go Back
     </a>
     <h1>CLUB NAME</h1>
-    {% for club_member in club_members %}
+    <a href="" id="create-event">
+        Create event
+    </a>
+    <br>
+    <a href="" id="club-requests">
+        Requests
+    </a>
+    <br>
+    <div>
+        {% for club_member in club_members %}
     {{club_member}}
+    <button>remove</button>
     <br>
     <br>
+    </div>
     {% endfor %}
-    
+    <a href="" id="delete-club">
+        Delete Club
+    </a>
 </body>
 </html>
