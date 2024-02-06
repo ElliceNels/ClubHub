@@ -7,9 +7,9 @@
     <title>Clubs Display</title>
 </head>
 <body>
-    <button id="back-button">
+    <a href="" id="back-button">
         Go Back
-    </button>
+    </a>
     <h1 id="clubs_header">
         CLUBS
     </h1>
@@ -33,5 +33,6 @@
         {% endfor %}
     </div>
     <a href="{{ url_for('create_club') }}">create club</a>
+    <a href="{{ url_for('club_mainpage') }}">see club</a>
 </body>
 </html>
