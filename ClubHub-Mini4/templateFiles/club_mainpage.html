@@ -6,6 +6,15 @@
     <title>Club Mainpage</title>
 </head>
 <body>
+    <a href="{{ url_for('index') }}" id="back-button">
+        Go Back
+    </a>
+    <h1>CLUB NAME</h1>
+    {% for club_member in club_members %}
+    {{club_member}}
+    <br>
+    <br>
+    {% endfor %}
     
 </body>
 </html>
