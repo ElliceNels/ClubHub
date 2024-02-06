@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='club_mainpage_style.css') }}"/>
     <title>Club Mainpage</title>
 </head>
 <body>
-    <a href="{{ url_for('index') }}" id="back-button">
+    <a href="{{ url_for('index') }}" class="button" id="back-button">
         Go Back
     </a>
     <h1>CLUB NAME</h1>
-    <a href="" id="create-event">
-        Create event
-    </a>
-    <br>
-    <a href="" id="club-requests">
-        Requests
-    </a>
-    <br>
-    <div>
-        {% for club_member in club_members %}
-    {{club_member}}
-    <button>remove</button>
-    <br>
-    <br>
+    <div id="coordinator-controls">
+        <a href="" class="button" id="create-event">
+            Create event
+        </a>
+        <br>
+        <a href="" class="button" id="club-requests">
+            Requests
+        </a>
+        <br>
     </div>
-    {% endfor %}
-    <a href="" id="delete-club">
+    <div>
+        <h2> List of members: </h2>
+        <br>
+        {% for club_member in club_members %}
+        {{club_member}}
+        <button class="remove-button" id="remove-member">remove</button>
+        <br>
+        <br>
+        {% endfor %}
+    </div>
+    <a href="" class="button" id="delete-club">
         Delete Club
     </a>
 </body>

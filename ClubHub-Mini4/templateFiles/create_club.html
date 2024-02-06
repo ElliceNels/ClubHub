@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_club_style.css') }}"/>
     <title>Create new club</title>
 </head>
 <body>
-    <a href="{{ url_for('index') }}" id="back-button">
+    <a href="{{ url_for('index') }}" class="button" id="back-button">
         Go Back
     </a>
     <h1 id="clubs_header">
