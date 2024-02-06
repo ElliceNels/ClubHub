@@ -51,7 +51,7 @@ body {
     margin: 10px;
     text-align: center;
 }
-#back-button {
+.button {
     font-size: medium;
     font-weight: bold;
     color: #FBF3F2;
@@ -63,4 +63,9 @@ body {
     border-radius: 1rem;
     text-align: center;
     padding: 5px;
+}
+.temp {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
 }

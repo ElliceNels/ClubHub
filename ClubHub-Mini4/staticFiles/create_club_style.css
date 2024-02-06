@@ -1,0 +1,21 @@
+body {
+    background-color: #032539 ;
+    color: white;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+.button {
+    font-size: medium;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: #FA991C;
+    margin-left: 3rem;
+    margin-top: 2rem;
+    width: 5rem;
+    height: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 5px;
+}
