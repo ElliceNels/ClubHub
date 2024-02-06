@@ -5,9 +5,20 @@ app = Flask(__name__, template_folder='templateFiles', static_folder='staticFile
 
 
 @app.route('/')
-@app.route('/Inbox')
 def index():
+    return render_template('ProfileStud.html')
+
+#@app.route("/Profile")
+#def Clubs():
+#    return render_template('ProfileStud.html')
+
+@app.route('/Inbox')
+def Inbox():
     return render_template('Inbox.html')
+
+@app.route('/UpdateProfile')
+def UpdateProfile():
+    return render_template('UpdateProfile.html')
 
 
 @app.route("/Clubs")

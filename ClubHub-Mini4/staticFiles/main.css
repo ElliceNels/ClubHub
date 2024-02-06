@@ -20,7 +20,7 @@
         .navbar{
             height: 7px;
             padding: 25px;
-            background-color: black;
+            background-color: #D9D9D9;
 
             display: flex;
             flex-direction: row;
@@ -28,7 +28,7 @@
         }
 
         .navbar a{
-            color: white;
+            color: black;
             text-decoration: none;
             font-family: Signika Negative;
             font-size: 1em;
@@ -59,6 +59,9 @@
             font-size: 20px;
             background-color: #032539;
             color: white;
+            text-decoration: none;
+            font-family: Signika Negative;
+
         }
 
 
@@ -67,6 +70,7 @@
             font-size: 20px;
             background-color: #032539;
             color: black;
+            font-family: Signika Negative;
         }
 
 
@@ -112,6 +116,17 @@
 
 
         .mail{
+        display: flex;
+        justify-content: space-between;
+        clear: both;
+        background-color: #1C768F;
+        color: white;
+        margin: auto;
+        padding: 10px;
+        width : 500px;
+        }
+
+        .profile{
         display: flex;
         justify-content: space-between;
         clear: both;
