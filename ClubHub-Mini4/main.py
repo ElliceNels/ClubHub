@@ -48,10 +48,6 @@ def UpdateProfileStud():
 def UpdateProfileCoord():
     return render_template('UpdateProfileCoord.html')
 
-@app.route("/Clubs")
-def Clubs():
-    return render_template('Clubs.html')
-
 
 @app.route("/Events")
 def Events():
