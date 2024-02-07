@@ -1,5 +1,5 @@
 import sqlite3
-conn = sqlite3.connect('D:\ClubHub\ClubHub-Mini4\Clubhub.db')
+conn = sqlite3.connect('database/Clubhub.db')
 print('Database connected')
 cursor = conn.cursor()
 
