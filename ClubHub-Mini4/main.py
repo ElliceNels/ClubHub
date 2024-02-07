@@ -15,7 +15,8 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
 
 
 @app.route('/')
-def index():
+@app.route('/clubs_display')
+def clubs_display():
     return render_template('clubs_display.html', clubs=clubs)
 
 @app.route('/create_club')
