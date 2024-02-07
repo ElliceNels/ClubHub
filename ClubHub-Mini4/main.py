@@ -128,7 +128,7 @@ def loginValidationRoute():
             if loginVerifier.Login(User_id, Username, password1):
                 approvalStatus = loginVerifier.approvalStatus(User_id)
                 if approvalStatus == True:
-                    return render_template('EventMain.html')
+                    return EventMain()
                 else:
                     return render_template('postLogin.html', approvalmessage=approvalStatus)
             else:
