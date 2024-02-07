@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from LoginValidation import LoginValidation
+from LoginVerification import LoginVerification
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -14,7 +16,7 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
                 "Leo Martinez"]
 
 
-@app.route('/')
+@app.route('/ProfileStud.html')
 def index():
     return render_template('ProfileStud.html')
 
@@ -61,16 +63,7 @@ def Events():
 def club_mainpage():
     return render_template('/club_mainpage.html', club_members=club_members)
 
-if __name__ == '__main__':
-    app.run(debug=True)
-from flask import Flask, render_template, request
-from LoginValidation import LoginValidation
-from LoginVerification import LoginVerification
-
 # Provide template folder name
-app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
-
-
 @app.route('/')
 @app.route('/index.html')
 def index():
