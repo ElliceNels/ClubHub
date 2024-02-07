@@ -13,14 +13,19 @@
     <h1 id="clubs_header">
         CREATE NEW CLUB
     </h1>
-    <form action="">
-        <label for="club-name">Club name: </label>
-        <input type="text" id="club-name" name="club-name">
-        <br>
-        <br>
-        <label for="description">Description: </label>
-        <textarea name="description" id="description" cols="30" rows="10"></textarea>
-        <br>
-    </form>
+    <div id="create-club-bg">
+        <form action="" id="club-form">
+            <label for="club-name">Club name: </label>
+            <br>
+            <input type="text" id="club-name" name="club-name">
+            <br>
+            <br>
+            <label for="description" id="description">Description: </label>
+            <br>
+            <textarea class="text-area" name="description" id="description" cols="30" rows="10"></textarea>
+            <br>
+            <input type="submit" value="submit" id="submit-button">
+        </form>
+    </div>
 </body>
 </html>
