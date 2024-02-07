@@ -16,9 +16,10 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
                 "Leo Martinez"]
 
 
-@app.route('/ProfileStud.html')
+@app.route('/')
+@app.route('/index')
 def index():
-    return render_template('ProfileStud.html')
+    return render_template('index.html')
 
 @app.route('/clubs_display')
 def clubs_display():
@@ -64,10 +65,7 @@ def club_mainpage():
     return render_template('/club_mainpage.html', club_members=club_members)
 
 # Provide template folder name
-@app.route('/')
-@app.route('/index.html')
-def index():
-    return render_template('index.html')
+
 
 @app.errorhandler(404)
 def page_not_found(e):
