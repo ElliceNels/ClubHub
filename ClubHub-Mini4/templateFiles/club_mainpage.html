@@ -10,7 +10,7 @@
     <a href="{{ url_for('index') }}" class="button" id="back-button">
         Go Back
     </a>
-    <h1>CLUB NAME</h1>
+    <h1  id="clubs_header">CLUB NAME</h1>
     <div id="coordinator-controls">
         <a href="" class="button" id="create-event">
             Create event
@@ -21,14 +21,16 @@
         </a>
         <br>
     </div>
-    <div>
-        <h2> List of members: </h2>
+    <div id="list-of-members">
+        <h2 id="members-header"> List of members: </h2>
         <br>
         {% for club_member in club_members %}
-        {{club_member}}
-        <button class="remove-button" id="remove-member">remove</button>
-        <br>
-        <br>
+        <div id="club-member-display">
+            {{loop.index}}. {{club_member}}
+            <button class="remove-button" id="remove-member">remove</button>
+            <br>
+            <br>
+        </div>
         {% endfor %}
     </div>
     <a href="" class="button" id="delete-club">
