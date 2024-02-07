@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='club_mainpage_style.css') }}"/>
+    <title>Club Mainpage</title>
+</head>
+<body>
+    <a href="{{ url_for('clubs_display') }}" class="button" id="back-button">
+        Go Back
+    </a>
+    <h1  id="clubs_header">CLUB NAME</h1>
+    <div id="coordinator-controls">
+        <a href="" class="button" id="create-event">
+            Create event
+        </a>
+        <br>
+        <a href="" class="button" id="club-requests">
+            Requests
+        </a>
+        <br>
+    </div>
+    <div id="list-of-members">
+        <h2 id="members-header"> List of members: </h2>
+        <br>
+        {% for club_member in club_members %}
+        <div id="club-member-display">
+            {{loop.index}}. {{club_member}}
+            <button class="remove-button" id="remove-member">remove</button>
+            <br>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="" class="button" id="delete-club">
+        Delete Club
+    </a>
+</body>
+</html>

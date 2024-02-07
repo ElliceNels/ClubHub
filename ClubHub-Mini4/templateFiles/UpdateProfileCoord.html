@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ClubHub</title>
+    <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<main>
+
+
+
+
+    <!-- SIDE NAVBAR -->
+    <nav class = sidenavbar>
+        <ul>
+             <a class = "discrete" href="/UpdateProfileStud">Update Profile</a>
+        </ul>
+    </nav>
+
+
+    <!-- MAIN STUFF -->
+    <div class="content">
+
+    <!-- NAVBAR -->
+    <ul class = navbar>
+        <a href="/clubs_display">Clubs</a>
+        <a href="/Events">Events</a>
+        <a href="/Inbox">Inbox</a>
+    </ul>
+
+        <!-- TITLE -->
+        <h1>Profile</h1>
+
+        <!-- Profile -->
+        <div class="updatedprofile">
+
+            <div class="left">
+
+                <h2><input type="text" placeholder="Firstname Lastname" id="names" minlength="4" maxlength="30" required></h2>
+
+                <p>@<input type="text" placeholder="Username" id="username" minlength="8" maxlength="20" required></p>
+                <br>
+                <br>
+                <p>Email: <input type="text" placeholder="Email" id="email" minlength="8" maxlength="30" required></p>
+                <p>Phone Number: <input type="text" placeholder="Phone Number" id="phoneNum" minlength="10" maxlength="10" required> </p>
+
+                <br>
+                <br>
+                <p>Club:</p>
+                <p>Club they are coordinating</p>
+
+
+            </div>
+
+            <div class="right">
+
+                <a type="button" class="button" href="/ProfileCoord" onclick="alert('Aborted')">Discard changes</a>
+                <br>
+                <br>
+                <a type="button" class="button" href="/ProfileCoord" onclick="alert('Profile details updated')">Save changes</a>
+
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+</main>
+</body>
+</html>
+

@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&family=Signika+Negative:wght@300&display=swap');
+
+body {
+    background-color: #032539 ;
+    color: white;
+    margin: 0;
+    font-family: 'Signika Negative', sans-serif; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.button {
+    font-size: medium;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: #FA991C;
+    margin-top: 2rem;
+    margin-right: 70rem;
+    width: 5rem;
+    height: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.text-area {
+    font-size: 2rem;
+}
+
+#clubs_header {
+    text-align: center;
+    padding: 20px;
+    color:#FBF3F2;
+    font-size: 4rem;
+    font-family: 'Nobile', sans-serif;
+}
+#create-club-bg {
+    background-color: #1C768F ;
+    width: 60rem;
+    height: 60rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+#club-form {
+    font-size: 3rem;
+    margin-top: 2rem;
+}
+#description {
+    width: 830px;
+    height: 218px;
+    border-radius: 15px;
+}
+#club-name {
+    font-size: 2rem;
+    width: 830px;
+    height: 50px;
+    border-radius: 15px;
+}
+#submit-button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: #FA991C;
+    margin-top: 2rem;
+    width: 9rem;
+    height: 4rem;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
