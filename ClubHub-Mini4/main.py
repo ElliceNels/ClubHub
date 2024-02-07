@@ -4,7 +4,6 @@ from LoginVerification import LoginVerification
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
-<<<<<<< HEAD
 
 
 clubs = [
@@ -15,16 +14,12 @@ clubs = [
 club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "Eva Garcia", 
                 "Frank Robinson", "Grace Lee", "Henry Davis", "Ivy Chen", "Jack Wilson", "Kelly Turner",
                 "Leo Martinez"]
-=======
->>>>>>> LoginUI
 
 
-@app.route('/')
-@app.route('/index.html')
+@app.route('/ProfileStud.html')
 def index():
     return render_template('ProfileStud.html')
 
-<<<<<<< HEAD
 @app.route('/clubs_display')
 def clubs_display():
     return render_template('clubs_display.html', clubs=clubs)
@@ -67,7 +62,13 @@ def Events():
 @app.route('/club_mainpage')
 def club_mainpage():
     return render_template('/club_mainpage.html', club_members=club_members)
-=======
+
+# Provide template folder name
+@app.route('/')
+@app.route('/index.html')
+def index():
+    return render_template('index.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error404.html'), 404
@@ -133,7 +134,6 @@ def loginValidationRoute():
 
     
         
->>>>>>> LoginUI
 
 if __name__ == '__main__':
     app.run(debug=True)
