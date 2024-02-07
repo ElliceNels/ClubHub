@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&family=Signika+Negative:wght@300&display=swap');
+
+body {
+    background-color: #032539 ;
+    color: white;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    /* font-family: 'Fjalla One', sans-serif; */
+    font-family: 'Signika Negative', sans-serif; 
+}
+#clubs_header {
+    text-align: center;
+    padding: 20px;
+    color:#FBF3F2;
+    margin: top;
+    font-size: 4rem;
+    font-family: 'Nobile', sans-serif;
+}
+.club-list {
+    display: block;
+    margin: 0 auto;
+    height: 500px;
+}
+.club-box {
+    background-color: #1C768F ;
+    width: 60rem;
+    height: 3rem;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 1rem;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.club-name {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.link{
+    color: #FA991C;
+    text-decoration: none;
+}
+.link:hover {
+    color:#032539;
+}
+.coordinator-name {
+    color: #FBF3F2;
+    font-size: 1.5rem;
+    margin-top: 10px;
+    text-align: center;
+}
+.club-description {
+    color: #FBF3F2;
+    margin: 10px;
+    text-align: center;
+}
+.button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: #FA991C;
+    margin-left: 3rem;
+    margin-top: 2rem;
+    width: 7rem;
+    height: 3rem;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 5px;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+}
+.temp {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_club_style.css') }}"/>
+    <title>Create new club</title>
+</head>
+<body>
+    <a href="{{ url_for('clubs_display') }}" class="button" id="back-button">
+        Go Back
+    </a>
+    <h1 id="clubs_header">
+        CREATE NEW CLUB
+    </h1>
+    <div id="create-club-bg">
+        <form action="" id="club-form">
+            <label for="club-name">Club name: </label>
+            <br>
+            <input type="text" id="club-name" name="club-name">
+            <br>
+            <br>
+            <label for="description" id="description">Description: </label>
+            <br>
+            <textarea class="text-area" name="description" id="description" cols="30" rows="10"></textarea>
+            <br>
+            <input type="submit" value="submit" id="submit-button">
+        </form>
+    </div>
+</body>
+</html>
