@@ -85,7 +85,7 @@ class LoginVerification:
 
     def SignUp(self, User_id, Username, Phonenumber, Password, Firstname, Lastname, Email, Usertype):
         # Establish connection
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         
 
         if self.userIdExists(conn, User_id):
@@ -109,7 +109,7 @@ class LoginVerification:
         conn.close()
 
     def Login(self, User_id, Username, Password):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         # check if an account with the user_id exists
         if self.userIdExists(conn, User_id):
             # check if an account with the user_id and username
@@ -128,7 +128,7 @@ class LoginVerification:
         conn.close()
         return
     def approvalStatus(self, User_id):
-          conn = sqlite3.connect('database/Clubhub.db')
+          conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
           cursor = conn.cursor()
           cursor.execute(''' SELECT Is_pending, Is_approved FROM USER_LOGIN WHERE User_id = ?  ''', (User_id,))
           statuses = list(chain.from_iterable(cursor.fetchall()))
