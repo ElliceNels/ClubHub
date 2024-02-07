@@ -121,8 +121,7 @@ def loginValidationRoute():
 
         loginValidator = LoginValidation()
         alerts = loginValidator.doPasswordsMatch(password1, password2)
-        print(password1, password2)
-        print(alerts)
+      
         if alerts == []:
             loginVerifier = LoginVerification()
             if loginVerifier.Login(User_id, Username, password1):
