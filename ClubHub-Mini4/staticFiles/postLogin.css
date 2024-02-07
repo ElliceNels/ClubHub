@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&family=Signika+Negative:wght@300&display=swap');
+
+*{
+    margin: 0;
+}
+
+.container {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-rows: repeat(10, 6rem) ;
+    grid-template-columns: repeat(10, 9.5rem);
+
+}
+
+h1{
+    grid-area: 4/4/6/9;
+    font-family: "Fjalla One";
+    color: #FA991C ;
+    font-size: 100px;
+    font-weight: 500;
+}
+.fa-face-frown{
+    padding-left: 40px;
+    color: #032539;
+}
+
+#return{
+    height: 5rem;
+    width: 25rem;
+    background-color: #1C768F;
+    border-radius: 1.563rem;
+    border-color: #032539;
+    border: .4rem solid #032539;
+    grid-area: 7/4/9/8;
+     align-self: center;
+    justify-self: center;
+    text-align: center;
+    font-family: "Nobile";
+    color: #ffffff;
+    font-size: 3.5rem;
+    text-decoration: none;
+}
