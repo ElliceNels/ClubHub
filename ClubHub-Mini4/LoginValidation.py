@@ -1,6 +1,6 @@
 import re
 
-class Login:
+class LoginValidation:
     def __init__(self):
         self.alert = []
 
@@ -64,7 +64,8 @@ class Login:
             self.alert.append("Username must contain at least one number")
     def phonenumberValidator(self, phonenumber):
         try:
-            phonenumber = int(phonenumber)
+            int(phonenumber[1:])
+            int(str(phonenumber[0]))
         except ValueError as e:
             self.alert.append("Phone number must be a number")
             return
@@ -72,7 +73,6 @@ class Login:
             self.alert.append("Irish phone numbers must be 10 digits long")
             
     def doPasswordsMatch(self, password1, password2):
-        print(f"pre comparison: {password1}, {password2}")
         if password1 != password2:
             self.alert.append("Passwords dont match")
         return self.alert
