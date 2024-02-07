@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset=" UTF -8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  Create Events </title>
+    <link rel="stylesheet" href="static/CreateStyle.CSS" />  
+    <script src="https://kit.fontawesome.com/9a80590ec1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="logo">
+        <span class="clubhub-text">ClubHub</span>
+        <i class="fa-solid fa-circle-nodes"></i>
+    </div>
+    <div class="header">
+        <h1> Create Events</h1>
+        </div>
+
+
+ <nav class="navbar">
+    <ul>
+        <li><a href="#">Events Page</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Club info</a></li>
+    </ul>
+ </nav>
+
+
+
+<div class="form-container">
+    <form>
+<div class="input-wrapper">
+    <div class="input-container">
+    <label for="Eventtitle"> Event title:</label>
+    <input type="text" id="Eventtitle" name="EventTitle" required class="rounded-input">
+</div>
+</div>
+<div class="input-wrapper">
+    <div class="input-container">
+    <label for="Description">Description:</label>
+    <textarea id="Description" name="Description" required class="rounded-input"></textarea>
+</div>
+</div>
+<div class="input-wrapper">
+    <div class="input-container">
+    <label for="Date">Date:</label>
+    <input type="date" id="Date" name="Date" required class="rounded-input">
+</div>
+</div>
+<div class="input-wrapper">
+    <div class="input-container">
+    <label for="Time">Time:</label>
+    <input type="time" id="Time" name="Time" required class="rounded-input">
+</div>
+</div>
+<div class="input-wrapper">
+    <div class="input-container">
+    <label for="Venue">Venue:</label>
+    <input type="text" id="Venue" name="Venue" required class="rounded-input">
+</div>
+</div>
+    </form>
+</div>
+
+<button type="button" id="createbutton"  onclick="alert ('You have created an event. Save the date!!')"> Create event</button>
+<div class="image-container">
+<img src="static/Screenshot 2024-01-30 at 21.29.10.png" id="sports" alt=" ">
+</div>
+
+</body>
+</html>
