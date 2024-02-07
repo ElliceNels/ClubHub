@@ -56,9 +56,19 @@ def Clubs():
     return render_template('Clubs.html')
 
 
-@app.route("/Events")
-def Events():
-    return render_template('Events.html')
+@app.route("/EventMain")
+def EventMain():
+    return render_template('EventMain.html')
+
+@app.route("/EventDetails")
+def EventDetails():
+    return render_template('EventDetails.html')
+
+
+@app.route("/CreateEvents")
+def CreateEvents():
+    return render_template('CreateEvents.html')
+
 
 @app.route('/club_mainpage')
 def club_mainpage():
