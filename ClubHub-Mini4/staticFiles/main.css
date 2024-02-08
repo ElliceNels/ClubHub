@@ -40,6 +40,7 @@
 
 
         .sidenavbar{
+            position: fixed;
             width: 200px;
             height: 100%;
             padding: 20px;
@@ -128,7 +129,10 @@
         clear: both;
         background-color: #1C768F;
         color: white;
-        margin: auto;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: 30px;
         padding: 30px;
         width : 500px;
         }
