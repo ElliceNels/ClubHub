@@ -1,3 +1,5 @@
+import sqlite3
+
 from flask import Flask, render_template, request
 from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
@@ -32,7 +34,18 @@ def create_club():
 
 @app.route('/ProfileStud')
 def ProfileStud():
-    return render_template('ProfileStud.html')
+    conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+
+    # Execute a query to retrieve data
+    cursor = conn.execute('''SELECT Username FROM USER_LOGIN WHERE Login_id = 1''')
+
+    # Fetch all rows of data
+    username = cursor.fetchall()
+
+    # Close the database connection
+    conn.close()
+
+    return render_template('ProfileStud.html', username=username)
 
 @app.route("/ProfileCoord")
 def ProfileCoord():
@@ -85,6 +98,8 @@ def signUp():
 @app.route('/login.html')
 def login():
     return render_template('login.html')
+
+
 
 @app.route('/SignUpProcess_Form', methods=["POST"])
 def signupValidationRoute():
@@ -140,3 +155,8 @@ def loginValidationRoute():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+#USEFUL FOR CLEAR VALUES
+#for row in username:
+#    for column in row:
+#       print(column)
