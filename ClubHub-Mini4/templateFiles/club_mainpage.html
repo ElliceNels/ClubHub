@@ -7,9 +7,14 @@
     <title>Club Mainpage</title>
 </head>
 <body>
-    <a href="{{ url_for('clubs_display') }}" class="button" id="back-button">
-        Go Back
-    </a>
+    <header class="header"> ClubHub<i class="fa-solid fa-circle-nodes"></i> </header>
+    <nav class="navigation-bar">
+        <a class="nav-link" href="/ProfileCoord">Proflie</a>
+        <a class="nav-link" href="/EventMain">Events</a>
+        <a class="nav-link" href="/Inbox">Inbox</a>
+        <a class="nav-link" href="/clubs_displayCoord">Clubs</a>
+    </nav>
+    <div id="background">
     <h1  id="clubs_header">CLUB NAME</h1>
     <div id="coordinator-controls">
         <a href="" class="button" id="create-event">
@@ -21,8 +26,8 @@
         </a>
         <br>
     </div>
-    <div id="list-of-members">
-        <h2 id="members-header"> List of members: </h2>
+    <h2 id="members-header"> List of members: </h2>
+    <div id="list-of-members">  
         <br>
         {% for club_member in club_members %}
         <div id="club-member-display">
@@ -36,5 +41,6 @@
     <a href="" class="button" id="delete-club">
         Delete Club
     </a>
+    </div>
 </body>
 </html>
