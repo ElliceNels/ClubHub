@@ -125,14 +125,13 @@ def loginValidationRoute():
 
         loginValidator = LoginValidation()
         alerts = loginValidator.doPasswordsMatch(password1, password2)
-        print(password1, password2)
-        print(alerts)
+      
         if alerts == []:
             loginVerifier = LoginVerification()
             if loginVerifier.Login(User_id, Username, password1):
                 approvalStatus = loginVerifier.approvalStatus(User_id)
                 if approvalStatus == True:
-                    return render_template('EventMain.html')
+                    return EventMain()
                 else:
                     return render_template('postLogin.html', approvalmessage=approvalStatus)
             else:
