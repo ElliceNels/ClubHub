@@ -22,6 +22,17 @@ body {
     flex-direction: column;
     align-items: center;
 }
+.fa-circle-nodes{
+    color: #032539;
+    font-size: 60px;
+    padding-left: 20px;
+    transition: transform 300ms ease-in-out;
+   
+}
+.fa-circle-nodes:hover{
+    transform: rotate(45deg);
+
+}
 .header {
     color: #FA991C;
     font-family: "Fjalla One" ;
