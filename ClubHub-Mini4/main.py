@@ -59,9 +59,6 @@ def UpdateProfileCoord():
     return render_template('UpdateProfileCoord.html')
 
 
-@app.route("/EventMain")
-def EventMain():
-    return render_template('EventMain.html')
 
 @app.route("/EventDetails")
 def EventDetails():
