@@ -33,8 +33,8 @@ class Admin:
             cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
             conn.commit()
         elif status == 0:
-            cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 0, User_id))
-            cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 0, User_id))
+            cursor.execute(''' DELETE FROM USER_LOGIN WHERE User_id = ? ''', (User_id,))
+            cursor.execute(''' DELETE FROM USER_DETAILS WHERE User_id = ? ''', (User_id,))
             conn.commit()
         cursor.close()
         conn.close()
