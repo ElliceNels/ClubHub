@@ -1,6 +1,9 @@
+
 from flask import Flask, render_template, request
 from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
+from datetime import datetime, timedelta
+
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -69,6 +72,11 @@ def EventDetails():
 def CreateEvents():
     return render_template('CreateEvents.html')
 
+
+@app.route("/EventMain")
+def EventMain():
+    dates = [datetime.now() + timedelta(days=i) for i in range(16)]
+    return render_template('EventMain.html', dates=dates)
 
 @app.route('/club_mainpage')
 def club_mainpage():
