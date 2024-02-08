@@ -21,9 +21,13 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
 def index():
     return render_template('index.html')
 
-@app.route('/clubs_display')
-def clubs_display():
-    return render_template('clubs_display.html', clubs=clubs)
+@app.route('/clubs_displayStud')
+def clubs_displayStud():
+    return render_template('clubs_displayStud.html', clubs=clubs)
+
+@app.route('/clubs_displayCoord')
+def clubs_displayCoord():
+    return render_template('clubs_displayCoord.html', clubs=clubs)
 
 @app.route('/create_club')
 def create_club():
