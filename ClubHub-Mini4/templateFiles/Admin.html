@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUpRequests</title>
+    
+    <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<main>
+
+
+
+
+    <!-- SIDE NAVBAR -->
+    <nav class = sidenavbar>
+        <ul>
+             <button class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
+            <br>
+             <button class = "discrete" onclick="alert('All Requests Rejected')">Reject All</button>
+        </ul>
+    </nav>
+
+
+    <!-- MAIN STUFF -->
+    <div class="content">
+
+    <!-- NAVBAR -->
+    <ul class = navbar>
+        <a href="/clubs_display">Clubs</a>
+        <a href="/EventMain">Events</a>
+        <a href="/Inbox">Inbox</a>
+    </ul>
+
+        <!-- TITLE -->
+        <h1>Sign Up Requests</h1>
+
+        <!-- MAIL -->
+        {% for user in userList %}
+        <div class="mail">
+
+            <div class="left">
+
+                <h2>{{user[1]}} {{user[2]}}</h2>
+                <p>{{user[3]}}</p>
+
+            </div>
+
+
+            <div class="right">
+                <form action="/approvalform" method="POST">
+                <input type="hidden" value={{user[0]}} name="user">
+                <button type="submit" name="status" value="1" class="button" >Accept</button>
+                <button type="submit" name="status" class="button" value="0" >Reject</button>
+               </form>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+</main>
+</body>
+</html>
+
+
+
+</main>
+</body>
+</html>
+

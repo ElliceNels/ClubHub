@@ -1,8 +1,9 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
 from datetime import datetime, timedelta
+from Admin import Admin
 
 
 # Provide template folder name
@@ -31,6 +32,24 @@ def clubs_displayStud():
 @app.route('/clubs_displayCoord')
 def clubs_displayCoord():
     return render_template('clubs_displayCoord.html', clubs=clubs)
+
+@app.route('/Admin')
+def showAdmin():
+    AdminInfo = Admin()
+    userList = AdminInfo.getUserList()
+    return render_template('Admin.html', userList = userList)
+
+@app.route('/approvalform', methods=["POST"])
+def approvalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        print(status)
+        print(User_id)
+        
+        AdminManagement = Admin()
+        AdminManagement.approveOrReject(User_id, status)
+        return redirect(url_for('showAdmin'))
 
 @app.route('/create_club')
 def create_club():
