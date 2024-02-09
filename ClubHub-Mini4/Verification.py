@@ -17,6 +17,19 @@ class Verification:
             print('Coordinator')
             return True
 
+    def isAdmin(User_id):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+
+        identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ? AND Coordinator_id = 1''', (User_id,))
+        id = identity.fetchall()
+
+        if not id:
+            print('Not admin')
+            return False
+        else:
+            print('Admin')
+            return True
 
     def profileDetails(User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
@@ -33,3 +46,4 @@ class Verification:
 
        # clubOwned
     profileDetails(4121234)
+    isAdmin(4121234)
