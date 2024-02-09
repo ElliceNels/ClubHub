@@ -39,7 +39,8 @@
         }
 
 
-        .sidenavbar{
+         .sidenavbar{
+           ->> position: fixed;
             width: 200px;
             height: 100%;
             padding: 20px;
