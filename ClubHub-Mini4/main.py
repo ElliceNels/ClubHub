@@ -4,7 +4,7 @@ from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
 from Verification import Verification
 from datetime import datetime, timedelta
-
+from session import Session
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -20,6 +20,8 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
 
 isCoord = False
 
+user_session = Session()
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -28,10 +30,10 @@ def index():
 
 @app.route('/LoginProcess_Form', methods=["POST"])
 def loginValidationRoute():
-    global isCoord
+    # global isCoord
     if request.method == "POST":
         User_id = request.form.get("IDbar").strip()
-        isCoord = Verification.isCoord(User_id)
+        # isCoord = Verification.isCoord(User_id)
         Username = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
         password2 = request.form.get("password2bar").strip()
@@ -44,6 +46,8 @@ def loginValidationRoute():
             if loginVerifier.Login(User_id, Username, password1):
                 approvalStatus = loginVerifier.approvalStatus(User_id)
                 if approvalStatus == True:
+                    user_session.login(User_id)
+                    print(user_session.isAdministrator())
                     return EventMain()
                 else:
                     return render_template('postLogin.html', approvalmessage=approvalStatus)
@@ -57,10 +61,10 @@ def loginValidationRoute():
 
 @app.route('/clubs_display')
 def clubs_display():
-    if isCoord:
-        return render_template('clubs_displayCoord.html')
+    if user_session.isCoordinator() or user_session.isAdministrator():
+        return render_template('clubs_displayCoord.html', clubs=clubs)
     else:
-        return render_template('clubs_displayStud.html')
+        return render_template('clubs_displayStud.html', clubs=clubs)
 
 
 @app.route('/create_club')
@@ -71,7 +75,7 @@ def create_club():
 
 @app.route('/Profile')
 def Profile():
-    if isCoord:
+    if user_session.isCoordinator() or user_session.isAdministrator():
         return render_template('ProfileCoord.html')
     else:
         return render_template('ProfileStud.html')
@@ -84,7 +88,7 @@ def Inbox():
 
 @app.route('/UpdateProfile')
 def UpdateProfile():
-    if isCoord:
+    if user_session.isCoordinator() or user_session.isAdministrator():
         return render_template('UpdateProfileCoord.html')
     else:
         return render_template('UpdateProfileStud.html')
