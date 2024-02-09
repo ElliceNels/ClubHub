@@ -55,13 +55,12 @@ def loginValidationRoute():
 
 
 
-@app.route('/clubs_displayStud')
-def clubs_displayStud():
-    return render_template('clubs_displayStud.html', clubs=clubs)
-
-@app.route('/clubs_displayCoord')
-def clubs_displayCoord():
-    return render_template('clubs_displayCoord.html', clubs=clubs)
+@app.route('/clubs_display')
+def clubs_display():
+    if isCoord:
+        return render_template('clubs_displayCoord.html')
+    else:
+        return render_template('clubs_displayStud.html')
 
 
 @app.route('/create_club')
@@ -69,12 +68,10 @@ def create_club():
     return render_template('create_club.html')
 
 
-User_id = 4121234
-
 
 @app.route('/Profile')
 def Profile():
-    if coord:
+    if isCoord:
         return render_template('ProfileCoord.html')
     else:
         return render_template('ProfileStud.html')
@@ -87,7 +84,7 @@ def Inbox():
 
 @app.route('/UpdateProfile')
 def UpdateProfile():
-    if Verification.isCoord(User_id=User_id):
+    if isCoord:
         return render_template('UpdateProfileCoord.html')
     else:
         return render_template('UpdateProfileStud.html')
