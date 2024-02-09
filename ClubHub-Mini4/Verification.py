@@ -40,10 +40,10 @@ class Verification:
             for column in row:
               print(column)
 
-    #def findClub(Coordinator_id):
-     #   conn = sqlite3.connect('database/Clubhub.db')
-      #  cursor = conn.cursor()
+    def findClub(Coordinator_id):
+        conn = sqlite3.connect('database/Clubhub.db')
+        cursor = conn.cursor()
 
-       # clubOwned
+
     profileDetails(4121234)
     isAdmin(4121234)
