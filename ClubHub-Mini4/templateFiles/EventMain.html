@@ -25,7 +25,14 @@
         </ul>
      </nav>
 
+<div class="datecontainer">
+    <div class="date-list" id="dateList">
+        {% for date in dates %}
+        <div class="date">{{ date.strftime('%a, %b %d') }}</div>
+        {% endfor %}
 
+    </div>
+</div>
 
 </body>
 </html>
