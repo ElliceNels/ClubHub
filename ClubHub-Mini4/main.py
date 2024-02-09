@@ -15,11 +15,39 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
                 "Frank Robinson", "Grace Lee", "Henry Davis", "Ivy Chen", "Jack Wilson", "Kelly Turner",
                 "Leo Martinez"]
 
+isCoord = False
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html')
+
+@app.route('/LoginProcess_Form', methods=["POST"])
+def loginValidationRoute():
+    global isCoord
+    if request.method == "POST":
+        User_id = request.form.get("IDbar").strip()
+        isCoord = Verification.isCoord(User_id)
+        Username = request.form.get("usernamebar").strip()
+        password1 = request.form.get("password1bar").strip()
+        password2 = request.form.get("password2bar").strip()
+
+        loginValidator = LoginValidation()
+        alerts = loginValidator.doPasswordsMatch(password1, password2)
+
+        if alerts == []:
+            loginVerifier = LoginVerification()
+            if loginVerifier.Login(User_id, Username, password1):
+                approvalStatus = loginVerifier.approvalStatus(User_id)
+                if approvalStatus == True:
+                    return EventMain()
+                else:
+                    return render_template('postLogin.html', approvalmessage=approvalStatus)
+            else:
+                return render_template('login.html', warning=loginVerifier.alert)
+        else:
+            return render_template('login.html', warning=alerts)
+
 
 
 @app.route('/clubs_display')
@@ -37,7 +65,7 @@ User_id = 4121234
 
 @app.route('/Profile')
 def Profile():
-    if Verification.isCoord(User_id=User_id):
+    if coord:
         return render_template('ProfileCoord.html')
     else:
         return render_template('ProfileStud.html')
@@ -121,29 +149,6 @@ def signupValidationRoute():
             return render_template('signup.html', warning=alerts)
 
 
-@app.route('/LoginProcess_Form', methods=["POST"])
-def loginValidationRoute():
-    if request.method == "POST":
-        User_id = request.form.get("IDbar").strip()
-        Username = request.form.get("usernamebar").strip()
-        password1 = request.form.get("password1bar").strip()
-        password2 = request.form.get("password2bar").strip()
-
-        loginValidator = LoginValidation()
-        alerts = loginValidator.doPasswordsMatch(password1, password2)
-
-        if alerts == []:
-            loginVerifier = LoginVerification()
-            if loginVerifier.Login(User_id, Username, password1):
-                approvalStatus = loginVerifier.approvalStatus(User_id)
-                if approvalStatus == True:
-                    return EventMain()
-                else:
-                    return render_template('postLogin.html', approvalmessage=approvalStatus)
-            else:
-                return render_template('login.html', warning=loginVerifier.alert)
-        else:
-            return render_template('login.html', warning=alerts)
 
 
 if __name__ == '__main__':
