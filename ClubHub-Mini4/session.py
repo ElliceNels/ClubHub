@@ -19,7 +19,9 @@ class Session:
     def isCoordinator(self):
         self.isCoord = Verification.isCoord(self.userId)
         return self.isCoord
-        
+
+    def getUser_id(self):
+        return self.userId
 
     def isAdministrator(self):
         self.isAdmin = Verification.isAdmin(self.userId)

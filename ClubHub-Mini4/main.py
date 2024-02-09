@@ -19,7 +19,6 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
                 "Leo Martinez"]
 
 isCoord = False
-
 user_session = Session()
 
 @app.route('/')
@@ -33,7 +32,6 @@ def loginValidationRoute():
     # global isCoord
     if request.method == "POST":
         User_id = request.form.get("IDbar").strip()
-        # isCoord = Verification.isCoord(User_id)
         Username = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
         password2 = request.form.get("password2bar").strip()
@@ -75,10 +73,12 @@ def create_club():
 
 @app.route('/Profile')
 def Profile():
+    details = Verification.profileDetails(user_session.getUser_id())
+    #clubOwned = Verification.coordinatingClub(user_session.getUser_id())
     if user_session.isCoordinator() or user_session.isAdministrator():
-        return render_template('ProfileCoord.html')
+        return render_template('ProfileCoord.html', details=details)#, clubOwned=clubOwned
     else:
-        return render_template('ProfileStud.html')
+        return render_template('ProfileStud.html', details=details)
 
 
 @app.route('/Inbox')
