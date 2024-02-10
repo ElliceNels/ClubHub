@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>  Event Details </title>
-    <link rel="stylesheet" href="static/DetailsStyle.CSS" />  
+    <link rel="stylesheet" href="staticFiles/DetailsStyle.CSS" />
     <script src="https://kit.fontawesome.com/9a80590ec1.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -19,13 +19,20 @@
 
     <nav class="navbar">
         <ul>
-            <li><a href="#">Events Page</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Club info</a></li>
+            <li><a href="/EventMain">Events Page</a></li>
+            <li><a href="/Profile">Profile</a></li>
+            <li><a href="/clubs_display">Club info</a></li>
         </ul>
      </nav>
 
+<div class="datecontainer">
+    <div class="date-list" id="dateList">
+        {% for date in dates %}
+        <div class="date">{{ date.strftime('%a, %b %d') }}</div>
+        {% endfor %}
 
+    </div>
+</div>
 
 </body>
 </html>

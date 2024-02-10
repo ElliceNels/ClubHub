@@ -14,7 +14,7 @@
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
-            <a class = "discrete" href="/UpdateProfileCoord">Update Profile</a>
+            <a class = "discrete" href="/UpdateProfile">Update Profile</a>
             <a class = "discrete" href="/CreateClub">Create A Club</a>
             <a class = "discrete" href="/ManageClub">Manage Club</a>
         </ul>
@@ -27,8 +27,9 @@
     <!-- NAVBAR -->
     <ul class = navbar>
         <a href="/clubs_display">Clubs</a>
-        <a href="/Events">Events</a>
+        <a href="/EventMain">Events</a>
         <a href="/Inbox">Inbox</a>
+        <a href="/Profile">Profile</a>
     </ul>
 
         <!-- TITLE -->
@@ -39,13 +40,13 @@
 
             <div class="left">
 
-                <h2>Person's Name and Surname</h2>
+                <h2>{{ details[0] }} {{details[1]}}</h2>
 
-                <p>@Username</p>
+                <p>@{{details[2]}}</p>
                 <br>
                 <br>
-                <p>Email: theiremail@staff.ul.ie</p>
-                <p>Phone Number: 0894293287</p>
+                <p>Email: {{details[4]}}</p>
+                <p>Phone Number: {{details[3]}}</p>
                 <br>
                 <br>
                 <p>Club:</p>

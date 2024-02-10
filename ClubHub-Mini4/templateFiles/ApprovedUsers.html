@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ClubHub</title>
+    <title>Approved Users</title>
+    
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -11,13 +12,10 @@
 
 
 
+    
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
-        <ul>
-             <button class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
-            <br>
-             <button class = "discrete" onclick="alert('All Requests Rejected')">Reject All</button>
-        </ul>
+    
     </nav>
 
 
@@ -29,32 +27,32 @@
         <a href="/clubs_display">Clubs</a>
         <a href="/EventMain">Events</a>
         <a href="/Inbox">Inbox</a>
-        <a href="/Profile">Profile</a>
     </ul>
 
         <!-- TITLE -->
-        <h1>Inbox</h1>
+        <h1>Sign Up Requests</h1>
 
         <!-- MAIL -->
+        {% for user in userList %}
         <div class="mail">
 
             <div class="left">
 
-                <h2>Who it's from</h2>
-
-                <p>What they want</p>
+                <h2>{{user[1]}} {{user[2]}}</h2>
+                <p>{{user[3]}}</p>
 
             </div>
 
 
             <div class="right">
-
-                <button type="button" class="button" onclick="alert('Invite accepted!')">Accept</button>
-                <button type="button" class="button" onclick="alert('Invite rejected!')">Reject</button>
-
+                <form action="/deletionform" method="POST">
+                    <input type="hidden" value={{user[0]}} name="user">
+                    <button type="submit" name="status" value="0" class="button">Delete</button>
+                   </form>
             </div>
 
         </div>
+        {% endfor %}
 
     </div>
 
@@ -63,3 +61,8 @@
 </body>
 </html>
 
+
+
+</main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&family=Signika+Negative:wght@300&display=swap');
+
+.header{
+    padding-bottom:10px;
+    color: #023047;
+    font-family: "Fjalla-One";
+    font-weight: 1000;
+    text-decoration: underline;
+    text-align: center;
+    margin-top:10px;
+   
+}
+.logo{
+    position: absolute;
+    top:0;
+    left:0;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+}
+.clubhub-text{
+    padding-top: 5px;
+    color: #FA991C;
+    
+    margin-right: 10px;
+    font-family: "Fjalla-One";
+}
+
+.fa-circle-nodes{
+    color:#8ECAE6;
+    
+}
+.navbar ul{
+    list-style-type: none;
+    background-color: #FFB703;
+    padding: 0;
+    margin:0;
+    overflow: hidden;
+}
+.navbar a{
+    color:#FBF3F2;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    padding: 15px 60px;
+}
+@media screen and (min-width:768px){ /*adjusted for websites*/
+    .navbar a{
+       padding: 15px 90px;
+    }
+     .clubhub-text{
+        font-size: 50px ;
+    }
+    .fa-circle-nodes{
+        font-size: 50px ;
+    }
+    
+}
+@media screen and(max-width:767px) { /*adjusted for mobile*/
+    .navbar a{
+        padding: 15px 20px;
+        width: auto;
+        white-space: nowrap;
+    }
+    .clubhub-text{
+        font-size: 40px;
+    }
+    .fa-circle-nodes{
+        font-size: 40px;
+    }
+    
+}
+.navbar{
+    margin:0;
+    padding:0;
+    width:100%;
+}
+.navbar a:hover{
+    background-color: #FA991C;
+
+}
+.navbar li{
+    float: left;
+}

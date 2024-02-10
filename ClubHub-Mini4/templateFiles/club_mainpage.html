@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='club_mainpage_style.css') }}"/>
+    <script src="https://kit.fontawesome.com/153c1879df.js" crossorigin="anonymous"></script>
     <title>Club Mainpage</title>
 </head>
 <body>
-    <a href="{{ url_for('clubs_display') }}" class="button" id="back-button">
-        Go Back
-    </a>
+    <header class="header"> ClubHub<i class="fa-solid fa-circle-nodes"></i> </header>
+    <nav class="navigation-bar">
+        <a class="nav-link" href="/ProfileCoord">Proflie</a>
+        <a class="nav-link" href="/EventMain">Events</a>
+        <a class="nav-link" href="/Inbox">Inbox</a>
+        <a class="nav-link" href="/clubs_display">Clubs</a>
+    </nav>
+    <div id="background">
     <h1  id="clubs_header">CLUB NAME</h1>
     <div id="coordinator-controls">
         <a href="" class="button" id="create-event">
@@ -21,20 +27,24 @@
         </a>
         <br>
     </div>
-    <div id="list-of-members">
-        <h2 id="members-header"> List of members: </h2>
-        <br>
-        {% for club_member in club_members %}
-        <div id="club-member-display">
-            {{loop.index}}. {{club_member}}
-            <button class="remove-button" id="remove-member">remove</button>
+    <h2 id="members-header"> List of members: </h2>
+    <div class="members-container">
+        <div id="list-of-members">  
             <br>
-            <br>
+            {% for club_member in club_members %}
+            <div id="club-member-display">
+                <p>
+                    {{loop.index}}. {{club_member}}
+                </p>
+                <button class="remove-button" id="remove-member">remove</button>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+
     <a href="" class="button" id="delete-club">
         Delete Club
     </a>
+    </div>
 </body>
 </html>
