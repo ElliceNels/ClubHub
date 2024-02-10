@@ -11,19 +11,19 @@ class Session:
     def login(self, userId):
         self.userId = userId
         self.isLoggedIn = True
+        self.isCoord = Verification.isCoord(self.userId)
+        self.isAdmin = Verification.isAdmin(self.userId)
 
     def logout(self):
         self.userId = None
         self.isLoggedIn = False
 
     def isCoordinator(self):
-        self.isCoord = Verification.isCoord(self.userId)
         return self.isCoord
 
     def getUser_id(self):
         return self.userId
 
     def isAdministrator(self):
-        self.isAdmin = Verification.isAdmin(self.userId)
         return self.isAdmin
     
