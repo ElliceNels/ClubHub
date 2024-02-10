@@ -36,20 +36,32 @@ def clubs_displayCoord():
 @app.route('/Admin')
 def showAdmin():
     AdminInfo = Admin()
-    userList = AdminInfo.getUserList()
+    userList = AdminInfo.getUserList(1,0)
     return render_template('Admin.html', userList = userList)
+
+@app.route('/ApprovedUsers')
+def showApprovedUsers():
+    AdminInfo = Admin()
+    userList = AdminInfo.getUserList(0,1)
+    return render_template('ApprovedUsers.html',userList=userList)
 
 @app.route('/approvalform', methods=["POST"])
 def approvalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
         User_id = int(request.form.get("user"))
-        print(status)
-        print(User_id)
-        
         AdminManagement = Admin()
         AdminManagement.individualapproveOrReject(User_id, status)
         return redirect(url_for('showAdmin'))
+
+@app.route('/deletionform', methods=["POST"])
+def deletionFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        AdminManagement = Admin()
+        AdminManagement.individualapproveOrReject(User_id, status)
+        return redirect(url_for('showApprovedUsers'))
     
 @app.route('/massapprovalform', methods=["POST"])
 def massApprovalFormRoute():
@@ -77,6 +89,16 @@ def ProfileCoord():
 @app.route('/Inbox')
 def Inbox():
     return render_template('Inbox.html')
+
+
+
+@app.route('/UserDetails', methods=["POST"])
+def  UserDetails():
+    if request.method =="POST":
+        UserID = request.form.get("userdeets")
+        UserInfo = Admin()
+        userinformation = UserInfo.getUserDetails(UserID)
+        return render_template('UserDetails.html', userinformation=userinformation)
 
 @app.route('/UpdateProfileStud')
 def UpdateProfileStud():
