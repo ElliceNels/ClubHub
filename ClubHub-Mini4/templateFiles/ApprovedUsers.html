@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SignUpRequests</title>
+    <title>Approved Users</title>
     
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
@@ -15,12 +15,7 @@
     
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
-        <ul>
-            <form action="/massapprovalform" method="POST">
-             <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
-            <br>
-             </form>
-        </ul>
+    
     </nav>
 
 
@@ -45,19 +40,15 @@
 
                 <h2>{{user[1]}} {{user[2]}}</h2>
                 <p>{{user[3]}}</p>
-                <form action="/UserDetails" method="POST">
-                <button type="submit" name ="userdeets" value="{{user[0]}}" id="userdeets">User Details</button>
-                </form>
 
             </div>
 
 
             <div class="right">
-                <form action="/approvalform" method="POST">
-                <input type="hidden" value={{user[0]}} name="user">
-                <button type="submit" name="status" value="1" class="button" >Accept</button>
-                <button type="submit" name="status" class="button" value="0" >Reject</button>
-               </form>
+                <form action="/deletionform" method="POST">
+                    <input type="hidden" value={{user[0]}} name="user">
+                    <button type="submit" name="status" value="0" class="button">Delete</button>
+                   </form>
             </div>
 
         </div>
@@ -75,4 +66,3 @@
 </main>
 </body>
 </html>
-
