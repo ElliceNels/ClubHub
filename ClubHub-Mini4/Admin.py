@@ -1,0 +1,66 @@
+import sqlite3
+from itertools import chain
+
+class Admin:
+    def __init__(self):
+        self.userList = []
+        
+    def getUserList(self):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+        print("db connected")
+        cursor.execute(''' SELECT User_id, Firstname, Lastname FROM USER_DETAILS WHERE Is_pending = ? AND Is_approved = ?''', (1, 0))
+        self.userList = [list(row) for row in cursor.fetchall()]
+       
+        for user in self.userList:
+            cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
+            if cursor.fetchone():
+                user.append("Coordinator")
+            else:
+                user.append("Student")
+     
+        cursor.close()
+        conn.close()
+        return self.userList
+
+    def individualapproveOrReject(self, User_id, status):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        print("db connected")
+        cursor = conn.cursor()
+        # if user has been approved
+        if status == 1:
+            try:
+                with conn:
+                    cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
+                    cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
+                    conn.commit()
+            except Exception as e:
+                print(f"for the developer: Error: {e}")
+        elif status == 0:
+            try:
+                with conn:
+                    cursor.execute(''' DELETE FROM USER_LOGIN WHERE User_id = ? ''', (User_id,))
+                    cursor.execute(''' DELETE FROM USER_DETAILS WHERE User_id = ? ''', (User_id,))
+                    conn.commit()
+            except Exception as e:
+                   print(f"for the developer: Error: {e}")
+        cursor.close()
+        conn.close()
+        return
+    
+    def massapproveOrReject(self, status):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        print("db connected")
+        cursor = conn.cursor()
+        
+        if status == 3:
+            try:
+                with conn:
+                    cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ?  WHERE Is_pending = ? AND Is_approved = ?''', (0, 1,1,0))
+                    cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ?WHERE Is_pending = ? AND Is_approved = ?''', (0, 1,1,0))
+                    conn.commit()
+            except Exception as e:
+                 print(f"for the developer: Error: {e}")
+        cursor.close()
+        conn.close()
+        

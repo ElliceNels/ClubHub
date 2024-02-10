@@ -20,7 +20,9 @@ class Session:
 
     def isCoordinator(self):
         return self.isCoord
-        
+
+    def getUser_id(self):
+        return self.userId
 
     def isAdministrator(self):
         return self.isAdmin
