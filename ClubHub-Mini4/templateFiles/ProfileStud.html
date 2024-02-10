@@ -24,7 +24,7 @@
 
     <!-- NAVBAR -->
     <ul class = navbar>
-        <a href="/clubs_displayStud">Clubs</a>
+        <a href="/clubs_display">Clubs</a>
         <a href="/EventMain">Events</a>
         <a href="/Inbox">Inbox</a>
         <a href="/Profile">Profile</a>
@@ -38,13 +38,13 @@
 
             <div class="left">
 
-                <h2>Person's Name and Surname</h2>
+                <h2>{{ details[0] }} {{details[1]}}</h2>
 
-                <p>@{{ username }}</p>
+                <p>@{{details[2]}}</p>
                 <br>
                 <br>
-                <p>Email: theiremail@student.ul.ie</p>
-                <p>Phone Number: 0894293287</p>
+                <p>Email: {{details[4]}}</p>
+                <p>Phone Number: {{details[3]}}</p>
                 <br>
                 <br>
                 <p>Club:</p>
