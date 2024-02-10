@@ -26,9 +26,8 @@
      </nav>
 
 
-
 <div class="form-container">
-    <form>
+    <form method="post" action="/CreateEvents" id="eventForm">
 <div class="input-wrapper">
     <div class="input-container">
     <label for="Eventtitle"> Event title:</label>
@@ -59,13 +58,12 @@
     <input type="text" id="Venue" name="Venue" required class="rounded-input">
 </div>
 </div>
+<button type="submit" id="createbutton" > Create event</button>
     </form>
 </div>
 
-<button type="button" id="createbutton"  onclick="alert ('You have created an event. Save the date!!')"> Create event</button>
-<div class="image-container">
-<img src="static/Screenshot 2024-01-30 at 21.29.10.png" id="sports" alt=" ">
-</div>
+
+
 
 </body>
 </html>

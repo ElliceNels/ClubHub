@@ -66,8 +66,26 @@ def EventDetails():
     return render_template('EventDetails.html')
 
 
-@app.route("/CreateEvents")
+def validate_event_form(EventTitle,Description, Date, Time, Venue):
+    if not all([EventTitle, Description, Date, Time, Venue]):
+        return False
+    return True
+
+@app.route("/CreateEvents" , methods=['POST'])
 def CreateEvents():
+    if request.method == 'POST':
+        EventTitle = request.form.get('EventTitle').strip()
+        Description = request.form.get('Description').strip()
+        Date = request.form.get('Date').strip()
+        Time = request.form.get('Time').strip()
+        Venue = request.form.get('Venue').strip()
+
+
+    if validate_event_form([EventTitle , Description , Date , Time , Venue]):
+        return render_template('CreateEvents.html', EventTitle=EventTitle)
+    else:
+        return render_template('CreateEvents.html', warning="All fields are required")
+
     return render_template('CreateEvents.html')
 
 
