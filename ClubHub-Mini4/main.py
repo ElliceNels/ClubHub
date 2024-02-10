@@ -1,10 +1,12 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
 from Verification import Verification
 from datetime import datetime, timedelta
-from session import Session
+from session import Session 
+from Admin import Admin
+
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -65,6 +67,34 @@ def clubs_display():
         return render_template('clubs_displayStud.html', clubs=clubs)
 
 
+@app.route('/Admin')
+def showAdmin():
+    AdminInfo = Admin()
+    userList = AdminInfo.getUserList()
+    return render_template('Admin.html', userList = userList)
+
+@app.route('/approvalform', methods=["POST"])
+def approvalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        print(status)
+        print(User_id)
+        
+        AdminManagement = Admin()
+        AdminManagement.individualapproveOrReject(User_id, status)
+        return redirect(url_for('showAdmin'))
+    
+@app.route('/massapprovalform', methods=["POST"])
+def massApprovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        
+        AdminManagement = Admin()
+        AdminManagement.massapproveOrReject(status)
+        return redirect(url_for('showAdmin'))
+ 
+    
 @app.route('/create_club')
 def create_club():
     return render_template('create_club.html')
@@ -159,6 +189,30 @@ def signupValidationRoute():
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
+        
+@app.route('/LoginProcess_Form', methods=["POST"])
+def loginValidationRoute():
+    if request.method == "POST":
+        User_id = request.form.get("IDbar").strip()
+        Username = request.form.get("usernamebar").strip()
+        password1 = request.form.get("password1bar").strip()
+        password2 = request.form.get("password2bar").strip()
+
+        loginValidator = LoginValidation()
+        alerts = loginValidator.doPasswordsMatch(password1, password2)
+      
+        if alerts == []:
+            loginVerifier = LoginVerification()
+            if loginVerifier.Login(User_id, Username, password1):
+                approvalStatus = loginVerifier.approvalStatus(User_id)
+                if approvalStatus == True:
+                    redirect(url_for('EventMain'))
+                else:
+                    return render_template('postLogin.html', approvalmessage=approvalStatus)
+            else:
+                return render_template('login.html', warning=loginVerifier.alert)
+        else:
+            return render_template('login.html', warning=alerts)
 
 
 
