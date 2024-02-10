@@ -34,7 +34,7 @@ class Verification:
             return True
 
     def profileDetails(User_id):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
         details = cursor.execute(
@@ -49,7 +49,7 @@ class Verification:
     User_id = 4121234
 
     def UserIdToCoordId(User_id):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
@@ -58,20 +58,20 @@ class Verification:
         conn.close()
         return coordids
 
-    def coordinatingClub(self, User_id):
-        coordId = self.UserIdToCoordId(self, User_id)
-        print(coordId)
-        conn = sqlite3.connect('database/Clubhub.db')
-        cursor = conn.cursor()
-
-        coordinatingClub = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
-        coordinatingClubs = coordinatingClub.fetchone()
-        return coordinatingClubs
+    # def coordinatingClub(User_id):
+    #     coordId = User_id.UserIdToCoordId( User_id)
+    #     print(coordId)
+    #     conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+    #     cursor = conn.cursor()
+    #
+    #     coordinatingClub = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
+    #     coordinatingClubs = coordinatingClub.fetchone()
+    #     return coordinatingClubs
 
 
 
     profileDetails(4121234)
     UserIdToCoordId(User_id)
-    coordinatingClub(User_id)
+    # coordinatingClub(User_id)
 
 

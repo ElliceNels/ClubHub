@@ -211,32 +211,6 @@ def signupValidationRoute():
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
-        
-@app.route('/LoginProcess_Form', methods=["POST"])
-def loginValidationRoute():
-    if request.method == "POST":
-        User_id = request.form.get("IDbar").strip()
-        Username = request.form.get("usernamebar").strip()
-        password1 = request.form.get("password1bar").strip()
-        password2 = request.form.get("password2bar").strip()
-
-        loginValidator = LoginValidation()
-        alerts = loginValidator.doPasswordsMatch(password1, password2)
-      
-        if alerts == []:
-            loginVerifier = LoginVerification()
-            if loginVerifier.Login(User_id, Username, password1):
-                approvalStatus = loginVerifier.approvalStatus(User_id)
-                if approvalStatus == True:
-                    redirect(url_for('EventMain'))
-                else:
-                    return render_template('postLogin.html', approvalmessage=approvalStatus)
-            else:
-                return render_template('login.html', warning=loginVerifier.alert)
-        else:
-            return render_template('login.html', warning=alerts)
-
-
 
 
 if __name__ == '__main__':
