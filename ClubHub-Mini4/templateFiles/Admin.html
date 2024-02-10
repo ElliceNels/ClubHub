@@ -12,12 +12,14 @@
 
 
 
+    
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
-             <button class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
+            <form action="/massapprovalform" method="POST">
+             <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
             <br>
-             <button class = "discrete" onclick="alert('All Requests Rejected')">Reject All</button>
+             </form>
         </ul>
     </nav>
 

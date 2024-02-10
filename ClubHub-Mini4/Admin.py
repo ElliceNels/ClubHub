@@ -23,19 +23,44 @@ class Admin:
         conn.close()
         return self.userList
 
-    def approveOrReject(self, User_id, status):
+    def individualapproveOrReject(self, User_id, status):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         print("db connected")
         cursor = conn.cursor()
         # if user has been approved
         if status == 1:
-            cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
-            cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
-            conn.commit()
+            try:
+                with conn:
+                    cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
+                    cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
+                    conn.commit()
+            except Exception as e:
+                print(f"for the developer: Error: {e}")
         elif status == 0:
-            cursor.execute(''' DELETE FROM USER_LOGIN WHERE User_id = ? ''', (User_id,))
-            cursor.execute(''' DELETE FROM USER_DETAILS WHERE User_id = ? ''', (User_id,))
-            conn.commit()
+            try:
+                with conn:
+                    cursor.execute(''' DELETE FROM USER_LOGIN WHERE User_id = ? ''', (User_id,))
+                    cursor.execute(''' DELETE FROM USER_DETAILS WHERE User_id = ? ''', (User_id,))
+                    conn.commit()
+            except Exception as e:
+                   print(f"for the developer: Error: {e}")
         cursor.close()
         conn.close()
         return
+    
+    def massapproveOrReject(self, status):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        print("db connected")
+        cursor = conn.cursor()
+        
+        if status == 3:
+            try:
+                with conn:
+                    cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ?  WHERE Is_pending = ? AND Is_approved = ?''', (0, 1,1,0))
+                    cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ?WHERE Is_pending = ? AND Is_approved = ?''', (0, 1,1,0))
+                    conn.commit()
+            except Exception as e:
+                 print(f"for the developer: Error: {e}")
+        cursor.close()
+        conn.close()
+        

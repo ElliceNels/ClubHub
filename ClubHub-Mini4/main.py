@@ -48,9 +48,19 @@ def approvalFormRoute():
         print(User_id)
         
         AdminManagement = Admin()
-        AdminManagement.approveOrReject(User_id, status)
+        AdminManagement.individualapproveOrReject(User_id, status)
         return redirect(url_for('showAdmin'))
-
+    
+@app.route('/massapprovalform', methods=["POST"])
+def massApprovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        
+        AdminManagement = Admin()
+        AdminManagement.massapproveOrReject(status)
+        return redirect(url_for('showAdmin'))
+ 
+    
 @app.route('/create_club')
 def create_club():
     return render_template('create_club.html')
@@ -155,7 +165,7 @@ def loginValidationRoute():
             if loginVerifier.Login(User_id, Username, password1):
                 approvalStatus = loginVerifier.approvalStatus(User_id)
                 if approvalStatus == True:
-                    return EventMain()
+                    redirect(url_for('EventMain'))
                 else:
                     return render_template('postLogin.html', approvalmessage=approvalStatus)
             else:
