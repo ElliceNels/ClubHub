@@ -48,10 +48,13 @@
                 <br>
                 <br>
                 <p>Club:</p>
-                <p>Club name 1</p>
-                <p>Club name 2</p>
-                <p>Club name 3</p>
-
+                    {% if not clubMembership %}
+                        <p>Not a member of any clubs</p>
+                    {% else %}
+                        {% for club in clubMembership %}
+                            <p>{{ club }}</p>
+                        {% endfor %}
+                    {% endif %}
             </div>
 
 

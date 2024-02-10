@@ -116,12 +116,13 @@ def create_club():
 @app.route('/Profile')
 def Profile():
     details = Verification.profileDetails(user_session.getUser_id())
-    #clubOwned = Verification.coordinatingClub(user_session.getUser_id())
-    if user_session.isCoordinator() or user_session.isAdministrator():
-        return render_template('ProfileCoord.html', details=details)#, clubOwned=clubOwned
-    else:
-        return render_template('ProfileStud.html', details=details)
 
+    if user_session.isCoordinator() or user_session.isAdministrator():
+        clubOwned = Verification.coordinatingClub(user_session.getUser_id(), user_session.getUser_id())
+        return render_template('ProfileCoord.html', details=details, clubOwned=clubOwned)
+    else:
+        clubMembership = Verification.clubMemberships(user_session.getUser_id())
+        return render_template('ProfileStud.html', details=details, clubMembership=clubMembership)
 
 @app.route('/Inbox')
 def Inbox():
@@ -174,6 +175,10 @@ def club_mainpage():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error404.html'), 404
+
+@app.errorhandler(AttributeError)
+def handle_attribute_error(error):
+    return render_template('attributeError.html'), 500
 
 
 @app.route('/signup.html')

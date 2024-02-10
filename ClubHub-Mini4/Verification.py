@@ -18,6 +18,7 @@ class Verification:
             print('Coordinator')
             return True
 
+
     def isAdmin(User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
@@ -33,6 +34,8 @@ class Verification:
             print('Admin')
             return True
 
+
+
     def profileDetails(User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
@@ -46,32 +49,51 @@ class Verification:
                 profileDetails.append(column)
         return profileDetails
 
-    User_id = 4121234
+
 
     def UserIdToCoordId(User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
-        coordids = coordId.fetchone()
-        print(coordids)
+        TCoordId = coordId.fetchone()
+        for row in TCoordId:
+            coordId = row
         conn.close()
-        return coordids
-
-    # def coordinatingClub(User_id):
-    #     coordId = User_id.UserIdToCoordId( User_id)
-    #     print(coordId)
-    #     conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
-    #     cursor = conn.cursor()
-    #
-    #     coordinatingClub = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
-    #     coordinatingClubs = coordinatingClub.fetchone()
-    #     return coordinatingClubs
+        return coordId
 
 
 
-    profileDetails(4121234)
-    UserIdToCoordId(User_id)
-    # coordinatingClub(User_id)
+    def coordinatingClub(cls, User_id):
+        coordId = Verification.UserIdToCoordId(User_id)
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+
+        coordinatingClubs = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
+        coordinatingClub = coordinatingClubs.fetchone()
+        if not coordinatingClub:
+            return 'No existing club'
+        else:
+            return coordinatingClub
+
+
+    def clubMemberships(User_id):   #needs to be tested when clubs are added
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+
+        details = cursor.execute(
+            '''SELECT Club_name FROM CLUB_MEMBERSHIP cm INNER JOIN CLUBS c ON cm.Club_id = c.Club_id WHERE cm.User_id = ?''',
+            (User_id,))
+        clubMembership = []
+        for row in details:
+            for club in row:
+                clubMembership.append(club)
+
+        if not clubMembership:
+            return None
+        else:
+            return clubMembership
+
+
 
 
