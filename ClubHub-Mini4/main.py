@@ -109,7 +109,7 @@ def massApprovalFormRoute():
         return redirect(url_for('showAdmin'))
  
     
-@app.route('/create_club')
+@app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
     return render_template('create_club.html')
 
