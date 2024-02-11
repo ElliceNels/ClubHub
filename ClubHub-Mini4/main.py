@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
 from datetime import datetime, timedelta
+from EventsRegister import register_events
 
 
 # Provide template folder name
@@ -82,9 +83,13 @@ def CreateEvents():
 
 
     if validate_event_form([EventTitle , Description , Date , Time , Venue]):
+        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+        event_date = event_datetime.date()
+        event_time = event_datetime.time()
+        register_events(EventTitle, Description, event_date, event_time, Venue)
         return render_template('CreateEvents.html', EventTitle=EventTitle)
     else:
-        return render_template('CreateEvents.html', warning="All fields are required")
+        return render_template('CreateEvents.html', warning="Please fill out all fields!!")
 
     return render_template('CreateEvents.html')
 
