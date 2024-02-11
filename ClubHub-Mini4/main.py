@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template, request, redirect, url_for
+from flask import flash
 from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
 from Verification import Verification
@@ -7,11 +8,13 @@ from datetime import datetime, timedelta
 from session import Session 
 from Admin import Admin
 from EventsRegister import register_events
+from Club import ClubCreationVerification
 
 
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
+app.secret_key = 'who_would_have_thought_teehee'
 
 clubs = [
     {"name": "Club 1", "description": "Description for Club 1", "coordinator_name": "John Doe"},
@@ -111,7 +114,17 @@ def massApprovalFormRoute():
     
 @app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
-    return render_template('create_club.html')
+    warning = None
+
+    if request.method == 'POST':
+        club_name = request.form['club-name']
+        club_description = request.form['description']
+        ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
+    else:
+        print('you have a club.')
+        warning = 'you have a club.'
+
+    return render_template('create_club.html', warning=warning)
 
 
 
