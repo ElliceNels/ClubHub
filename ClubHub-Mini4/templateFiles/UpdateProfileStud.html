@@ -38,13 +38,32 @@
 
             <div class="left">
 
-                <h2><input type="text" placeholder="Firstname Lastname" id="names" minlength="4" maxlength="30" required></h2>
+                <form action="/changeDetails" method="post">
+                    <form action="/changeFirstname" method="post">
+                        <p><input type="text" placeholder="Firstname" id="firstname" name="Firstname" minlength="2" maxlength="30" required></p>
+                        <input type="submit" value="Save changes" class="button">
+                    </form>
 
-                <p>@<input type="text" placeholder="Username" id="username" minlength="8" maxlength="20" required></p>
-                <br>
-                <br>
-                <p>Email: <input type="text" placeholder="Email" id="email" minlength="8" maxlength="30" required></p>
-                <p>Phone Number: <input type="text" placeholder="Phone Number" id="phoneNum" minlength="10" maxlength="10" required> </p>
+                    <form action="/changeLastname" method="post">
+                        <p><input type="text" placeholder="Lastname" id="lastname" name="Lastname" minlength="2" maxlength="30" required></p>
+                        <input type="submit" value="Save changes" class="button">
+                    </form>
+
+                    <form action="/changeUsername" method="post">
+                        <p><input type="text" placeholder="Username" id="username" name="Username" minlength="8" maxlength="20" required></p>
+                        <input type="submit" value="Save changes" class="button">
+                    </form>
+
+                    <form action="/changeEmail" method="post">
+                        <p><input type="text" placeholder="Email" id="email" name="Email" minlength="8" maxlength="30" required></p>
+                        <input type="submit" value="Save changes" class="button">
+                    </form>
+
+                    <form action="/changePhoneNumber" method="post">
+                        <p><input type="text" placeholder="Phone Number" id="phoneNum" name="Contact_number" minlength="10" maxlength="10" required></p>
+                        <input type="submit" value="Save changes" class="button">
+                    </form>
+                </form>
 
                 <br>
                 <br>
