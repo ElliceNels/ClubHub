@@ -24,20 +24,20 @@
     <div class="club-list">
         {% for club in clubs %}
         <div class="club-box">
-            <div class="club-name">
-                <a class="link" href="">
-                    {{club.name}}
-                </a>
+                <div class="club-name">
+                    <a class="link" href="">
+                        {{club[0]}}
+                    </a>
+                </div>
+        </div>
+            <div class="coordinator-name">
+                {{club[2]}}
+                <br>
+                <br>
             </div>
-        </div>
-        <div class="coordinator-name">
-            {{club.coordinator_name}}
-            <br>
-            <br>
-        </div>
-        <div class="club-description">
-            <p>{{club.description}}</p>
-        </div>
+            <div class="club-description">
+                <p>{{club[1]}}</p>
+            </div>
         {% endfor %}
     </div>
     <br>
