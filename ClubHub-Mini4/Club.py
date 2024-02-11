@@ -19,9 +19,6 @@ class ClubCreationVerification:
         except sqlite3.Error as e:
             print("error: ", e)
 
-    def valid_club(club_name,club_description):
-        if len(club_name) > 40:
-            print()
 
     def create_new_club( club_name, club_description, user_id):
         try : 
@@ -58,6 +55,4 @@ class ClubCreationVerification:
         except sqlite3.Error as e:
             print("error: ", e)
 
-
-ClubCreationVerification.create_new_club( "shouldnt work", "if this works ill cry", 4128888)
 
