@@ -171,17 +171,24 @@ def CreateEvents():
         Time = request.form.get('Time').strip()
         Venue = request.form.get('Venue').strip()
 
+        session_check = Session()
 
-    if validate_event_form([EventTitle , Description , Date , Time , Venue]):
-        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
-        event_date = event_datetime.date()
-        event_time = event_datetime.time()
-        register_events(EventTitle, Description, event_date, event_time, Venue)
-        return render_template('CreateEvents.html', EventTitle=EventTitle)
+        if session_check.isLoggedIn:
+            user_id = session_check.getUser_id()
+            if session_check.isCoord():
+                club_id = Verification.CoordinatorClubId(user_id)
+                if club_id:
+                    event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+                    event_date = event_datetime.date()
+                    event_time = event_datetime.time()
+                    register_events(EventTitle, Description, event_date, event_time, Venue, club_id)
+                    return render_template('CreateEvents.html', EventTitle=EventTitle)
+                else:
+                    return render_template('CreateEvents.html', warning="You are not associated with any club!")
     else:
         return render_template('CreateEvents.html', warning="Please fill out all fields!!")
 
-    return render_template('CreateEvents.html')
+  
 
 
 @app.route("/EventMain")
