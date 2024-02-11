@@ -128,7 +128,10 @@ def Profile():
 
 @app.route('/Inbox')
 def Inbox():
-    return render_template('Inbox.html')
+    if user_session.isAdministrator():
+        return render_template('Admin.html')
+    else:
+        return render_template('Inbox.html')
 
 
 
