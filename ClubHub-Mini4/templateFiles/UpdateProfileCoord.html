@@ -14,7 +14,7 @@
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
-             <a class = "discrete" href="/UpdateProfileStud">Update Profile</a>
+             <a class = "discrete" href="/UpdateProfile">Update Profile</a>
         </ul>
     </nav>
 
@@ -24,9 +24,9 @@
 
     <!-- NAVBAR -->
     <ul class = navbar>
-        <a href="/clubs_displayCoord">Clubs</a>
+        <a href="/clubs_display">Clubs</a>
         <a href="/EventMain">Events</a>
-        <a href="/Inbox">Inbox</a>
+        <a href="/Profile">Profile</a>
     </ul>
 
         <!-- TITLE -->
@@ -48,17 +48,17 @@
                 <br>
                 <br>
                 <p>Club:</p>
-                <p>Club they are coordinating</p>
+                <p>{{clubOwned}}</p>
 
 
             </div>
 
             <div class="right">
 
-                <a type="button" class="button" href="/ProfileCoord" onclick="alert('Aborted')">Discard changes</a>
+                <a type="button" class="button" href="/Profile" onclick="alert('Aborted')">Discard changes</a>
                 <br>
                 <br>
-                <a type="button" class="button" href="/ProfileCoord" onclick="alert('Profile details updated')">Save changes</a>
+                <a type="button" class="button" href="/Profile" onclick="alert('Profile details updated')">Save changes</a>
 
 
             </div>
