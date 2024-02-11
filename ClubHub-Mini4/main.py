@@ -6,6 +6,8 @@ from Verification import Verification
 from datetime import datetime, timedelta
 from session import Session 
 from Admin import Admin
+from EventsRegister import register_events
+
 
 
 # Provide template folder name
@@ -70,20 +72,32 @@ def clubs_display():
 @app.route('/Admin')
 def showAdmin():
     AdminInfo = Admin()
-    userList = AdminInfo.getUserList()
+    userList = AdminInfo.getUserList(1,0)
     return render_template('Admin.html', userList = userList)
+
+@app.route('/ApprovedUsers')
+def showApprovedUsers():
+    AdminInfo = Admin()
+    userList = AdminInfo.getUserList(0,1)
+    return render_template('ApprovedUsers.html',userList=userList)
 
 @app.route('/approvalform', methods=["POST"])
 def approvalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
         User_id = int(request.form.get("user"))
-        print(status)
-        print(User_id)
-        
         AdminManagement = Admin()
         AdminManagement.individualapproveOrReject(User_id, status)
         return redirect(url_for('showAdmin'))
+
+@app.route('/deletionform', methods=["POST"])
+def deletionFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        AdminManagement = Admin()
+        AdminManagement.individualapproveOrReject(User_id, status)
+        return redirect(url_for('showApprovedUsers'))
     
 @app.route('/massapprovalform', methods=["POST"])
 def massApprovalFormRoute():
@@ -104,16 +118,27 @@ def create_club():
 @app.route('/Profile')
 def Profile():
     details = Verification.profileDetails(user_session.getUser_id())
-    #clubOwned = Verification.coordinatingClub(user_session.getUser_id())
-    if user_session.isCoordinator() or user_session.isAdministrator():
-        return render_template('ProfileCoord.html', details=details)#, clubOwned=clubOwned
-    else:
-        return render_template('ProfileStud.html', details=details)
 
+    if user_session.isCoordinator() or user_session.isAdministrator():
+        clubOwned = Verification.coordinatingClub(user_session.getUser_id(), user_session.getUser_id())
+        return render_template('ProfileCoord.html', details=details, clubOwned=clubOwned)
+    else:
+        clubMembership = Verification.clubMemberships(user_session.getUser_id())
+        return render_template('ProfileStud.html', details=details, clubMembership=clubMembership)
 
 @app.route('/Inbox')
 def Inbox():
     return render_template('Inbox.html')
+
+
+
+@app.route('/UserDetails', methods=["POST"])
+def  UserDetails():
+    if request.method =="POST":
+        UserID = request.form.get("userdeets")
+        UserInfo = Admin()
+        userinformation = UserInfo.getUserDetails(UserID)
+        return render_template('UserDetails.html', userinformation=userinformation)
 
 
 @app.route('/UpdateProfile')
@@ -126,13 +151,36 @@ def UpdateProfile():
 
 
 
+
 @app.route("/EventDetails")
 def EventDetails():
     return render_template('EventDetails.html')
 
 
-@app.route("/CreateEvents")
+def validate_event_form(EventTitle,Description, Date, Time, Venue):
+    if not all([EventTitle, Description, Date, Time, Venue]):
+        return False
+    return True
+
+@app.route("/CreateEvents" , methods=['POST'])
 def CreateEvents():
+    if request.method == 'POST':
+        EventTitle = request.form.get('EventTitle').strip()
+        Description = request.form.get('Description').strip()
+        Date = request.form.get('Date').strip()
+        Time = request.form.get('Time').strip()
+        Venue = request.form.get('Venue').strip()
+
+
+    if validate_event_form([EventTitle , Description , Date , Time , Venue]):
+        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+        event_date = event_datetime.date()
+        event_time = event_datetime.time()
+        register_events(EventTitle, Description, event_date, event_time, Venue)
+        return render_template('CreateEvents.html', EventTitle=EventTitle)
+    else:
+        return render_template('CreateEvents.html', warning="Please fill out all fields!!")
+
     return render_template('CreateEvents.html')
 
 
@@ -152,6 +200,10 @@ def club_mainpage():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error404.html'), 404
+
+@app.errorhandler(AttributeError)
+def handle_attribute_error(error):
+    return render_template('attributeError.html'), 500
 
 
 @app.route('/signup.html')
@@ -189,7 +241,7 @@ def signupValidationRoute():
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
-        
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -5,11 +5,11 @@ class Admin:
     def __init__(self):
         self.userList = []
         
-    def getUserList(self):
+    def getUserList(self, pendingstatus, approvedstatus):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
         print("db connected")
-        cursor.execute(''' SELECT User_id, Firstname, Lastname FROM USER_DETAILS WHERE Is_pending = ? AND Is_approved = ?''', (1, 0))
+        cursor.execute(''' SELECT User_id, Firstname, Lastname FROM USER_DETAILS WHERE Is_pending = ? AND Is_approved = ? AND User_id != ?''', (pendingstatus, approvedstatus, 4121234))
         self.userList = [list(row) for row in cursor.fetchall()]
        
         for user in self.userList:
@@ -63,4 +63,15 @@ class Admin:
                  print(f"for the developer: Error: {e}")
         cursor.close()
         conn.close()
-        
+    def getUserDetails(self, User_id):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+        cursor.execute('''SELECT ud.user_id, ud.firstname, ud.lastname, ul.username, ud.email,contact_number
+        FROM USER_DETAILS as ud
+        INNER JOIN USER_LOGIN as ul
+        ON ud.User_id = ul.User_id
+        WHERE ud.User_id = ?;''', (User_id,))
+        userinformation = list(chain.from_iterable(cursor.fetchall()))
+        cursor.close()
+        conn.close()
+        return userinformation

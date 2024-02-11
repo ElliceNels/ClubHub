@@ -13,12 +13,11 @@
    
 }
 .logo{
-    position: absolute;
-    top:0;
-    left:0;
+    position: relative;
     margin: 20px;
     display: flex;
     align-items: center;
+    z-index: 1;
 }
 .clubhub-text{
     padding-top: 5px;
@@ -76,6 +75,7 @@
     margin:0;
     padding:0;
     width:100%;
+    margin-bottom: 20px;
 }
 .navbar a:hover{
     background-color: #FA991C;
@@ -83,4 +83,32 @@
 }
 .navbar li{
     float: left;
+}
+
+.datecontainer{
+    display: grid;
+    gap: 20px;
+}
+
+.date{
+    padding : 20px;
+    background-color: #023047;
+    border: 1px solid #023047;
+    border-radius: 5px;
+    color: #FBF3F2;
+   width: 100px;
+   text-align: center;
+  float:left;
+  margin-left: 10px;
+
+}
+.detailsbox{
+    padding: 20px;
+    background-color: #1C768F;
+    border: 1px solid #023047;
+    border-radius: 5px;
+   color: #FBF3F2;
+   float:left;
+   margin-bottom: 20px;
+   margin-left: 10px;
 }
