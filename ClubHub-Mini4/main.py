@@ -162,7 +162,7 @@ def validate_event_form(EventTitle,Description, Date, Time, Venue):
         return False
     return True
 
-@app.route("/CreateEvents" , methods=['POST'])
+@app.route("/CreateEvents" , methods=['GET', 'POST'])
 def CreateEvents():
     if request.method == 'POST':
         EventTitle = request.form.get('EventTitle').strip()
@@ -185,6 +185,8 @@ def CreateEvents():
                     return render_template('CreateEvents.html', EventTitle=EventTitle)
                 else:
                     return render_template('CreateEvents.html', warning="You are not associated with any club!")
+            else:
+                return render_template('CreateEvents.html', warning="Only coordinators can create events.")
     else:
         return render_template('CreateEvents.html', warning="Please fill out all fields!!")
 
