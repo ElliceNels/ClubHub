@@ -34,7 +34,7 @@ class Verification:
             return True
 
     def profileDetails(User_id):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
         details = cursor.execute(
@@ -49,7 +49,7 @@ class Verification:
     User_id = 4121234
 
     def UserIdToCoordId(User_id):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
@@ -61,7 +61,7 @@ class Verification:
     def coordinatingClub(self, User_id):
         coordId = self.UserIdToCoordId(self, User_id)
         print(coordId)
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
         coordinatingClub = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
