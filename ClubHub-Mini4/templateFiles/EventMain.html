@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>  Event Details </title>
-    <link rel="stylesheet" href="staticFiles/DetailsStyle.CSS" />
+    <link rel="stylesheet" href="staticFiles/EventMainStyle.CSS" />
     <script src="https://kit.fontawesome.com/9a80590ec1.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -13,7 +13,7 @@
         <i class="fa-solid fa-circle-nodes"></i>
     </div>
     <div class="header">
-    <h1> Event Details</h1>
+    <h1> Events</h1>
     </div>
 
 
@@ -29,10 +29,14 @@
     <div class="date-list" id="dateList">
         {% for date in dates %}
         <div class="date">{{ date.strftime('%a, %b %d') }}</div>
+        <div class="detailsbox" id="box">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptas dicta ea odio voluptatibus, ad architecto rem nostrum sit obcaecati labore ullam necessitatibus iusto. Non impedit odio quis voluptate nihil.
+        </div>
         {% endfor %}
 
     </div>
 </div>
+
 
 </body>
 </html>

@@ -6,6 +6,8 @@ from Verification import Verification
 from datetime import datetime, timedelta
 from session import Session 
 from Admin import Admin
+from EventsRegister import register_events
+
 
 
 # Provide template folder name
@@ -107,7 +109,7 @@ def massApprovalFormRoute():
         return redirect(url_for('showAdmin'))
  
     
-@app.route('/create_club')
+@app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
     return render_template('create_club.html')
 
@@ -116,12 +118,13 @@ def create_club():
 @app.route('/Profile')
 def Profile():
     details = Verification.profileDetails(user_session.getUser_id())
-    #clubOwned = Verification.coordinatingClub(user_session.getUser_id())
-    if user_session.isCoordinator() or user_session.isAdministrator():
-        return render_template('ProfileCoord.html', details=details)#, clubOwned=clubOwned
-    else:
-        return render_template('ProfileStud.html', details=details)
 
+    if user_session.isCoordinator() or user_session.isAdministrator():
+        clubOwned = Verification.coordinatingClub(user_session.getUser_id(), user_session.getUser_id())
+        return render_template('ProfileCoord.html', details=details, clubOwned=clubOwned)
+    else:
+        clubMembership = Verification.clubMemberships(user_session.getUser_id())
+        return render_template('ProfileStud.html', details=details, clubMembership=clubMembership)
 
 @app.route('/Inbox')
 def Inbox():
@@ -148,13 +151,36 @@ def UpdateProfile():
 
 
 
+
 @app.route("/EventDetails")
 def EventDetails():
     return render_template('EventDetails.html')
 
 
-@app.route("/CreateEvents")
+def validate_event_form(EventTitle,Description, Date, Time, Venue):
+    if not all([EventTitle, Description, Date, Time, Venue]):
+        return False
+    return True
+
+@app.route("/CreateEvents" , methods=['POST'])
 def CreateEvents():
+    if request.method == 'POST':
+        EventTitle = request.form.get('EventTitle').strip()
+        Description = request.form.get('Description').strip()
+        Date = request.form.get('Date').strip()
+        Time = request.form.get('Time').strip()
+        Venue = request.form.get('Venue').strip()
+
+
+    if validate_event_form([EventTitle , Description , Date , Time , Venue]):
+        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+        event_date = event_datetime.date()
+        event_time = event_datetime.time()
+        register_events(EventTitle, Description, event_date, event_time, Venue)
+        return render_template('CreateEvents.html', EventTitle=EventTitle)
+    else:
+        return render_template('CreateEvents.html', warning="Please fill out all fields!!")
+
     return render_template('CreateEvents.html')
 
 
@@ -174,6 +200,10 @@ def club_mainpage():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error404.html'), 404
+
+@app.errorhandler(AttributeError)
+def handle_attribute_error(error):
+    return render_template('attributeError.html'), 500
 
 
 @app.route('/signup.html')
@@ -211,32 +241,6 @@ def signupValidationRoute():
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
-        
-@app.route('/LoginProcess_Form', methods=["POST"])
-def loginValidationRoute():
-    if request.method == "POST":
-        User_id = request.form.get("IDbar").strip()
-        Username = request.form.get("usernamebar").strip()
-        password1 = request.form.get("password1bar").strip()
-        password2 = request.form.get("password2bar").strip()
-
-        loginValidator = LoginValidation()
-        alerts = loginValidator.doPasswordsMatch(password1, password2)
-      
-        if alerts == []:
-            loginVerifier = LoginVerification()
-            if loginVerifier.Login(User_id, Username, password1):
-                approvalStatus = loginVerifier.approvalStatus(User_id)
-                if approvalStatus == True:
-                    redirect(url_for('EventMain'))
-                else:
-                    return render_template('postLogin.html', approvalmessage=approvalStatus)
-            else:
-                return render_template('login.html', warning=loginVerifier.alert)
-        else:
-            return render_template('login.html', warning=alerts)
-
-
 
 
 if __name__ == '__main__':
