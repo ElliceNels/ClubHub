@@ -6,6 +6,8 @@ from Verification import Verification
 from datetime import datetime, timedelta
 from session import Session 
 from Admin import Admin
+from EventsRegister import register_events
+
 
 
 # Provide template folder name
@@ -149,13 +151,36 @@ def UpdateProfile():
 
 
 
+
 @app.route("/EventDetails")
 def EventDetails():
     return render_template('EventDetails.html')
 
 
-@app.route("/CreateEvents")
+def validate_event_form(EventTitle,Description, Date, Time, Venue):
+    if not all([EventTitle, Description, Date, Time, Venue]):
+        return False
+    return True
+
+@app.route("/CreateEvents" , methods=['POST'])
 def CreateEvents():
+    if request.method == 'POST':
+        EventTitle = request.form.get('EventTitle').strip()
+        Description = request.form.get('Description').strip()
+        Date = request.form.get('Date').strip()
+        Time = request.form.get('Time').strip()
+        Venue = request.form.get('Venue').strip()
+
+
+    if validate_event_form([EventTitle , Description , Date , Time , Venue]):
+        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+        event_date = event_datetime.date()
+        event_time = event_datetime.time()
+        register_events(EventTitle, Description, event_date, event_time, Venue)
+        return render_template('CreateEvents.html', EventTitle=EventTitle)
+    else:
+        return render_template('CreateEvents.html', warning="Please fill out all fields!!")
+
     return render_template('CreateEvents.html')
 
 
