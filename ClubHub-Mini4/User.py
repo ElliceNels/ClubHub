@@ -12,4 +12,7 @@ class User:
                 conn.commit()
         except Exception as e:
             print(e)
+        finally:
+            cursor.close()
+            conn.close()
         
