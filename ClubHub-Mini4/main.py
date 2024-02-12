@@ -300,7 +300,7 @@ def signupValidationRoute():
         if alerts == []:
             signUpVerfier = LoginVerification()
             if signUpVerfier.SignUp(userId, username, phonenumber, password1, firstname, lastname, email, usertype):
-                redirect(url_for('login'))
+                return redirect(url_for('login'))
             else:
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
