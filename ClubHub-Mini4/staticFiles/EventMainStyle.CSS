@@ -33,7 +33,7 @@
 }
 .navbar ul{
     list-style-type: none;
-    background-color: #FFB703;
+    background-color: #FA991C;
     padding: 0;
     margin:0;
     overflow: hidden;
@@ -41,6 +41,8 @@
 .navbar a{
     color:#FBF3F2;
     text-decoration: none;
+    font-weight: bold;
+    font-family: Signika Negative;
     display: block;
     text-align: center;
     padding: 15px 60px;
