@@ -1,6 +1,5 @@
 
 from flask import Flask, render_template, request, redirect, url_for
-from flask import flash
 from LoginValidation import LoginValidation
 from LoginVerification import LoginVerification
 from Verification import Verification
@@ -21,7 +20,6 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
                 "Frank Robinson", "Grace Lee", "Henry Davis", "Ivy Chen", "Jack Wilson", "Kelly Turner",
                 "Leo Martinez"]
 
-isCoord = False
 user_session = Session()
 
 @app.route('/')
@@ -32,7 +30,7 @@ def index():
 
 @app.route('/LoginProcess_Form', methods=["POST"])
 def loginValidationRoute():
-    # global isCoord
+
     if request.method == "POST":
         User_id = request.form.get("IDbar").strip()
         Username = request.form.get("usernamebar").strip()
@@ -62,9 +60,12 @@ def loginValidationRoute():
 
 @app.route('/clubs_display')
 def clubs_display():
+    #checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
+
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     else:
+
         return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data())
 
 
@@ -113,10 +114,14 @@ def create_club():
     warning = None
 
     if request.method == 'POST':
+
+        #get data from html from to create a new club
         club_name = request.form['club-name']
         club_description = request.form['description']
         ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
     else:
+
+        #if user has a club, display warning
         print('you have a club.')
         warning = 'you have a club.'
 
@@ -159,8 +164,6 @@ def UpdateProfile():
 
 
 
-
-
 @app.route("/EventDetails")
 def EventDetails():
     return render_template('EventDetails.html')
@@ -200,10 +203,9 @@ def EventMain():
 
 @app.route('/club_mainpage')
 def club_mainpage():
+
     return render_template('/club_mainpage.html', club_members=club_members)
 
-
-# Provide template folder name
 
 
 @app.errorhandler(404)
