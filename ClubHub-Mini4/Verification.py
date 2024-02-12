@@ -74,7 +74,8 @@ class Verification:
         if not coordinatingClub:
             return 'No existing club'
         else:
-            return coordinatingClub
+            for club in coordinatingClub:
+                return club
 
 
     def clubMemberships(User_id):   #needs to be tested when clubs are added
