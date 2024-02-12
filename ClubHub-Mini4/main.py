@@ -1,3 +1,4 @@
+import sqlite3
 
 from flask import Flask, render_template, request, redirect, url_for
 from LoginValidation import LoginValidation
@@ -6,6 +7,7 @@ from Verification import Verification
 from datetime import datetime, timedelta
 from session import Session 
 from Admin import Admin
+from User import User
 
 
 # Provide template folder name
@@ -65,6 +67,26 @@ def clubs_display():
         return render_template('clubs_displayCoord.html', clubs=clubs)
     else:
         return render_template('clubs_displayStud.html', clubs=clubs)
+    
+@app.route('/UpdateProfileStud')
+def updateStudentProfileDisplay():
+    return render_template('UpdateProfileStud.html')
+    
+@app.route('/changeDetails', methods=["POST"])
+def changeDetailsRoute():
+    if request.method == "POST":
+        newvalue = request.form.get("newvalue")
+        column = request.form.get("column")
+        user_id = user_session.getUser_id()
+        table = None
+        if column == "Username":
+            table = "USER_LOGIN"
+        else:
+            table = "USER_DETAILS"
+        UserInformationHandler = User()
+        UserInformationHandler.updateUserInformation(table, column, newvalue, user_id)
+        return redirect(url_for('updateStudentProfileDisplay'))
+    
 
 
 @app.route('/Admin')
@@ -116,12 +138,13 @@ def create_club():
 @app.route('/Profile')
 def Profile():
     details = Verification.profileDetails(user_session.getUser_id())
-    #clubOwned = Verification.coordinatingClub(user_session.getUser_id())
-    if user_session.isCoordinator() or user_session.isAdministrator():
-        return render_template('ProfileCoord.html', details=details)#, clubOwned=clubOwned
-    else:
-        return render_template('ProfileStud.html', details=details)
 
+    if user_session.isCoordinator() or user_session.isAdministrator():
+        clubOwned = Verification.coordinatingClub(user_session.getUser_id(), user_session.getUser_id())
+        return render_template('ProfileCoord.html', details=details, clubOwned=clubOwned)
+    else:
+        clubMembership = Verification.clubMemberships(user_session.getUser_id())
+        return render_template('ProfileStud.html', details=details, clubMembership=clubMembership)
 
 @app.route('/Inbox')
 def Inbox():
@@ -145,7 +168,32 @@ def UpdateProfile():
     else:
         return render_template('UpdateProfileStud.html')
 
+@app.route('/changeDetails', methods=['POST'])
+def submit_form():
+    User_id = user_session.getUser_id()
+    firstname = request.form['Firstname']
+    lastname = request.form['Lastname']
+    username = request.form['Username']
+    email = request.form['Email']
+    phoneNum = request.form['Contact_number']
 
+    print(User_id)
+    print(firstname)
+    print(lastname)
+    print(username)
+    print(email)
+    print(phoneNum)
+
+    conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+    cursor = conn.cursor()
+
+    cursor.execute('UPDATE USER_DETAILS SET Firstname = ?, Lastname = ?, Contact_number = ?, Email = ? WHERE User_id = ?', (firstname, lastname, phoneNum, email, User_id))
+    cursor.execute('UPDATE USER_LOGIN SET Username = ? WHERE User_id = ?', (username, User_id))
+
+    conn.commit()
+    conn.close()
+
+    return Profile()
 
 
 @app.route("/EventDetails")
@@ -174,6 +222,10 @@ def club_mainpage():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error404.html'), 404
+
+@app.errorhandler(AttributeError)
+def handle_attribute_error(error):
+    return render_template('attributeError.html'), 500
 
 
 @app.route('/signup.html')
@@ -211,30 +263,6 @@ def signupValidationRoute():
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
-        
-@app.route('/LoginProcess_Form', methods=["POST"])
-def loginValidationRoute():
-    if request.method == "POST":
-        User_id = request.form.get("IDbar").strip()
-        Username = request.form.get("usernamebar").strip()
-        password1 = request.form.get("password1bar").strip()
-        password2 = request.form.get("password2bar").strip()
-
-        loginValidator = LoginValidation()
-        alerts = loginValidator.doPasswordsMatch(password1, password2)
-      
-        if alerts == []:
-            loginVerifier = LoginVerification()
-            if loginVerifier.Login(User_id, Username, password1):
-                approvalStatus = loginVerifier.approvalStatus(User_id)
-                if approvalStatus == True:
-                    redirect(url_for('EventMain'))
-                else:
-                    return render_template('postLogin.html', approvalmessage=approvalStatus)
-            else:
-                return render_template('login.html', warning=loginVerifier.alert)
-        else:
-            return render_template('login.html', warning=alerts)
 
 
 
