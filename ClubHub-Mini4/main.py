@@ -7,6 +7,7 @@ from Verification import Verification
 from datetime import datetime, timedelta
 from session import Session 
 from Admin import Admin
+from User import User
 
 
 # Provide template folder name
@@ -66,6 +67,26 @@ def clubs_display():
         return render_template('clubs_displayCoord.html', clubs=clubs)
     else:
         return render_template('clubs_displayStud.html', clubs=clubs)
+    
+@app.route('/UpdateProfileStud')
+def updateStudentProfileDisplay():
+    return render_template('UpdateProfileStud.html')
+    
+@app.route('/changeDetails', methods=["POST"])
+def changeDetailsRoute():
+    if request.method == "POST":
+        newvalue = request.form.get("newvalue")
+        column = request.form.get("column")
+        user_id = user_session.getUser_id()
+        table = None
+        if column == "Username":
+            table = "USER_LOGIN"
+        else:
+            table = "USER_DETAILS"
+        UserInformationHandler = User()
+        UserInformationHandler.updateUserInformation(table, column, newvalue, user_id)
+        return redirect(url_for('updateStudentProfileDisplay'))
+    
 
 
 @app.route('/Admin')
