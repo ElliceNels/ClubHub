@@ -7,22 +7,19 @@ from datetime import datetime, timedelta
 from session import Session 
 from Admin import Admin
 from EventsRegister import register_events
+from Club import ClubCreationVerification
+from Coordinator import Coordinator
 
 
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
+app.secret_key = 'who_would_have_thought_teehee'
 
-clubs = [
-    {"name": "Club 1", "description": "Description for Club 1", "coordinator_name": "John Doe"},
-    {"name": "Club 2", "description": "Description for Club 2", "coordinator_name": "Jane Doe"},
-    {"name": "Club 3", "description": "Description for Club 3", "coordinator_name": "Bob Smith"},
-]
 club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "Eva Garcia",
                 "Frank Robinson", "Grace Lee", "Henry Davis", "Ivy Chen", "Jack Wilson", "Kelly Turner",
                 "Leo Martinez"]
 
-isCoord = False
 user_session = Session()
 
 @app.route('/')
@@ -33,7 +30,7 @@ def index():
 
 @app.route('/LoginProcess_Form', methods=["POST"])
 def loginValidationRoute():
-    # global isCoord
+
     if request.method == "POST":
         User_id = request.form.get("IDbar").strip()
         Username = request.form.get("usernamebar").strip()
@@ -63,10 +60,13 @@ def loginValidationRoute():
 
 @app.route('/clubs_display')
 def clubs_display():
+    #checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
-        return render_template('clubs_displayCoord.html', clubs=clubs)
+
+        return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     else:
-        return render_template('clubs_displayStud.html', clubs=clubs)
+
+        return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data())
 
 
 @app.route('/Admin')
@@ -111,7 +111,21 @@ def massApprovalFormRoute():
     
 @app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
-    return render_template('create_club.html')
+    warning = None
+
+    if request.method == 'POST':
+
+        #get data from html from to create a new club
+        club_name = request.form['club-name']
+        club_description = request.form['description']
+        ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
+    else:
+
+        #if user has a club, display warning
+        print('you have a club.')
+        warning = 'you have a club.'
+
+    return render_template('create_club.html', warning=warning)
 
 
 
@@ -147,8 +161,6 @@ def UpdateProfile():
         return render_template('UpdateProfileCoord.html')
     else:
         return render_template('UpdateProfileStud.html')
-
-
 
 
 
@@ -191,10 +203,9 @@ def EventMain():
 
 @app.route('/club_mainpage')
 def club_mainpage():
+
     return render_template('/club_mainpage.html', club_members=club_members)
 
-
-# Provide template folder name
 
 
 @app.errorhandler(404)
