@@ -1,3 +1,4 @@
+import sqlite3
 
 from flask import Flask, render_template, request, redirect, url_for
 from LoginValidation import LoginValidation
@@ -10,6 +11,7 @@ from EventsRegister import register_events
 from Club import ClubCreationVerification
 from Coordinator import Coordinator
 
+from User import User
 
 
 # Provide template folder name
@@ -67,6 +69,26 @@ def clubs_display():
     else:
 
         return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data())
+    
+@app.route('/UpdateProfileStud')
+def updateStudentProfileDisplay():
+    return render_template('UpdateProfileStud.html')
+    
+@app.route('/changeDetails', methods=["POST"])
+def changeDetailsRoute():
+    if request.method == "POST":
+        newvalue = request.form.get("newvalue")
+        column = request.form.get("column")
+        user_id = user_session.getUser_id()
+        table = None
+        if column == "Username":
+            table = "USER_LOGIN"
+        else:
+            table = "USER_DETAILS"
+        UserInformationHandler = User()
+        UserInformationHandler.updateUserInformation(table, column, newvalue, user_id)
+        return redirect(url_for('updateStudentProfileDisplay'))
+    
 
 
 @app.route('/Admin')
@@ -142,7 +164,12 @@ def Profile():
 
 @app.route('/Inbox')
 def Inbox():
-    return render_template('Inbox.html')
+    if user_session.isAdministrator():
+        AdminInfo = Admin()
+        userList = AdminInfo.getUserList(1, 0)
+        return render_template('Admin.html', userList=userList)
+    else:
+        return render_template('Inbox.html')
 
 
 
@@ -162,6 +189,32 @@ def UpdateProfile():
     else:
         return render_template('UpdateProfileStud.html')
 
+@app.route('/changeDetails', methods=['POST'])
+def submit_form():
+    User_id = user_session.getUser_id()
+    firstname = request.form['Firstname']
+    lastname = request.form['Lastname']
+    username = request.form['Username']
+    email = request.form['Email']
+    phoneNum = request.form['Contact_number']
+
+    print(User_id)
+    print(firstname)
+    print(lastname)
+    print(username)
+    print(email)
+    print(phoneNum)
+
+    conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+    cursor = conn.cursor()
+
+    cursor.execute('UPDATE USER_DETAILS SET Firstname = ?, Lastname = ?, Contact_number = ?, Email = ? WHERE User_id = ?', (firstname, lastname, phoneNum, email, User_id))
+    cursor.execute('UPDATE USER_LOGIN SET Username = ? WHERE User_id = ?', (username, User_id))
+
+    conn.commit()
+    conn.close()
+
+    return Profile()
 
 
 @app.route("/EventDetails")
@@ -247,11 +300,13 @@ def signupValidationRoute():
         if alerts == []:
             signUpVerfier = LoginVerification()
             if signUpVerfier.SignUp(userId, username, phonenumber, password1, firstname, lastname, email, usertype):
-                return render_template('login.html')
+                redirect(url_for('login'))
             else:
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
+
+
 
 
 if __name__ == '__main__':
