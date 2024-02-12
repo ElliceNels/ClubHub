@@ -164,7 +164,10 @@ def Profile():
 
 @app.route('/Inbox')
 def Inbox():
-    return render_template('Inbox.html')
+    if user_session.isAdministrator():
+        return render_template('Admin.html')
+    else:
+        return render_template('Inbox.html')
 
 
 
@@ -295,7 +298,7 @@ def signupValidationRoute():
         if alerts == []:
             signUpVerfier = LoginVerification()
             if signUpVerfier.SignUp(userId, username, phonenumber, password1, firstname, lastname, email, usertype):
-                return render_template('login.html')
+                redirect(url_for('login'))
             else:
                 return render_template('signup.html', warning=signUpVerfier.alert)
         else:
