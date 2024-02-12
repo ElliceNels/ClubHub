@@ -33,7 +33,7 @@ class LoginValidation:
             self.alert.append("Invalid Id")
 
     def passwordValidator(self, password1, password2):
-        regex = r'^(?=.*[$%&@!€])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
+        regex = r'^(?=.*[$%&@!€_-?/\£])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
         
         if password1 != password2:
             self.alert.append("Passwords do not match")
