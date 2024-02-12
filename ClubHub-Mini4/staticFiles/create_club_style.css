@@ -125,3 +125,11 @@ body {
     align-items: center;
     justify-content: center;
 }
+.alert {
+    padding: 3rem;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    color: #FA991C;
+    background-color: #063a58;
+}

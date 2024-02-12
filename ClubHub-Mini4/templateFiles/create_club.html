@@ -20,18 +20,21 @@
         CREATE NEW CLUB
     </h1>
     <div id="create-club-bg">
-        <form action="" id="club-form">
+        <form method="post" id="club-form">
             <label for="club-name">Club name: </label>
             <br>
-            <input type="text" id="club-name" name="club-name">
+            <input type="text" id="club-name" name="club-name" maxlength="40" value="{{ request.form['club-name'] }}" required>
             <br>
             <br>
             <label for="description" id="description">Description: </label>
             <br>
-            <textarea class="text-area" name="description" id="description" cols="30" rows="10"></textarea>
+            <textarea class="text-area" name="description" id="description" cols="30" rows="10" maxlength="200" value="{{ request.form['description'] }}" required></textarea>
             <br>
             <input type="submit" value="submit" id="submit-button">
         </form>
+        {% if warning %}
+            <div class="alert">{{ warning }}</div>
+        {% endif %}
     </div>
     </div>
 </body>

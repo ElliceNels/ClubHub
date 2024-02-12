@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ClubHub</title>
+    <title>SignUpRequests</title>
+
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -11,12 +12,14 @@
 
 
 
+
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
-             <button class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
+            <form action="/massapprovalform" method="POST">
+             <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
             <br>
-             <button class = "discrete" onclick="alert('All Requests Rejected')">Reject All</button>
+             </form>
         </ul>
     </nav>
 
@@ -36,27 +39,38 @@
         <h1>Inbox</h1>
 
         <!-- MAIL -->
+        {% for user in userList %}
         <div class="mail">
 
             <div class="left">
 
-                <h2>Who it's from</h2>
-
-                <p>What they want</p>
+                <h2>{{user[1]}} {{user[2]}}</h2>
+                <p>{{user[3]}}</p>
+                <form action="/UserDetails" method="POST">
+                <button type="submit" name ="userdeets" value="{{user[0]}}" id="userdeets">User Details</button>
+                </form>
 
             </div>
 
 
             <div class="right">
-
-                <button type="button" class="button" onclick="alert('Invite accepted!')">Accept</button>
-                <button type="button" class="button" onclick="alert('Invite rejected!')">Reject</button>
-
+                <form action="/approvalform" method="POST">
+                <input type="hidden" value={{user[0]}} name="user">
+                <button type="submit" name="status" value="1" class="button" >Accept</button>
+                <button type="submit" name="status" class="button" value="0" >Reject</button>
+               </form>
             </div>
 
         </div>
+        {% endfor %}
 
     </div>
+
+
+</main>
+</body>
+</html>
+
 
 
 </main>
