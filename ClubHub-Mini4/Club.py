@@ -7,7 +7,7 @@ class ClubCreationVerification:
     def valid_coordinator(user_id, coordinator_id):
 
         try: 
-
+    
             with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
                 cur = conn.cursor()
 
