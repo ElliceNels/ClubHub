@@ -89,7 +89,7 @@ class LoginVerification:
         
 
         if self.userIdExists(conn, User_id):
-            self.alert("User_id already exists")
+            self.alert.append("User_id already exists")
             return
         else:
             if self.usernameExists(conn, Username):

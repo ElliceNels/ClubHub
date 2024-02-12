@@ -25,6 +25,7 @@ body {
     font-family: "Fjalla One" ;
     font-size: 4.375rem;
     text-align: center;
+    margin-top: 7rem;
 }
 .fa-circle-nodes{
     color: #032539;
@@ -38,11 +39,16 @@ body {
 
 }
 .navigation-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width = 100%;
     background-color: #FA991C;
     padding: 1.25rem;
-    text-align: center;
     display: flex;
     justify-content: space-around;
+    z-index: 100;
     
 }
 .nav-link {
@@ -123,4 +129,10 @@ body {
     display: flex;
     justify-content: flex-end;
     margin-right: 1rem;
+}
+#join-club-button {
+    margin-left: 45.5%;
+    width: 6rem;
+    height: 2rem;
+    font-size: 1rem;
 }
