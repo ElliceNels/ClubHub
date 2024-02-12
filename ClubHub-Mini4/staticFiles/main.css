@@ -20,15 +20,20 @@
             justify-content: space-between;
         }
 
-        .navbar{
-            height: 7px;
-            padding: 25px;
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            padding: 10px;
             background-color: #D9D9D9;
-
             display: flex;
-            flex-direction: row;
             justify-content: space-around;
+            z-index: 100;
         }
+
+
 
         .navbar a{
             color: black;
@@ -49,12 +54,16 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+
         }
 
 
         .content{
             height: 100%;
             flex: 1;
+            margin-top: 50px; /* Adjust margin-top to match the height of the navbar */
+            padding: 35px;
+
         }
 
 

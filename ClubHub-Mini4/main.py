@@ -165,7 +165,9 @@ def Profile():
 @app.route('/Inbox')
 def Inbox():
     if user_session.isAdministrator():
-        return render_template('Admin.html')
+        AdminInfo = Admin()
+        userList = AdminInfo.getUserList(1, 0)
+        return render_template('Admin.html', userList=userList)
     else:
         return render_template('Inbox.html')
 
