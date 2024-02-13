@@ -127,7 +127,7 @@ def massApprovalFormRoute():
         status = int(request.form.get("status"))
         
         AdminManagement = Admin()
-        AdminManagement.massapproveOrReject(status)
+        AdminManagement.massapprove(status)
         return redirect(url_for('showAdmin'))
  
     

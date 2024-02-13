@@ -2,7 +2,7 @@ import sqlite3
 conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
 print('Database connected')
 cursor = conn.cursor()
-
+cursor.execute('PRAGMA foreign_keys = ON')
 ## tables
 cursor.execute('''CREATE TABLE IF NOT EXISTS CLUB_MEMBERSHIP (
     Membership_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,8 +12,8 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS CLUB_MEMBERSHIP (
     Is_approved INTEGER DEFAULT 0,
     Created DATETIME DEFAULT CURRENT_TIMESTAMP,
     Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id)
-    FOREIGN KEY (Club_id) REFERENCES CLUBS(Club_id)
+    FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id) ON DELETE CASCADE
+    FOREIGN KEY (Club_id) REFERENCES CLUBS(Club_id) ON DELETE CASCADE
 );''')
 conn.commit()
 print("Club membership table created successfullly")
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS EVENT_ATTENDEES (
     Is_approved INTEGER DEFAULT 0,
     Created DATETIME DEFAULT CURRENT_TIMESTAMP,
     Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id)
-    FOREIGN KEY (Event_id) REFERENCES EVENTS(Event_id)
+    FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id) ON DELETE CASCADE
+    FOREIGN KEY (Event_id) REFERENCES EVENTS(Event_id) ON DELETE CASCADE
 ); ''')
 conn.commit()
 print("Event attendees table created successfullly")
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS EVENTS(
   Club_id INTEGER,
   Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
   Created DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN Key(Club_id) REFERENCES CLUBS(Club_id)
+  FOREIGN Key(Club_id) REFERENCES CLUBS(Club_id) ON DELETE CASCADE
 ); ''')
 conn.commit()
 print("Events table created successfullly")
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS CLUBS (
     Is_valid INTEGER DEFAULT 1,
     Created DATETIME DEFAULT CURRENT_TIMESTAMP,
     Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (Coordinator_id) REFERENCES COORDINATORS(Coordinator_id)
+    FOREIGN KEY (Coordinator_id) REFERENCES COORDINATORS(Coordinator_id) ON DELETE CASCADE
 );''')
 conn.commit()
 print("Clubs table created successfullly")
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS COORDINATORS (
     User_id INTEGER,
     Created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     Updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id)
+    FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id) ON DELETE CASCADE
 );''')
 conn.commit()
 print("Coordinators table created successfullly")
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS USER_LOGIN(
   Created DATETIME DEFAULT CURRENT_TIMESTAMP,
   Is_pending INT(1) DEFAULT 1,
   Is_approved INT(1) DEFAULT 0,
-  CONSTRAINT UDFK FOREIGN KEY (User_id) REFERENCES USER_DETAILS (User_id)
+  CONSTRAINT UDFK FOREIGN KEY (User_id) REFERENCES USER_DETAILS (User_id) ON DELETE CASCADE
 );   ''')
 conn.commit()
 print("User login table created successfullly")

@@ -90,23 +90,26 @@ class LoginVerification:
 
         if self.userIdExists(conn, User_id):
             self.alert.append("User_id already exists")
+            conn.close()
             return
         else:
             if self.usernameExists(conn, Username):
                 self.alert.append('Username already exists')
+                conn.close()
                 return
             else:
                 if self.emailExists(conn, Email):
                     self.alert.append('Email Already exists')
+                    conn.close()
                     return 
                 else:
                     # if all details are new
                     self.insertLoginAndDetails(conn, User_id, Username, Phonenumber, Password,Firstname, Lastname, Email )
                     if Usertype == 'Coordinator':
                         self.insertCoordinator(conn, User_id)
+                    conn.close()
                     return True
         
-        conn.close()
 
     def Login(self, User_id, Username, Password):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
