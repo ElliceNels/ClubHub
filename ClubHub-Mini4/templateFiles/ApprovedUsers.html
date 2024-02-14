@@ -7,30 +7,33 @@
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<main>
-
-
-
-
-    
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
-    
+        <ul>
+            <a class = "discrete" href="/Admin">SignUp Requests</a>
+        </ul>
     </nav>
+
+    <!-- NAVBAR -->
+    <nav class = navbar>
+        <a href="/clubs_display">Clubs</a>
+        <a href="/EventMain">Events</a>
+        <a href="/Inbox">Inbox</a>
+        <a href="/Profile">Profile</a>
+    </nav>
+
+
+<main>
 
 
     <!-- MAIN STUFF -->
     <div class="content">
 
-    <!-- NAVBAR -->
-    <ul class = navbar>
-        <a href="/clubs_display">Clubs</a>
-        <a href="/EventMain">Events</a>
-        <a href="/Inbox">Inbox</a>
-    </ul>
 
         <!-- TITLE -->
-        <h1>Sign Up Requests</h1>
+        <h1>Approved Users</h1>
+        <br>
+
 
         <!-- MAIL -->
         {% for user in userList %}
@@ -46,9 +49,9 @@
 
             <div class="right">
                 <form action="/deletionform" method="POST">
-                    <input type="hidden" value={{user[0]}} name="user">
+                    <input type="hidden" value="{{ user[0] }}" name="user">
                     <button type="submit" name="status" value="0" class="button">Delete</button>
-                   </form>
+                </form>
             </div>
 
         </div>
@@ -61,8 +64,3 @@
 </body>
 </html>
 
-
-
-</main>
-</body>
-</html>

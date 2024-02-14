@@ -7,12 +7,6 @@
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<main>
-
-
-
-
-    
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
@@ -20,12 +14,9 @@
              <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
             <br>
              </form>
+            <a class = "discrete" href="/ApprovedUsers">Approved Users</a>
         </ul>
     </nav>
-
-
-    <!-- MAIN STUFF -->
-    <div class="content">
 
     <!-- NAVBAR -->
     <ul class = navbar>
@@ -35,8 +26,16 @@
         <a href="/Profile">Profile</a>
     </ul>
 
+<main>
+
+    <!-- MAIN STUFF -->
+    <div class="content">
+
+
+
         <!-- TITLE -->
         <h1>Sign Up Requests</h1>
+        <br>
 
         <!-- MAIL -->
         {% for user in userList %}

@@ -23,6 +23,8 @@ class LoginValidation:
         if str(userId).isdigit() == False:
             self.alert.append("User id must only contain numbers")
             return
+        if len(str(userId)) != 7:
+            self.alert.append("User id must be 7 numbers long")
         identifier = str(userId)[:3]
         print(f" the first three are: {identifier}")
         if identifier == "233" and usertype != "Student":
@@ -33,7 +35,7 @@ class LoginValidation:
             self.alert.append("Invalid Id")
 
     def passwordValidator(self, password1, password2):
-        regex = r'^(?=.*[$%&@!€])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
+        regex = r'^(?=.*[$%&@!€_-?/\£])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
         
         if password1 != password2:
             self.alert.append("Passwords do not match")
