@@ -39,16 +39,20 @@ class Admin:
         elif status == 0:
             try:
                 with conn:
-                    cursor.execute(''' DELETE FROM USER_LOGIN WHERE User_id = ? ''', (User_id,))
-                    cursor.execute(''' DELETE FROM USER_DETAILS WHERE User_id = ? ''', (User_id,))
+                    cursor.execute('PRAGMA foreign_keys = ON')
                     conn.commit()
+                    cursor.execute('''DELETE FROM USER_DETAILS WHERE User_id = ?''', (User_id,))
+                    conn.commit()
+                    print("Deleted from details table")
+            
             except Exception as e:
                    print(f"for the developer: Error: {e}")
-        cursor.close()
-        conn.close()
+            finally:
+                cursor.close()
+                conn.close()
         return
     
-    def massapproveOrReject(self, status):
+    def massapprove(self, status):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         print("db connected")
         cursor = conn.cursor()
@@ -61,8 +65,11 @@ class Admin:
                     conn.commit()
             except Exception as e:
                  print(f"for the developer: Error: {e}")
-        cursor.close()
-        conn.close()
+            finally:
+                cursor.close()
+                conn.close()
+                
+                
     def getUserDetails(self, User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
@@ -75,3 +82,4 @@ class Admin:
         cursor.close()
         conn.close()
         return userinformation
+
