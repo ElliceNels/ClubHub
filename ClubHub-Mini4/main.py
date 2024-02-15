@@ -34,28 +34,21 @@ def index():
 def loginValidationRoute():
 
     if request.method == "POST":
-        User_id = request.form.get("IDbar").strip()
         Username = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
-        password2 = request.form.get("password2bar").strip()
-
-        loginValidator = LoginValidation()
-        alerts = loginValidator.doPasswordsMatch(password1, password2)
-
-        if alerts == []:
-            loginVerifier = LoginVerification()
-            if loginVerifier.Login(User_id, Username, password1):
-                approvalStatus = loginVerifier.approvalStatus(User_id)
-                if approvalStatus == True:
-                    user_session.login(User_id)
-                    print(user_session.isAdministrator())
-                    return EventMain()
-                else:
-                    return render_template('postLogin.html', approvalmessage=approvalStatus)
+        loginVerifier = LoginVerification()
+        User_id = int(loginVerifier.getUseridFromUsername(Username))
+        if loginVerifier.Login(User_id, Username, password1):
+            approvalStatus = loginVerifier.approvalStatus(User_id)
+            if approvalStatus == True:
+                user_session.login(User_id)
+                print(user_session.isAdministrator())
+                return EventMain()
             else:
-                return render_template('login.html', warning=loginVerifier.alert)
+                return render_template('postLogin.html', approvalmessage=approvalStatus)
         else:
-            return render_template('login.html', warning=alerts)
+            return render_template('login.html', warning=loginVerifier.alert)
+
 
 
 

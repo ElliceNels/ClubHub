@@ -72,14 +72,13 @@
 }
 .formlayout{
     display: inline-block;
-    grid-area: 7
-    /2/10/5;
+    grid-area: 5/2/9/5;
     align-self: flex-end;
     justify-self: center;
     margin: 1.875rem;
 }
 #login{
-    grid-area: 4/2/5/5;
+    grid-area: 5/2/6/5;
     font-family: "Nobile";
     font-weight: 500;
     font-size: 6.25rem;
