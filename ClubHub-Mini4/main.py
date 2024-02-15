@@ -263,20 +263,23 @@ def CreateEvents():
 
         if user_session.isLoggedIn:
             user_id = user_session.getUser_id()
-            if user_session.isCoord():
-                club_id = Verification.CoordinatorClubId(user_id)
-                if club_id:
-                    event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
-                    event_date = event_datetime.date()
-                    event_time = event_datetime.time()
-                    register_events(EventTitle, Description, event_date, event_time, Venue, club_id)
-                    success_message="Event successfully created!!"
-                else:
-                    warning_message="You are not associated with any club!"
+            if user_session.isCoord:
+                try:
+                    Club_id = Verification.CoordinatorClubId(user_id)
+                    if Club_id:
+                        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+                        event_date = event_datetime.date()
+                        event_time = event_datetime.strftime("%H:%M")
+                        register_events(EventTitle, Description, event_date, event_time, Venue, Club_id)
+                        success_message="Event successfully created!!"
+                    else:
+                        warning_message="You are not associated with any club!"
+                except Exception as e:
+                    warning_message = f"Error occurred: {e}"        
             else:
                 warning_message="Only coordinators can create events."
-    else:
-        warning_message="Please fill out all fields!!"
+        else:
+            warning_message="Please fill out all fields!!"
     return render_template('CreateEvents.html', warning=warning_message, success_message=success_message)
 
   
