@@ -239,11 +239,11 @@ def CreateEvents():
         Time = request.form.get('Time').strip()
         Venue = request.form.get('Venue').strip()
 
-        session_check = Session()
+        
 
-        if session_check.isLoggedIn:
-            user_id = session_check.getUser_id()
-            if session_check.isCoord():
+        if user_session.isLoggedIn:
+            user_id = user_session.getUser_id()
+            if user_session.isCoord():
                 club_id = Verification.CoordinatorClubId(user_id)
                 if club_id:
                     event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
