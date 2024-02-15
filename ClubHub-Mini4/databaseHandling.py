@@ -1,5 +1,7 @@
 import sqlite3
-conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+from constants import DB_PATH
+
+conn = sqlite3.connect(DB_PATH)
 print('Database connected')
 cursor = conn.cursor()
 cursor.execute('PRAGMA foreign_keys = ON')
