@@ -1,0 +1,7 @@
+*.db
+*.DS_Store
+*.DS_Store?
+*.sqlite
+*.pyc
+*__pycache__/
+

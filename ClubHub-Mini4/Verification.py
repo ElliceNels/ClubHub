@@ -1,11 +1,11 @@
 import sqlite3
-
+from constants import DB_PATH
 
 
 class Verification:
 
     def isCoord(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
@@ -18,9 +18,8 @@ class Verification:
             print('Coordinator')
             return True
 
-
     def isAdmin(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ? AND Coordinator_id = 1''',
@@ -34,10 +33,8 @@ class Verification:
             print('Admin')
             return True
 
-
-
     def profileDetails(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         details = cursor.execute(
@@ -49,10 +46,9 @@ class Verification:
                 profileDetails.append(column)
         return profileDetails
 
-
-
     def UserIdToCoordId(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
+
         cursor = conn.cursor()
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
@@ -62,11 +58,9 @@ class Verification:
         conn.close()
         return coordId
 
-
-
     def coordinatingClub(cls, User_id):
         coordId = Verification.UserIdToCoordId(User_id)
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         coordinatingClubs = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
@@ -79,7 +73,7 @@ class Verification:
 
 
     def clubMemberships(User_id):   #needs to be tested when clubs are added
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         details = cursor.execute(
@@ -94,7 +88,20 @@ class Verification:
             return None
         else:
             return clubMembership
+        
 
+    def CoordinatorClubId(user_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
 
+        try:
+            cursor.execute('''SELECT Club_id FROM WHERE Coordinator_id = ?''', (user_id,))
+            club_id = cursor.fetchone()
+            if club_id:
+                return club_id
+            else:
+                return "Not associated with any clubs"
+        finally:
+            conn.close()
 
 

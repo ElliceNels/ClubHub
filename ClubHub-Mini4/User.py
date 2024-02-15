@@ -1,8 +1,9 @@
+from constants import DB_PATH
 import sqlite3
 class User:
     
     def updateUserInformation(self, table, column, newvalue, user_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         
         try:
