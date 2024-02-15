@@ -1,3 +1,8 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+*.db
+*.DS_Store
+*.DS_Store?
+*.sqlite
+*.pyc

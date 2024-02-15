@@ -2,7 +2,6 @@ import sqlite3
 from constants import DB_PATH
 
 
-
 class Verification:
 
     def isCoord(User_id):
@@ -19,7 +18,6 @@ class Verification:
             print('Coordinator')
             return True
 
-
     def isAdmin(User_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -35,8 +33,6 @@ class Verification:
             print('Admin')
             return True
 
-
-
     def profileDetails(User_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -50,10 +46,9 @@ class Verification:
                 profileDetails.append(column)
         return profileDetails
 
-
-
     def UserIdToCoordId(User_id):
         conn = sqlite3.connect(DB_PATH)
+
         cursor = conn.cursor()
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
@@ -62,8 +57,6 @@ class Verification:
             coordId = row
         conn.close()
         return coordId
-
-
 
     def coordinatingClub(cls, User_id):
         coordId = Verification.UserIdToCoordId(User_id)
@@ -110,7 +103,5 @@ class Verification:
                 return "Not associated with any clubs"
         finally:
             conn.close()
-
-
 
 

@@ -10,7 +10,7 @@ from Admin import Admin
 from EventsRegister import register_events
 from Club import ClubCreationVerification
 from Coordinator import Coordinator
-
+from Inbox import Inbox
 from User import User
 from constants import DB_PATH
 
@@ -118,6 +118,15 @@ def approvalFormRoute():
         AdminManagement.individualapproveOrReject(User_id, status)
         return redirect(url_for('showAdmin'))
 
+@app.route('/clubjoinform', methods=["POST"])
+def clubJoinFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        Inboxinfo = Inbox()
+        Inboxinfo.individualapproveOrReject(User_id, status)
+        return redirect(url_for('Inboxs'))
+
 @app.route('/deletionform', methods=["POST"])
 def deletionFormRoute():
     if request.method == "POST":
@@ -135,8 +144,18 @@ def massApprovalFormRoute():
         AdminManagement = Admin()
         AdminManagement.massapprove(status)
         return redirect(url_for('showAdmin'))
- 
-    
+
+
+@app.route('/clubapprovalform', methods=["POST"])
+def clubApprovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+
+        Inboxinfo = Inbox()
+        Inboxinfo.massapprove(status)
+        return redirect(url_for('Inboxs'))
+
+
 @app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
     warning = None
@@ -169,13 +188,15 @@ def Profile():
         return render_template('ProfileStud.html', details=details, clubMembership=clubMembership)
 
 @app.route('/Inbox')
-def Inbox():
-    if user_session.isAdministrator():
+def Inboxs():
+    if not user_session.isAdministrator():
         AdminInfo = Admin()
         userList = AdminInfo.getUserList(1, 0)
         return render_template('Admin.html', userList=userList)
-    else:
-        return render_template('Inbox.html')
+    elif user_session.isCoordinator():
+        Coordinfo = Inbox()
+        clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
+        return render_template('Inbox.html', clubWaitingList=clubWaitingList)
 
 
 
