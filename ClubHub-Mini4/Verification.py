@@ -1,11 +1,12 @@
 import sqlite3
+from constants import DB_PATH
 
 
 
 class Verification:
 
     def isCoord(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
@@ -20,7 +21,7 @@ class Verification:
 
 
     def isAdmin(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ? AND Coordinator_id = 1''',
@@ -37,7 +38,7 @@ class Verification:
 
 
     def profileDetails(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         details = cursor.execute(
@@ -52,7 +53,7 @@ class Verification:
 
 
     def UserIdToCoordId(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
@@ -66,7 +67,7 @@ class Verification:
 
     def coordinatingClub(cls, User_id):
         coordId = Verification.UserIdToCoordId(User_id)
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         coordinatingClubs = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
@@ -79,7 +80,7 @@ class Verification:
 
 
     def clubMemberships(User_id):   #needs to be tested when clubs are added
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         details = cursor.execute(
@@ -97,7 +98,7 @@ class Verification:
         
 
     def CoordinatorClubId(user_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         try:

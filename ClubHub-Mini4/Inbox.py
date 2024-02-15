@@ -1,4 +1,5 @@
 import sqlite3
+from constants import DB_PATH
 
 
 
@@ -6,7 +7,7 @@ class Inbox:
 
 
     def CoordIDtoClubID(CoordId):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
 
@@ -18,7 +19,7 @@ class Inbox:
 
 
     def getUserList(self, pendingstatus, approvedstatus):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         cursor.execute(
