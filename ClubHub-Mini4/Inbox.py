@@ -11,6 +11,17 @@ class Inbox:
     def __init__(self):
         self.userList = []
 
+    def isMemberOfClub(User_id):
+        conn = sqlite3.connect('database/Clubhub.db')
+        cursor = conn.cursor()
+
+        cursor.execute('''SELECT * FROM CLUB_MEMBERSHIP WHERE User_id = ?''', (User_id,))
+        if cursor.fetchall():
+            return True
+        else:
+            return False
+
+
     def CoordIDtoClubID(CoordId):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
@@ -22,6 +33,31 @@ class Inbox:
         return iD
 
     def clubApprovalList(self, User_id, pendingstatus):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+
+
+        # cursor.execute('''INSERT INTO CLUB_MEMBERSHIP (User_id, Club_id) VALUES(?,?)''', (4121234, 3))
+        # conn.commit()
+        CoordID = Verification.UserIdToCoordId(User_id)
+        Club_id = Inbox.CoordIDtoClubID(CoordID)
+
+        cursor.execute(
+            ''' SELECT cm.User_id, Firstname, Lastname FROM CLUB_MEMBERSHIP cm INNER JOIN USER_DETAILS ud ON cm.User_id = ud.User_id WHERE cm.Is_pending = ? AND cm.Club_id = ?''',
+            (pendingstatus, Club_id))
+        self.waitingList = [list(row) for row in cursor.fetchall()]
+
+        for user in self.waitingList:
+            cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
+            user.append(user[1] + " would like to join your club")
+
+        cursor.close()
+        conn.close()
+
+        return self.waitingList
+
+
+    def eventApprovalList(self, User_id, pendingstatus):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
