@@ -1,5 +1,6 @@
 import sqlite3
 from itertools import chain
+from constants import DB_PATH
 
 class Admin:
     def __init__(self):

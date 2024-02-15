@@ -1,8 +1,6 @@
 import sqlite3
 from constants import DB_PATH
 
-import self as self
-
 from Verification import Verification
 
 
@@ -13,7 +11,7 @@ class Inbox:
         self.waitingList = []
 
     def isMemberOfClub(self, User_id):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         cursor.execute('''SELECT * FROM CLUB_MEMBERSHIP WHERE User_id = ?''', (User_id,))
@@ -33,7 +31,7 @@ class Inbox:
         return Events
 
     def CoordIDtoClubID(self, CoordId):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         ClubId = cursor.execute('''SELECT Club_id FROM CLUBS WHERE Coordinator_id = ?''', (CoordId,))
@@ -43,7 +41,7 @@ class Inbox:
         return iD
 
     def clubApprovalList(self,User_id, pendingstatus):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         CoordID = Verification.UserIdToCoordId(User_id)
@@ -135,6 +133,3 @@ class Inbox:
             finally:
                 cursor.close()
                 conn.close()
-
-newInbox = Inbox()
-newInbox.eventApprovalList(4121234, 1)
