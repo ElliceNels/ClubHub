@@ -27,7 +27,7 @@
 
 
 <div class="form-container">
-    <form method="post" action="/CreateEvents" id="eventForm">
+    <form method="POST" action="/CreateEvents" id="eventForm">
 <div class="input-wrapper">
     <div class="input-container">
     <label for="EventTitle"> Event title:</label>
@@ -63,7 +63,15 @@
 </div>
 
 
+{% if warning %}
+    <p class="warning">{{ warning }}</p>
+{% endif %}
+<!--this displays the warning messages which i created in main-->
 
+{% if success_message %}
+        <p class="success">{{ success_message }}</p>
+{% endif %}
+<!--this displays the success message then when the user created the event-->
 
 </body>
 </html>

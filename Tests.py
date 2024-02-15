@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
 #Execute a query to retrieve data
 cursor.execute('''SELECT Password, User_id FROM USER_LOGIN WHERE Login_id BETWEEN ? AND ?''', (1, 4))
