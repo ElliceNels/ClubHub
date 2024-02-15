@@ -1,7 +1,6 @@
 import sqlite3
 
 
-
 class Verification:
 
     def isCoord(User_id):
@@ -18,7 +17,6 @@ class Verification:
             print('Coordinator')
             return True
 
-
     def isAdmin(User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
@@ -34,8 +32,6 @@ class Verification:
             print('Admin')
             return True
 
-
-
     def profileDetails(User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
@@ -49,8 +45,6 @@ class Verification:
                 profileDetails.append(column)
         return profileDetails
 
-
-
     def UserIdToCoordId(User_id):
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
@@ -61,8 +55,6 @@ class Verification:
             coordId = row
         conn.close()
         return coordId
-
-
 
     def coordinatingClub(cls, User_id):
         coordId = Verification.UserIdToCoordId(User_id)
@@ -77,8 +69,7 @@ class Verification:
             for club in coordinatingClub:
                 return club
 
-
-    def clubMemberships(User_id):   #needs to be tested when clubs are added
+    def clubMemberships(User_id):  # needs to be tested when clubs are added
         conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
         cursor = conn.cursor()
 
@@ -94,7 +85,3 @@ class Verification:
             return None
         else:
             return clubMembership
-
-
-
-

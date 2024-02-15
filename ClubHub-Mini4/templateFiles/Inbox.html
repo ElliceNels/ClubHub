@@ -16,7 +16,7 @@
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
-            <form action="/massapprovalform" method="POST">
+            <form action="/clubapprovalform" method="POST">
              <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
             <br>
              </form>
@@ -39,7 +39,7 @@
         <h1>Inbox</h1>
 
         <!-- MAIL -->
-        {% for user in userList %}
+        {% for user in clubWaitingList %}
         <div class="mail">
 
             <div class="left">
@@ -54,7 +54,7 @@
 
 
             <div class="right">
-                <form action="/approvalform" method="POST">
+                <form action="/clubjoinform" method="POST">
                 <input type="hidden" value={{user[0]}} name="user">
                 <button type="submit" name="status" value="1" class="button" >Accept</button>
                 <button type="submit" name="status" class="button" value="0" >Reject</button>
