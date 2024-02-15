@@ -1,7 +1,7 @@
 import sqlite3
 from Verification import Verification
-
-# conn = sqlite3.connect('ClubHub-Mini4\database\Clubhub.db')
+from constants import DB_PATH
+# conn = sqlite3.connect(DB_PATH)
 # cur = conn.cursor()
 
 # club_data = cur.execute('''SELECT Club_name,Coordinator_id, Description FROM CLUBS ''')
@@ -32,7 +32,7 @@ class Coordinator:
 
         try:
 
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+            with sqlite3.connect(DB_PATH) as conn:
                 cur = conn.cursor()
 
                 cur.execute('''SELECT Club_name, Coordinator_id, Description, Is_valid FROM CLUBS ''')
@@ -58,7 +58,7 @@ class Coordinator:
     def coord_name_getter(coord_id):
         try:
 
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+            with sqlite3.connect(DB_PATH) as conn:
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT User_id FROM COORDINATORS WHERE Coordinator_id = ? ''', (coord_id,))
@@ -78,7 +78,7 @@ class Coordinator:
     def club_getter(club_name):
         try:
 
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+            with sqlite3.connect(DB_PATH) as conn:
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Club_id FROM CLUBS WHERE Club_name = ? ''', (club_name,))
@@ -95,7 +95,7 @@ class Coordinator:
         try:
 
             club_id = Coordinator.club_getter(club_name)
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+            with sqlite3.connect(DB_PATH) as conn:
                 cur = conn.cursor()
 
                 cur.execute(''' INSERT INTO CLUB_MEMBERSHIP (User_id, Club_id) VALUES ( ?, ? )''', (user_id, club_id,))
@@ -109,7 +109,7 @@ class Coordinator:
         try: 
             
             club_id = Coordinator.club_getter(club_name)
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+            with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Club_id FROM CLUB_MEMBERSHIP WHERE User_id = ? ''', (user_id,))
@@ -126,5 +126,3 @@ class Coordinator:
 
         except sqlite3.Error as e:
             print("error: ", e)
-
-Coordinator.check_club_requests(233001,'Archery')

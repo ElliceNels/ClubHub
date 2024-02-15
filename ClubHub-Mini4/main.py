@@ -12,6 +12,7 @@ from Club import ClubCreationVerification
 from Coordinator import Coordinator
 
 from User import User
+from constants import DB_PATH
 
 
 # Provide template folder name
@@ -210,7 +211,7 @@ def submit_form():
     print(email)
     print(phoneNum)
 
-    conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute('UPDATE USER_DETAILS SET Firstname = ?, Lastname = ?, Contact_number = ?, Email = ? WHERE User_id = ?', (firstname, lastname, phoneNum, email, User_id))

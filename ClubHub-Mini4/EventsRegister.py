@@ -1,7 +1,9 @@
+from constants import DB_PATH
 import sqlite3
 
+
 def register_events(EventTitle , Description , event_date, event_time, Venue ,Club_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
 
         try:
                 cursor = conn.cursor() 

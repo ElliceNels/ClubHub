@@ -1,4 +1,6 @@
 import re
+from constants import DB_PATH
+
 
 class LoginValidation:
     def __init__(self):
