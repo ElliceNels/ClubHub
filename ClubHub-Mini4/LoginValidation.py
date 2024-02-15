@@ -23,6 +23,8 @@ class LoginValidation:
         if str(userId).isdigit() == False:
             self.alert.append("User id must only contain numbers")
             return
+        if len(str(userId)) != 7:
+            self.alert.append("User id must be 7 numbers long")
         identifier = str(userId)[:3]
         print(f" the first three are: {identifier}")
         if identifier == "233" and usertype != "Student":
