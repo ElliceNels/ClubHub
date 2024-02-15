@@ -75,4 +75,35 @@ class Coordinator:
         except sqlite3.Error as e:
             print('error: ', e)
 
+    def club_getter(club_name):
+        try:
 
+            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+                cur = conn.cursor()
+
+                cur.execute(''' SELECT Club_id FROM CLUBS WHERE Club_name = ? ''', (club_name,))
+                club_id = cur.fetchone()
+                print(club_id[0])
+
+                return club_id[0]
+
+        except sqlite3.Error as e:
+            print('error: ', e)
+
+
+    def request_club_membership(user_id, club_name):
+        try:
+
+            club_id = Coordinator.club_getter(club_name)
+            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+                cur = conn.cursor()
+
+                cur.execute(''' INSERT INTO CLUB_MEMBERSHIP (User_id, Club_id) VALUES ( ?, ? )''', (user_id, club_id,))
+                conn.commit()
+                print("data entered successfully")
+
+        except sqlite3.Error as e:
+            print("error: ", e)
+
+
+Coordinator.request_club_membership(233001,'Archery')
