@@ -132,6 +132,17 @@ class LoginVerification:
             self.alert.append('no account with this User id exists')
         conn.close()
         return
+    
+    def getUseridFromUsername(self, Username):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+        cursor.execute(''' SELECT User_id FROM USER_LOGIN WHERE Username = ? ''', (Username, ))
+        User_idList = list(chain.from_iterable(cursor.fetchall()))
+        User_id = int(User_idList[0])
+        cursor.close()
+        conn.close()
+        return User_id
+    
     def approvalStatus(self, User_id):
           conn = sqlite3.connect(DB_PATH)
           cursor = conn.cursor()
