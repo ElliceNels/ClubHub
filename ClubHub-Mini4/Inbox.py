@@ -1,4 +1,5 @@
 import sqlite3
+from constants import DB_PATH
 
 import self as self
 
@@ -21,8 +22,10 @@ class Inbox:
         else:
             return False
 
-    def ClubIDtoEventID(self, ClubId):
-        conn = sqlite3.connect('database/Clubhub.db')
+
+    def CoordIDtoClubID(CoordId):
+        conn = sqlite3.connect(DB_PATH)
+        
         cursor = conn.cursor()
         EventId = cursor.execute('''SELECT Event_id FROM EVENTS WHERE Club_id = ?''', (ClubId,))
 
@@ -60,8 +63,10 @@ class Inbox:
 
         return self.waitingList
 
-    def eventApprovalList(self,User_id, pendingstatus):
-        conn = sqlite3.connect('database/Clubhub.db')
+
+    def getUserList(self, pendingstatus, approvedstatus):
+        conn = sqlite3.connect(DB_PATH)
+
         cursor = conn.cursor()
 
         # cursor.execute('''INSERT INTO CLUB_MEMBERSHIP (User_id, Club_id) VALUES(?,?)''', (4121234, 3))
@@ -86,7 +91,7 @@ class Inbox:
 
 
     def individualapproveOrReject(self, User_id, status):
-        conn = sqlite3.connect('database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         # if user has been approved
         if status == 1:
@@ -114,7 +119,7 @@ class Inbox:
         return
 
     def massapprove(self, status):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         if status == 3:

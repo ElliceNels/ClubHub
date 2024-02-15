@@ -1,5 +1,9 @@
 import sqlite3
 from Verification import Verification
+import os
+from constants import DB_PATH
+
+
 
 class ClubCreationVerification:
 
@@ -8,7 +12,7 @@ class ClubCreationVerification:
 
         try: 
     
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+            with sqlite3.connect(DB_PATH) as conn:
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ? ''', (user_id,))
@@ -33,7 +37,7 @@ class ClubCreationVerification:
 
             coordinator_id = Verification.UserIdToCoordId(user_id)
 
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+            with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
 
                 if ClubCreationVerification.valid_coordinator(user_id, coordinator_id):
@@ -56,7 +60,7 @@ class ClubCreationVerification:
 
             coordinator_id = Verification.UserIdToCoordId(user_id)
 
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+            with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Coordinator_id, Is_valid FROM CLUBS WHERE Coordinator_id = ? ''', (coordinator_id,))
@@ -73,5 +77,5 @@ class ClubCreationVerification:
 
         except sqlite3.Error as e:
             print("error: ", e)
-
+    
 # ClubCreationVerification.existing_club(412004)
