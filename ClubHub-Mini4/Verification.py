@@ -46,7 +46,7 @@ class Verification:
         return profileDetails
 
     def UserIdToCoordId(User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect('database/Clubhub.db')
         cursor = conn.cursor()
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
