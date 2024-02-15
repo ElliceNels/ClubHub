@@ -60,13 +60,18 @@ def loginValidationRoute():
 
 
 
-@app.route('/clubs_display')
+@app.route('/clubs_display', methods=["GET","POST"])
 def clubs_display():
     #checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
 
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     else:
+        if request.method == "POST":
+            club_name = request.form.get("club_name")
+            user_id = user_session.getUser_id()
+            if not Coordinator.check_club_requests(user_id, club_name):
+                Coordinator.request_club_membership(user_id, club_name)
 
         return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data())
     
@@ -227,8 +232,11 @@ def validate_event_form(EventTitle,Description, Date, Time, Venue):
         return False
     return True
 
-@app.route("/CreateEvents" , methods=['POST'])
+@app.route("/CreateEvents" , methods=['GET', 'POST'])
 def CreateEvents():
+    warning_message = None
+    success_message = None
+    
     if request.method == 'POST':
         EventTitle = request.form.get('EventTitle').strip()
         Description = request.form.get('Description').strip()
@@ -236,17 +244,27 @@ def CreateEvents():
         Time = request.form.get('Time').strip()
         Venue = request.form.get('Venue').strip()
 
+        
 
-    if validate_event_form([EventTitle , Description , Date , Time , Venue]):
-        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
-        event_date = event_datetime.date()
-        event_time = event_datetime.time()
-        register_events(EventTitle, Description, event_date, event_time, Venue)
-        return render_template('CreateEvents.html', EventTitle=EventTitle)
+        if user_session.isLoggedIn:
+            user_id = user_session.getUser_id()
+            if user_session.isCoord():
+                club_id = Verification.CoordinatorClubId(user_id)
+                if club_id:
+                    event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+                    event_date = event_datetime.date()
+                    event_time = event_datetime.time()
+                    register_events(EventTitle, Description, event_date, event_time, Venue, club_id)
+                    success_message="Event successfully created!!"
+                else:
+                    warning_message="You are not associated with any club!"
+            else:
+                warning_message="Only coordinators can create events."
     else:
-        return render_template('CreateEvents.html', warning="Please fill out all fields!!")
+        warning_message="Please fill out all fields!!"
+    return render_template('CreateEvents.html', warning=warning_message, success_message=success_message)
 
-    return render_template('CreateEvents.html')
+  
 
 
 @app.route("/EventMain")

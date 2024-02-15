@@ -94,6 +94,21 @@ class Verification:
             return None
         else:
             return clubMembership
+        
+
+    def CoordinatorClubId(user_id):
+        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute('''SELECT Club_id FROM WHERE Coordinator_id = ?''', (user_id,))
+            club_id = cursor.fetchone()
+            if club_id:
+                return club_id
+            else:
+                return "Not associated with any clubs"
+        finally:
+            conn.close()
 
 
 
