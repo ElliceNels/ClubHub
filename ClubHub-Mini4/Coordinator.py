@@ -108,6 +108,7 @@ class Coordinator:
     def check_club_requests(user_id, club_name):
         try: 
             
+            club_requests = []
             club_id = Coordinator.club_getter(club_name)
             with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
                 cur = conn.cursor()
@@ -115,7 +116,7 @@ class Coordinator:
                 cur.execute(''' SELECT Club_id FROM CLUB_MEMBERSHIP WHERE User_id = ? ''', (user_id,))
                 club_requests = cur.fetchone()
 
-                if len(club_requests) >=3 or (club_requests[0] == club_id):
+                if club_requests is not None and (len(club_requests) >=3 or (club_requests[0] == club_id)):
                     print('true')
                     return True
                 
@@ -127,4 +128,17 @@ class Coordinator:
         except sqlite3.Error as e:
             print("error: ", e)
 
-Coordinator.check_club_requests(233001,'Archery')
+    
+    def display_members(club):
+        club_id = Coordinator.club_getter(club)
+
+        try:
+            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+                cur = conn.cursor()
+            cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? ''', (club_id,))
+            members = cur.fetchall()
+            print(members)
+
+
+        except sqlite3.Error as e:
+            print("error: ", e )

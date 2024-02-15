@@ -73,5 +73,5 @@ class ClubCreationVerification:
 
         except sqlite3.Error as e:
             print("error: ", e)
-
+    
 # ClubCreationVerification.existing_club(412004)
