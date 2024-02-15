@@ -1,6 +1,6 @@
 import sqlite3
 from Verification import Verification
-<<<<<<< HEAD
+
 from constants import DB_PATH
 # conn = sqlite3.connect(DB_PATH)
 # cur = conn.cursor()
@@ -21,8 +21,6 @@ from constants import DB_PATH
 # cur.close()
 # conn.close()
 
-=======
->>>>>>> 4f775be41c70524f3d0ecdfb9026947e892defeb
 
 class Coordinator:
 
@@ -130,8 +128,6 @@ class Coordinator:
 
         except sqlite3.Error as e:
             print("error: ", e)
-<<<<<<< HEAD
-=======
 
     
     def display_members(club):
@@ -150,5 +146,4 @@ class Coordinator:
         except sqlite3.Error as e:
             print("error: ", e )
 
-        
->>>>>>> 4f775be41c70524f3d0ecdfb9026947e892defeb
+
