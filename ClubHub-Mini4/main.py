@@ -60,13 +60,18 @@ def loginValidationRoute():
 
 
 
-@app.route('/clubs_display')
+@app.route('/clubs_display', methods=["GET","POST"])
 def clubs_display():
     #checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
 
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     else:
+        if request.method == "POST":
+            club_name = request.form.get("club_name")
+            user_id = user_session.getUser_id()
+            if not Coordinator.check_club_requests(user_id, club_name):
+                Coordinator.request_club_membership(user_id, club_name)
 
         return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data())
     
