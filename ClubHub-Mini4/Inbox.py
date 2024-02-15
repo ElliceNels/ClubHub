@@ -30,15 +30,13 @@ class Inbox:
         Events = EventId.fetchall()
         return Events
 
-    def CoordIDtoClubID(self, CoordId):
+    def CoordIDtoClubID(CoordId):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         ClubId = cursor.execute('''SELECT Club_id FROM CLUBS WHERE Coordinator_id = ?''', (CoordId,))
         id = ClubId.fetchone()
-        for iD in id:
-            print('CoordId is', CoordId, 'and clubId is', iD)
-        return iD
+        return id
 
     def clubApprovalList(self,User_id, pendingstatus):
         conn = sqlite3.connect(DB_PATH)
