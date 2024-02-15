@@ -39,7 +39,11 @@
             <p>{{club[1]}}</p>
         </div>
         <!-- join club button -->
-        <button class="button" id="join-club-button" onclick="">Join club</button>
+        <!-- <button class="button" id="join-club-button" onclick="">Join club</button> -->
+        <form method="post" action="">
+            <input type="hidden" name="club_name" value="{{club[0]}}">
+            <button type="submit" class="button" id="join-club-button">Join Club</button>
+        </form>
         {% endfor %}
     </div>
     <br>

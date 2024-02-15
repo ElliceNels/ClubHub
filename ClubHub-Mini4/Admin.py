@@ -6,7 +6,7 @@ class Admin:
         self.userList = []
         
     def getUserList(self, pendingstatus, approvedstatus):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         print("db connected")
         cursor.execute(''' SELECT User_id, Firstname, Lastname FROM USER_DETAILS WHERE Is_pending = ? AND Is_approved = ? AND User_id != ?''', (pendingstatus, approvedstatus, 4121234))
@@ -24,7 +24,7 @@ class Admin:
         return self.userList
 
     def individualapproveOrReject(self, User_id, status):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         print("db connected")
         cursor = conn.cursor()
         # if user has been approved
@@ -53,7 +53,7 @@ class Admin:
         return
     
     def massapprove(self, status):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         print("db connected")
         cursor = conn.cursor()
         
@@ -71,7 +71,7 @@ class Admin:
                 
                 
     def getUserDetails(self, User_id):
-        conn = sqlite3.connect('ClubHub-Mini4/database/Clubhub.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         cursor.execute('''SELECT ud.user_id, ud.firstname, ud.lastname, ul.username, ud.email,contact_number
         FROM USER_DETAILS as ud
