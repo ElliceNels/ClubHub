@@ -38,23 +38,26 @@ class Inbox:
         id = ClubId.fetchone()
         return id
 
-    # def clubApprovalList(self,User_id, pendingstatus):
-    #     conn = sqlite3.connect(DB_PATH)
-    #     cursor = conn.cursor()
-    #
-    #     CoordID = Verification.UserIdToCoordId(User_id)
-    #     Club_id = Inbox.CoordIDtoClubID(CoordID)
-    #
-    #     cursor.execute(''' SELECT cm.User_id, Firstname, Lastname FROM CLUB_MEMBERSHIP cm INNER JOIN USER_DETAILS ud ON cm.User_id = ud.User_id WHERE cm.Is_pending = ? AND cm.Club_id = ?''',
-    #         (pendingstatus, Club_id))
-    #     self.waitingList = [list(row) for row in cursor.fetchall()]
-    #
-    #     for user in self.waitingList:
-    #         cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
-    #         user.append(user[1] + " would like to join your club")
-    #
-    #     cursor.close()
-    #     conn.close()
+    def clubApprovalList(self, User_id, pendingstatus):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        CoordID = Verification.UserIdToCoordId(User_id)
+        club_id = Inbox.CoordIDtoClubID(CoordID)
+        for Club_id in club_id:
+            print('club id is' , Club_id)
+
+            code = cursor.execute(''' SELECT cm.User_id, Firstname, Lastname FROM CLUB_MEMBERSHIP cm INNER JOIN USER_DETAILS ud ON cm.User_id = ud.User_id WHERE cm.Is_pending = ? AND cm.Club_id = ?''',
+                (pendingstatus, Club_id))
+            print(code)
+            self.waitingList = [list(row) for row in code.fetchall()]
+
+        for user in self.waitingList:
+            cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
+            user.append(user[1] + " would like to join your club")
+
+        cursor.close()
+        conn.close()
 
         return self.waitingList
 

@@ -102,6 +102,18 @@ def showApprovedUsers():
     userList = AdminInfo.getUserList(0,1)
     return render_template('ApprovedUsers.html',userList=userList)
 
+
+@app.route('/EventRequests')
+def eventRequests():
+    if user_session.isAdministrator():
+        AdminInfo = Admin()
+        userList = AdminInfo.getUserList(1, 0)
+        return render_template('Admin.html', userList=userList)
+    elif user_session.isCoordinator():
+        Coordinfo = Inbox()
+        clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
+        return render_template('InboxEvents.html', clubWaitingList=clubWaitingList)
+
 @app.route('/approvalform', methods=["POST"])
 def approvalFormRoute():
     if request.method == "POST":
@@ -118,7 +130,7 @@ def clubJoinFormRoute():
         User_id = int(request.form.get("user"))
         Inboxinfo = Inbox()
         Inboxinfo.individualapproveOrReject(User_id, status)
-        return redirect(url_for('Inboxs'))
+        return redirect(url_for('InboxRoute'))
 
 @app.route('/deletionform', methods=["POST"])
 def deletionFormRoute():
@@ -146,7 +158,7 @@ def clubApprovalFormRoute():
 
         Inboxinfo = Inbox()
         Inboxinfo.massapprove(status)
-        return redirect(url_for('Inboxs'))
+        return redirect(url_for('InboxRoute'))
 
 
 @app.route('/create_club', methods=('GET', 'POST'))
@@ -188,8 +200,8 @@ def InboxRoute():
         return render_template('Admin.html', userList=userList)
     elif user_session.isCoordinator():
         Coordinfo = Inbox()
-        #clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
-        return render_template('Inbox.html')#, clubWaitingList=clubWaitingList)
+        clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
+        return render_template('Inbox.html', clubWaitingList=clubWaitingList)
 
 
 

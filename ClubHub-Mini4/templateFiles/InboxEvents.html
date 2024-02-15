@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ClubHub</title>
+    <title>SignUpRequests</title>
 
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
@@ -20,7 +20,7 @@
              <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
             <br>
              </form>
-            <a class = "discrete" href="/EventRequests">Event Requests</a>
+            <a class = "discrete" href="/Inbox">Club Requests</a>
         </ul>
     </nav>
 
@@ -37,7 +37,7 @@
     </ul>
 
         <!-- TITLE -->
-        <h1>Club Requests</h1>
+        <h1>Event Requests</h1>
 
         <!-- MAIL -->
         {% for user in clubWaitingList %}
