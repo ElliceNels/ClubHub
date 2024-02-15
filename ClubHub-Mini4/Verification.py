@@ -95,7 +95,7 @@ class Verification:
         cursor = conn.cursor()
 
         try:
-            cursor.execute('''SELECT Club_id FROM WHERE Coordinator_id = ?''', (user_id,))
+            cursor.execute('''SELECT Club_id FROM CLUBS WHERE Coordinator_id = ?''', (user_id,))
             club_id = cursor.fetchone()
             if club_id:
                 return club_id
