@@ -181,15 +181,15 @@ def Profile():
         return render_template('ProfileStud.html', details=details, clubMembership=clubMembership)
 
 @app.route('/Inbox')
-def Inboxs():
-    if not user_session.isAdministrator():
+def InboxRoute():
+    if user_session.isAdministrator():
         AdminInfo = Admin()
         userList = AdminInfo.getUserList(1, 0)
         return render_template('Admin.html', userList=userList)
     elif user_session.isCoordinator():
         Coordinfo = Inbox()
-        clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
-        return render_template('Inbox.html', clubWaitingList=clubWaitingList)
+        #clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
+        return render_template('Inbox.html')#, clubWaitingList=clubWaitingList)
 
 
 
