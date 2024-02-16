@@ -74,6 +74,28 @@ class Inbox:
         else:
             return self.waitingList
 
+    def membersList(self, User_id, pendingstatus):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        CoordID = Verification.UserIdToCoordId(User_id)
+        club_id = self.CoordIDtoClubID(CoordID)
+        print('club id is', club_id)
+
+        code = cursor.execute(
+            ''' SELECT cm.User_id, Firstname, Lastname FROM CLUB_MEMBERSHIP cm INNER JOIN USER_DETAILS ud ON cm.User_id = ud.User_id WHERE cm.Is_pending = ? AND cm.Club_id = ?''',
+            (pendingstatus, club_id))
+        print(code)
+        self.waitingList = [list(row) for row in code.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        if not self.waitingList:
+            return ''
+        else:
+            return self.waitingList
+
     def getEventWaitList(self, User_id, pendingstatus):
         conn = sqlite3.connect(DB_PATH)
 
@@ -205,6 +227,8 @@ class Inbox:
             finally:
                 cursor.close()
                 conn.close()
+
+
 
 
 NNN = Inbox()

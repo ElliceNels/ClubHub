@@ -256,6 +256,12 @@ def InboxRoute():
         clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
         return render_template('Inbox.html', clubWaitingList=clubWaitingList)
 
+@app.route('/ClubMembers')
+def clubMembers():
+        Coordinfo = Inbox()
+        membersList = Coordinfo.membersList(user_session.getUser_id(), 0)
+        return render_template('ClubMembers.html', membersList=membersList)
+
 
 @app.route('/clubjoinform', methods=["POST"])
 def clubJoinFormRoute():
@@ -295,6 +301,15 @@ def eventApprovalFormRoute():
         Inboxinfo = Inbox()
         Inboxinfo.massapproveE(status)
         return redirect(url_for('InboxRoute'))
+
+@app.route('/memberremovalform', methods=["POST"])
+def memberRemovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        InboxInfo = Inbox()
+        InboxInfo.individualapproveOrReject(User_id, status)
+        return redirect(url_for('clubMembers'))
 
 
 ##############################################################################Events###################################################################################
