@@ -16,7 +16,7 @@
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
-            <form action="/clubapprovalform" method="POST">
+            <form action="/eventapprovalform" method="POST">
              <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
             <br>
              </form>
@@ -47,7 +47,7 @@
 
                 <h2>{{user[1]}} {{user[2]}}</h2>
                 <p>{{user[3]}}</p>
-                <form action="/UserDetails" method="POST">
+                <form action="/UserDeets" method="POST">
                 <button type="submit" name ="userdeets" value="{{user[0]}}" id="userdeets">User Details</button>
                 </form>
 
@@ -55,7 +55,7 @@
 
 
             <div class="right">
-                <form action="/clubjoinform" method="POST">
+                <form action="/eventjoinform" method="POST">
                 <input type="hidden" value={{user[0]}} name="user">
                 <button type="submit" name="status" value="1" class="button" >Accept</button>
                 <button type="submit" name="status" class="button" value="0" >Reject</button>
