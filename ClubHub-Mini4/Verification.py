@@ -90,12 +90,12 @@ class Verification:
             return clubMembership
         
 
-    def CoordinatorClubId(user_id):
+    def CoordinatorClubId(User_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         try:
-            cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (user_id,))
+            cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
             result = cursor.fetchone()
 
             if result:
