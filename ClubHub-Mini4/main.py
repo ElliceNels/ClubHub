@@ -273,7 +273,7 @@ def eventJoinFormRoute():
         status = int(request.form.get("status"))
         User_id = int(request.form.get("user"))
         Inboxinfo = Inbox()
-        Inboxinfo.individualapproveOrReject(User_id, status)
+        Inboxinfo.individualapproveOrRejectE(User_id, status)
         return redirect(url_for('InboxRoute'))
 
 
@@ -293,7 +293,7 @@ def eventApprovalFormRoute():
         status = int(request.form.get("status"))
 
         Inboxinfo = Inbox()
-        Inboxinfo.massapprove(status)
+        Inboxinfo.massapproveE(status)
         return redirect(url_for('InboxRoute'))
 
 

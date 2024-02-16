@@ -1,6 +1,5 @@
 import sqlite3
 from constants import DB_PATH
-from itertools import chain
 from Verification import Verification
 
 
@@ -18,6 +17,7 @@ def isMemberOfClub(User_id):
 class Inbox:
 
     def __init__(self):
+        self.eventList = None
         self.userList = []
         self.waitingList = []
 
@@ -69,7 +69,10 @@ class Inbox:
         cursor.close()
         conn.close()
 
-        return self.waitingList
+        if not self.waitingList:
+            return ''
+        else:
+            return self.waitingList
 
     def getEventWaitList(self, User_id, pendingstatus):
         conn = sqlite3.connect(DB_PATH)
@@ -86,20 +89,30 @@ class Inbox:
         ids = ", ".join([str(id) for id in Events])
         print(ids)
 
-        cursor.execute(
+        data = cursor.execute(
             f''' SELECT ea.User_id, Firstname, Lastname FROM EVENT_ATTENDEES ea INNER JOIN USER_DETAILS ud ON ea.User_id = ud.User_id WHERE ea.Is_pending = ? AND ea.Event_id IN ({ids})''',
             (pendingstatus,))
-        self.eventList = [list(row) for row in cursor.fetchall()]
-        print(self.eventList)
-        for user in self.eventList:
-            cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
-            user.append(user[1] + " would like to come to your event")
+        allData = data.fetchall()
 
+        for entries in allData:
+
+            if isMemberOfClub(entries[0]):
+                print('is a member, auto accept')
+                self.individualapproveOrRejectE(entries[0], 1)
+            else:
+                print('not member, waiting verification')
+                self.eventList = [list(row) for row in allData]
+                print(self.eventList)
+                for user in self.eventList:
+                    cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
+                    user.append(user[1] + " would like to come to your event")
 
         cursor.close()
         conn.close()
-
-        return self.eventList
+        if not self.eventList:
+            return ''
+        else:
+            return self.eventList
 
     def individualapproveOrReject(self, User_id, status):
         conn = sqlite3.connect(DB_PATH)
@@ -129,6 +142,34 @@ class Inbox:
                 conn.close()
         return
 
+    def individualapproveOrRejectE(self, User_id, status):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        # if user has been approved
+        if status == 1:
+            try:
+                with conn:
+                    cursor.execute(''' UPDATE EVENT_ATTENDEES SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''',
+                                   (0, 1, User_id))
+                    conn.commit()
+            except Exception as e:
+                print(f"for the developer: Error: {e}")
+        elif status == 0:
+            try:
+                with conn:
+                    cursor.execute('PRAGMA foreign_keys = ON')
+                    conn.commit()
+                    cursor.execute('''DELETE FROM EVENT_ATTENDEES WHERE User_id = ?''', (User_id,))
+                    conn.commit()
+                    print("Deleted from details table")
+
+            except Exception as e:
+                print(f"for the developer: Error: {e}")
+            finally:
+                cursor.close()
+                conn.close()
+        return
+
     def massapprove(self, status):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -138,6 +179,24 @@ class Inbox:
                 with conn:
                     cursor.execute(
                         ''' UPDATE CLUB_MEMBERSHIP SET Is_pending = ?, Is_approved = ?  WHERE Is_pending = ? AND Is_approved = ?''',
+                        (0, 1, 1, 0))
+                    conn.commit()
+
+            except Exception as e:
+                print(f"for the developer: Error: {e}")
+            finally:
+                cursor.close()
+                conn.close()
+
+    def massapproveE(self, status):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        if status == 3:
+            try:
+                with conn:
+                    cursor.execute(
+                        ''' UPDATE EVENT_ATTENDEES SET Is_pending = ?, Is_approved = ?  WHERE Is_pending = ? AND Is_approved = ?''',
                         (0, 1, 1, 0))
                     conn.commit()
 
