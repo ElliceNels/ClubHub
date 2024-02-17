@@ -9,7 +9,6 @@ class Admin:
     def get_user_list(self, pending_status, approved_status):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        print("db connected")
         cursor.execute(''' SELECT User_id, Firstname, Lastname FROM USER_DETAILS WHERE Is_pending = ? AND Is_approved = ? AND User_id != ?''', (pending_status, approved_status, 4121234))
         self.user_list = [list(row) for row in cursor.fetchall()]
        
@@ -42,21 +41,19 @@ class Admin:
     def individual_reject(self, user_id):
         conn = sqlite3.connect(DB_PATH)
         print("db connected")
+        print(F"User_id is {user_id}")
         cursor = conn.cursor()
         try:
-                with conn:
-                    cursor.execute('PRAGMA foreign_keys = ON')
-                    conn.commit()
-                    cursor.execute('''DELETE FROM USER_DETAILS WHERE User_id = ?''', (user_id,))
-                    conn.commit()
-                    print("Deleted from details table")
-            
-        except Exception as e:
-                   print(f"for the developer: Error: {e}")
+            with conn:
+                cursor.execute('PRAGMA foreign_keys = ON')  # Ensure foreign key constraints are enabled
+                cursor.execute('''DELETE FROM USER_DETAILS WHERE User_id = ?''', (user_id,))
+                conn.commit() 
+        except sqlite3.Error as e:
+            # Consider raising custom exceptions or returning error messages
+            print(f"Error deleting user details: {e}")
         finally:
             cursor.close()
             conn.close()
-            
 
     def mass_approve(self, status):
         conn = sqlite3.connect(DB_PATH)

@@ -78,11 +78,11 @@ def signupValidationRoute():
         user_type = request.form.get("usertype")
 
         sign_up_validator = Login_validation()
-        alerts = sign_up_validator.signupValidation(first_name, last_name, user_id, email, phone_number, user_name, password1,
+        alerts = sign_up_validator.signup_validation(first_name, last_name, user_id, email, phone_number, user_name, password1,
                                                   password2, user_type)
         if alerts == []:
             sign_up_verfier = Login_verification()
-            if sign_up_verfier.SignUp(user_id, user_name, phone_number, password1, first_name, last_name, email, user_type):
+            if sign_up_verfier.Sign_up(user_id, user_name, phone_number, password1, first_name, last_name, email, user_type):
                 return redirect(url_for('login'))
             else:
                 return render_template('signup.html', warning=sign_up_verfier.alert)
@@ -221,7 +221,6 @@ def showApprovedUsers():
 def massApprovalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
-
         AdminManagement = Admin()
         AdminManagement.mass_approve(status)
         return redirect(url_for('showAdmin'))
