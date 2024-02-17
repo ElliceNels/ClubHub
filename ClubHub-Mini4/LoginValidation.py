@@ -2,7 +2,7 @@ import re
 from constants import DB_PATH
 
 
-class login_validation:
+class Login_validation:
     def __init__(self):
         self.alert = []
 
