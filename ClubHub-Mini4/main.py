@@ -13,6 +13,7 @@ from Coordinator import Coordinator
 from Inbox import Inbox
 from User import User
 from constants import DB_PATH
+from EventMainPage import eventsmainpage
 
 
 # Provide template folder name
@@ -287,8 +288,9 @@ def CreateEvents():
 
 @app.route("/EventMain")
 def EventMain():
+    events = eventsmainpage()
     dates = [datetime.now() + timedelta(days=i) for i in range(16)]
-    return render_template('EventMain.html', dates=dates)
+    return render_template('EventMain.html', dates=dates, events=events)
 
 @app.route('/club_mainpage')
 def club_mainpage():
