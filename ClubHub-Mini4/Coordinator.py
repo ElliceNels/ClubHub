@@ -64,9 +64,12 @@ class Coordinator:
 
                 cur.execute(''' SELECT Club_id FROM CLUBS WHERE Club_name = ? ''', (club_name,))
                 club_id = cur.fetchone()
-                print(club_id[0])
-
-                return club_id[0]
+                if club_id is not None:
+                    return club_id[0]
+            
+                else:
+                    print(f"No matching record found for club: {club_name}")
+                    return None
 
         except sqlite3.Error as e:
             print('error: ', e)
@@ -117,11 +120,9 @@ class Coordinator:
             with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
                 cur = conn.cursor()
             cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? ''', (club_id,))
-            members = cur.fetchone()
-            member_details = Verification.profileDetails(members[0])
-            print(members[0])
-            print(member_details)
-
+            member_ids = cur.fetchall()
+            member_details = [Verification.profileDetails(member[0]) for member in member_ids]
+            return member_details
 
         except sqlite3.Error as e:
             print("error: ", e )
