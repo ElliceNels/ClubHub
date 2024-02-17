@@ -1,8 +1,8 @@
 import sqlite3
 
 from flask import Flask, render_template, request, redirect, url_for
-from LoginValidation import LoginValidation
-from LoginVerification import LoginVerification
+from LoginValidation import Login_validation
+from LoginVerification import Login_verification
 from Verification import Verification
 from datetime import datetime, timedelta
 from session import Session
@@ -45,48 +45,47 @@ def login():
 
 
 @app.route('/LoginProcess_Form', methods=["POST"])
-def loginValidationRoute():
+def login_validation_route():
     if request.method == "POST":
-        Username = request.form.get("usernamebar").strip()
+        user_name = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
-        loginVerifier = LoginVerification()
-        User_id = int(loginVerifier.getUseridFromUsername(Username))
-        if loginVerifier.Login(User_id, Username, password1):
-            approvalStatus = loginVerifier.approvalStatus(User_id)
-            if approvalStatus == True:
-                user_session.login(User_id)
+        login_verifier = Login_verification()
+        user_id = int(login_verifier.getUseridFromUsername(user_name))
+        if login_verifier.Login(user_id, user_name, password1):
+            approval_status = login_verifier.approvalStatus(user_id)
+            if approval_status == True:
+                user_session.login(user_id)
 
                 print(user_session.isAdministrator())
                 return EventMain()
             else:
-                return render_template('postLogin.html', approvalmessage=approvalStatus)
+                return render_template('postLogin.html', approvalmessage=approval_status)
         else:
-            return render_template('login.html', warning=loginVerifier.alert)
+            return render_template('login.html', warning=login_verifier.alert)
 
 
 @app.route('/SignUpProcess_Form', methods=["POST"])
 def signupValidationRoute():
     if request.method == "POST":
-        firstname = request.form.get("firstnamebar").strip()
-        lastname = request.form.get("lastnamebar").strip()
-        userId = request.form.get("IDbar").strip()
+        first_name = request.form.get("firstnamebar").strip()
+        last_name = request.form.get("lastnamebar").strip()
+        user_id = request.form.get("IDbar").strip()
         email = request.form.get("emailbar").strip()
-        phonenumber = request.form.get("phonenumberbar").strip()
-        username = request.form.get("usernamebar").strip()
+        phone_number = request.form.get("phonenumberbar").strip()
+        user_name = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
         password2 = request.form.get("password2bar").strip()
-        usertype = request.form.get("usertype")
-        print(usertype)
+        user_type = request.form.get("usertype")
 
-        signUpValidator = LoginValidation()
-        alerts = signUpValidator.signupValidation(firstname, lastname, userId, email, phonenumber, username, password1,
-                                                  password2, usertype)
+        sign_up_validator = Login_validation()
+        alerts = sign_up_validator.signupValidation(first_name, last_name, user_id, email, phone_number, user_name, password1,
+                                                  password2, user_type)
         if alerts == []:
-            signUpVerfier = LoginVerification()
-            if signUpVerfier.SignUp(userId, username, phonenumber, password1, firstname, lastname, email, usertype):
+            sign_up_verfier = Login_verification()
+            if sign_up_verfier.SignUp(user_id, user_name, phone_number, password1, first_name, last_name, email, user_type):
                 return redirect(url_for('login'))
             else:
-                return render_template('signup.html', warning=signUpVerfier.alert)
+                return render_template('signup.html', warning=sign_up_verfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
 
@@ -143,7 +142,7 @@ def updateStudentProfileDisplay():
 @app.route('/changeDetails', methods=["POST"])
 def changeDetailsRoute():
     if request.method == "POST":
-        newvalue = request.form.get("newvalue")
+        new_value = request.form.get("newvalue")
         column = request.form.get("column")
         user_id = user_session.getUser_id()
         table = None
@@ -151,8 +150,8 @@ def changeDetailsRoute():
             table = "USER_LOGIN"
         else:
             table = "USER_DETAILS"
-        UserInformationHandler = User()
-        UserInformationHandler.updateUserInformation(table, column, newvalue, user_id)
+        user_information_handler = User()
+        user_information_handler.updateUserInformation(table, column, new_value, user_id)
         return redirect(url_for('updateStudentProfileDisplay'))
 
 
@@ -179,8 +178,8 @@ def UpdateProfile():
 ##############################################################################Admin Inbox##############################################################################
 @app.route('/Admin')
 def showAdmin():
-    AdminInfo = Admin()
-    userList = AdminInfo.getUserList(1, 0)
+    admin_info = Admin()
+    userList = admin_info.get_user_List(1, 0)
     return render_template('Admin.html', userList=userList)
 
 
@@ -190,7 +189,7 @@ def approvalFormRoute():
         status = int(request.form.get("status"))
         User_id = int(request.form.get("user"))
         AdminManagement = Admin()
-        AdminManagement.individualapproveOrReject(User_id, status)
+        AdminManagement.individual_approve_or_reject(User_id, status)
         return redirect(url_for('showAdmin'))
 
 
@@ -200,14 +199,14 @@ def deletionFormRoute():
         status = int(request.form.get("status"))
         User_id = int(request.form.get("user"))
         AdminManagement = Admin()
-        AdminManagement.individualapproveOrReject(User_id, status)
+        AdminManagement.individual_approve_or_reject(User_id, status)
         return redirect(url_for('showApprovedUsers'))
 
 
 @app.route('/ApprovedUsers')
 def showApprovedUsers():
     AdminInfo = Admin()
-    userList = AdminInfo.getUserList(0, 1)
+    userList = AdminInfo.get_user_list(0, 1)
     return render_template('ApprovedUsers.html', userList=userList)
 
 
@@ -217,7 +216,7 @@ def massApprovalFormRoute():
         status = int(request.form.get("status"))
 
         AdminManagement = Admin()
-        AdminManagement.massapprove(status)
+        AdminManagement.mass_approve(status)
         return redirect(url_for('showAdmin'))
 
 
@@ -226,7 +225,7 @@ def UserDetails():
     if request.method == "POST":
         UserID = request.form.get("userdeets")
         UserInfo = Admin()
-        userinformation = UserInfo.getUserDetails(UserID)
+        userinformation = UserInfo.get_user_details(UserID)
         return render_template('UserDetails.html', userinformation=userinformation)
 
 
@@ -235,7 +234,7 @@ def UserDetails():
 def eventRequests():
     if user_session.isAdministrator():
         AdminInfo = Admin()
-        userList = AdminInfo.getUserList(1, 0)
+        userList = AdminInfo.get_user_list(1, 0)
         return render_template('Admin.html', userList=userList)
     elif user_session.isCoordinator():
         print("moving to inboxevents.html")
@@ -249,7 +248,7 @@ def InboxRoute():
     print("in inbox")
     if user_session.isAdministrator():
         AdminInfo = Admin()
-        userList = AdminInfo.getUserList(1, 0)
+        userList = AdminInfo.get_user_list(1, 0)
         return render_template('Admin.html', userList=userList)
     elif user_session.isCoordinator():
         Coordinfo = Inbox()
@@ -355,7 +354,7 @@ def UserDeets():
     if request.method == "POST":
         UserID = request.form.get("userdeets")
         UserInfo = Admin()
-        userinformation = UserInfo.getUserDetails(UserID)
+        userinformation = UserInfo.get_user_details(UserID)
         return render_template('UserDetails.html', userinformation=userinformation)
 
 
