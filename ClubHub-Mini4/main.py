@@ -50,9 +50,9 @@ def login_validation_route():
         user_name = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
         login_verifier = Login_verification()
-        user_id = int(login_verifier.getUseridFromUsername(user_name))
+        user_id = int(login_verifier.get_user_id_from_username(user_name))
         if login_verifier.Login(user_id, user_name, password1):
-            approval_status = login_verifier.approvalStatus(user_id)
+            approval_status = login_verifier.approval_status(user_id)
             if approval_status == True:
                 user_session.login(user_id)
 
