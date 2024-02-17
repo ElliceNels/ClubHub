@@ -92,16 +92,18 @@ def signupValidationRoute():
 
 ##############################################################################Clubs##############################################################################
 
-@app.route('/club_mainpage')
-def club_mainpage():
-    return render_template('/club_mainpage.html', club_members=club_members)
+@app.route('/club_mainpage/<club_name>')
+def club_mainpage(club_name):
+    club_member_info = Coordinator.display_members(club_name)
+    return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
 
 
 @app.route('/clubs_display', methods=["GET", "POST"])
 def clubs_display():
     # checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
-
+        if request.method == "POST":
+            club_name = request.form.get("club_link")
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     else:
         if request.method == "POST":
