@@ -4,7 +4,6 @@ import os
 from constants import DB_PATH
 
 
-
 class ClubCreationVerification:
 
     #checks if the user id is associated with a coordinator id
