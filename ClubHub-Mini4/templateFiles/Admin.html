@@ -55,8 +55,12 @@
             <div class="right">
                 <form action="/approvalform" method="POST">
                 <input type="hidden" value={{user[0]}} name="user">
-                <button type="submit" name="status" value="1" class="button" >Accept</button>
-                <button type="submit" name="status" class="button" value="0" >Reject</button>
+                <button type="submit" name="status"class="button" >Accept</button>
+                </form>
+                
+                <form action="/predeletionform" method="POST">
+                <input type="hidden" value={{user[0]}} name="user">
+                <button type="submit" name="status" class="button" >Reject</button>
                </form>
             </div>
 

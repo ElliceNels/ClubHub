@@ -23,22 +23,27 @@ class Admin:
         cursor.close()
         conn.close()
         return self.user_list
-
-    def individual_approve_or_reject(self, user_id, status):
+    
+    def individual_approve(self, user_id):
         conn = sqlite3.connect(DB_PATH)
         print("db connected")
         cursor = conn.cursor()
-        # if user has been approved
-        if status == 1:
-            try:
+        try:
                 with conn:
                     cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, user_id))
                     cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, user_id))
                     conn.commit()
-            except Exception as e:
+        except Exception as e:
                 print(f"for the developer: Error: {e}")
-        elif status == 0:
-            try:
+        finally:
+            cursor.close()
+            conn.close()
+            
+    def individual_reject(self, user_id):
+        conn = sqlite3.connect(DB_PATH)
+        print("db connected")
+        cursor = conn.cursor()
+        try:
                 with conn:
                     cursor.execute('PRAGMA foreign_keys = ON')
                     conn.commit()
@@ -46,13 +51,13 @@ class Admin:
                     conn.commit()
                     print("Deleted from details table")
             
-            except Exception as e:
+        except Exception as e:
                    print(f"for the developer: Error: {e}")
-            finally:
-                cursor.close()
-                conn.close()
-        return
-    
+        finally:
+            cursor.close()
+            conn.close()
+            
+
     def mass_approve(self, status):
         conn = sqlite3.connect(DB_PATH)
         print("db connected")

@@ -186,20 +186,27 @@ def showAdmin():
 @app.route('/approvalform', methods=["POST"])
 def approvalFormRoute():
     if request.method == "POST":
-        status = int(request.form.get("status"))
-        User_id = int(request.form.get("user"))
-        AdminManagement = Admin()
-        AdminManagement.individual_approve_or_reject(User_id, status)
+        user_id = int(request.form.get("user"))
+        admin_management = Admin()
+        admin_management.individual_approve(user_id)
         return redirect(url_for('showAdmin'))
-
-
-@app.route('/deletionform', methods=["POST"])
-def deletionFormRoute():
+ 
+@app.route('/predeletionform', methods=["POST"])
+def predeletionformroute():
     if request.method == "POST":
-        status = int(request.form.get("status"))
-        User_id = int(request.form.get("user"))
-        AdminManagement = Admin()
-        AdminManagement.individual_approve_or_reject(User_id, status)
+        user_id = int(request.form.get("user"))
+        admin_management = Admin()
+        admin_management.individual_reject(user_id)
+        return redirect(url_for('showAdmin'))
+        
+
+
+@app.route('/postdeletionform', methods=["POST"])
+def postdeletionFormRoute():
+    if request.method == "POST":
+        user_id = int(request.form.get("user"))
+        admin_management = Admin()
+        admin_management.individual_reject(user_id)
         return redirect(url_for('showApprovedUsers'))
 
 
