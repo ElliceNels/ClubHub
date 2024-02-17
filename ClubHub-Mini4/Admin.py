@@ -6,7 +6,7 @@ class Admin:
     def __init__(self):
         self.user_list = []
         
-    def getUserList(self, pending_status, approved_status):
+    def get_user_list(self, pending_status, approved_status):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         print("db connected")

@@ -151,7 +151,7 @@ def changeDetailsRoute():
         else:
             table = "USER_DETAILS"
         user_information_handler = User()
-        user_information_handler.updateUserInformation(table, column, new_value, user_id)
+        user_information_handler.update_user_information(table, column, new_value, user_id)
         return redirect(url_for('updateStudentProfileDisplay'))
 
 
@@ -179,7 +179,7 @@ def UpdateProfile():
 @app.route('/Admin')
 def showAdmin():
     admin_info = Admin()
-    userList = admin_info.get_user_List(1, 0)
+    userList = admin_info.get_user_list(1, 0)
     return render_template('Admin.html', userList=userList)
 
 
