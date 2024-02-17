@@ -4,16 +4,16 @@ from constants import DB_PATH
 
 class Admin:
     def __init__(self):
-        self.userList = []
+        self.user_list = []
         
-    def getUserList(self, pendingstatus, approvedstatus):
+    def getUserList(self, pending_status, approved_status):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         print("db connected")
-        cursor.execute(''' SELECT User_id, Firstname, Lastname FROM USER_DETAILS WHERE Is_pending = ? AND Is_approved = ? AND User_id != ?''', (pendingstatus, approvedstatus, 4121234))
-        self.userList = [list(row) for row in cursor.fetchall()]
+        cursor.execute(''' SELECT User_id, Firstname, Lastname FROM USER_DETAILS WHERE Is_pending = ? AND Is_approved = ? AND User_id != ?''', (pending_status, approved_status, 4121234))
+        self.user_list = [list(row) for row in cursor.fetchall()]
        
-        for user in self.userList:
+        for user in self.user_list:
             cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
             if cursor.fetchone():
                 user.append("Coordinator")
@@ -22,9 +22,9 @@ class Admin:
      
         cursor.close()
         conn.close()
-        return self.userList
+        return self.user_list
 
-    def individualapproveOrReject(self, User_id, status):
+    def individual_approve_or_reject(self, user_id, status):
         conn = sqlite3.connect(DB_PATH)
         print("db connected")
         cursor = conn.cursor()
@@ -32,8 +32,8 @@ class Admin:
         if status == 1:
             try:
                 with conn:
-                    cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
-                    cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, User_id))
+                    cursor.execute(''' UPDATE USER_LOGIN SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, user_id))
+                    cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, user_id))
                     conn.commit()
             except Exception as e:
                 print(f"for the developer: Error: {e}")
@@ -42,7 +42,7 @@ class Admin:
                 with conn:
                     cursor.execute('PRAGMA foreign_keys = ON')
                     conn.commit()
-                    cursor.execute('''DELETE FROM USER_DETAILS WHERE User_id = ?''', (User_id,))
+                    cursor.execute('''DELETE FROM USER_DETAILS WHERE User_id = ?''', (user_id,))
                     conn.commit()
                     print("Deleted from details table")
             
@@ -53,7 +53,7 @@ class Admin:
                 conn.close()
         return
     
-    def massapprove(self, status):
+    def mass_approve(self, status):
         conn = sqlite3.connect(DB_PATH)
         print("db connected")
         cursor = conn.cursor()
@@ -71,14 +71,14 @@ class Admin:
                 conn.close()
                 
                 
-    def getUserDetails(self, User_id):
+    def get_user_details(self, user_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         cursor.execute('''SELECT ud.user_id, ud.firstname, ud.lastname, ul.username, ud.email,contact_number
         FROM USER_DETAILS as ud
         INNER JOIN USER_LOGIN as ul
         ON ud.User_id = ul.User_id
-        WHERE ud.User_id = ?;''', (User_id,))
+        WHERE ud.User_id = ?;''', (user_id,))
         userinformation = list(chain.from_iterable(cursor.fetchall()))
         cursor.close()
         conn.close()

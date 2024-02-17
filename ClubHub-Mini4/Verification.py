@@ -85,7 +85,7 @@ class Verification:
                 clubMembership.append(club)
 
         if not clubMembership:
-            return None
+            return None 
         else:
             return clubMembership
         
@@ -95,12 +95,19 @@ class Verification:
         cursor = conn.cursor()
 
         try:
-            cursor.execute('''SELECT Club_id FROM WHERE Coordinator_id = ?''', (user_id,))
-            club_id = cursor.fetchone()
-            if club_id:
-                return club_id
+            cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (user_id,))
+            result = cursor.fetchone()
+
+            if result:
+                Coordinator_id = result[0]
+                cursor.execute('''SELECT Club_id FROM CLUBS WHERE Coordinator_id = ?''', (Coordinator_id,))
+                Club_id = cursor.fetchone()
+                if Club_id:
+                    return Club_id[0]
+                else:
+                    return "Not associated with any clubs"
             else:
-                return "Not associated with any clubs"
+                return None
         finally:
             conn.close()
 
