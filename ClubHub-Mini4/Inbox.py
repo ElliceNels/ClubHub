@@ -207,5 +207,5 @@ class Inbox:
                 conn.close()
 
 
-NNN = Inbox()
-NNN.getEventWaitList(4121212, 1)
+# NNN = Inbox()
+# NNN.getEventWaitList(4121212, 1)
