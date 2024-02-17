@@ -1,11 +1,11 @@
 import sqlite3
 
 from flask import Flask, render_template, request, redirect, url_for
-from LoginValidation import LoginValidation
-from LoginVerification import LoginVerification
+from LoginValidation import Login_validation
+from LoginVerification import Login_verification
 from Verification import Verification
 from datetime import datetime, timedelta
-from session import Session 
+from session import Session
 from Admin import Admin
 from EventsRegister import register_events
 from Club import ClubCreationVerification
@@ -13,7 +13,6 @@ from Coordinator import Coordinator
 from Inbox import Inbox
 from User import User
 from constants import DB_PATH
-
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -25,38 +24,82 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
 
 user_session = Session()
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html')
 
 
-@app.route('/LoginProcess_Form', methods=["POST"])
-def loginValidationRoute():
 
+##############################################################################Login#################################################################################
+
+@app.route('/signup.html')
+def signUp():
+    return render_template('signup.html')
+
+
+@app.route('/login.html')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/LoginProcess_Form', methods=["POST"])
+def login_validation_route():
     if request.method == "POST":
-        Username = request.form.get("usernamebar").strip()
+        user_name = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
-        loginVerifier = LoginVerification()
-        User_id = int(loginVerifier.getUseridFromUsername(Username))
-        if loginVerifier.Login(User_id, Username, password1):
-            approvalStatus = loginVerifier.approvalStatus(User_id)
-            if approvalStatus == True:
-                user_session.login(User_id)
+        login_verifier = Login_verification()
+        user_id = int(login_verifier.getUseridFromUsername(user_name))
+        if login_verifier.Login(user_id, user_name, password1):
+            approval_status = login_verifier.approvalStatus(user_id)
+            if approval_status == True:
+                user_session.login(user_id)
+
                 print(user_session.isAdministrator())
                 return EventMain()
             else:
-                return render_template('postLogin.html', approvalmessage=approvalStatus)
+                return render_template('postLogin.html', approvalmessage=approval_status)
         else:
-            return render_template('login.html', warning=loginVerifier.alert)
+            return render_template('login.html', warning=login_verifier.alert)
 
 
+@app.route('/SignUpProcess_Form', methods=["POST"])
+def signupValidationRoute():
+    if request.method == "POST":
+        first_name = request.form.get("firstnamebar").strip()
+        last_name = request.form.get("lastnamebar").strip()
+        user_id = request.form.get("IDbar").strip()
+        email = request.form.get("emailbar").strip()
+        phone_number = request.form.get("phonenumberbar").strip()
+        user_name = request.form.get("usernamebar").strip()
+        password1 = request.form.get("password1bar").strip()
+        password2 = request.form.get("password2bar").strip()
+        user_type = request.form.get("usertype")
+
+        sign_up_validator = Login_validation()
+        alerts = sign_up_validator.signupValidation(first_name, last_name, user_id, email, phone_number, user_name, password1,
+                                                  password2, user_type)
+        if alerts == []:
+            sign_up_verfier = Login_verification()
+            if sign_up_verfier.SignUp(user_id, user_name, phone_number, password1, first_name, last_name, email, user_type):
+                return redirect(url_for('login'))
+            else:
+                return render_template('signup.html', warning=sign_up_verfier.alert)
+        else:
+            return render_template('signup.html', warning=alerts)
 
 
+##############################################################################Clubs##############################################################################
 
-@app.route('/clubs_display', methods=["GET","POST"])
+@app.route('/club_mainpage')
+def club_mainpage():
+    return render_template('/club_mainpage.html', club_members=club_members)
+
+
+@app.route('/clubs_display', methods=["GET", "POST"])
 def clubs_display():
-    #checks if user is a coordinator or an admin.
+    # checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
 
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
@@ -68,85 +111,6 @@ def clubs_display():
                 Coordinator.request_club_membership(user_id, club_name)
 
         return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data())
-    
-@app.route('/UpdateProfileStud')
-def updateStudentProfileDisplay():
-    return render_template('UpdateProfileStud.html')
-    
-@app.route('/changeDetails', methods=["POST"])
-def changeDetailsRoute():
-    if request.method == "POST":
-        newvalue = request.form.get("newvalue")
-        column = request.form.get("column")
-        user_id = user_session.getUser_id()
-        table = None
-        if column == "Username":
-            table = "USER_LOGIN"
-        else:
-            table = "USER_DETAILS"
-        UserInformationHandler = User()
-        UserInformationHandler.updateUserInformation(table, column, newvalue, user_id)
-        return redirect(url_for('updateStudentProfileDisplay'))
-    
-
-
-@app.route('/Admin')
-def showAdmin():
-    AdminInfo = Admin()
-    userList = AdminInfo.getUserList(1,0)
-    return render_template('Admin.html', userList = userList)
-
-@app.route('/ApprovedUsers')
-def showApprovedUsers():
-    AdminInfo = Admin()
-    userList = AdminInfo.getUserList(0,1)
-    return render_template('ApprovedUsers.html',userList=userList)
-
-@app.route('/approvalform', methods=["POST"])
-def approvalFormRoute():
-    if request.method == "POST":
-        status = int(request.form.get("status"))
-        User_id = int(request.form.get("user"))
-        AdminManagement = Admin()
-        AdminManagement.individualapproveOrReject(User_id, status)
-        return redirect(url_for('showAdmin'))
-
-@app.route('/clubjoinform', methods=["POST"])
-def clubJoinFormRoute():
-    if request.method == "POST":
-        status = int(request.form.get("status"))
-        User_id = int(request.form.get("user"))
-        Inboxinfo = Inbox()
-        Inboxinfo.individualapproveOrReject(User_id, status)
-        return redirect(url_for('Inboxs'))
-
-@app.route('/deletionform', methods=["POST"])
-def deletionFormRoute():
-    if request.method == "POST":
-        status = int(request.form.get("status"))
-        User_id = int(request.form.get("user"))
-        AdminManagement = Admin()
-        AdminManagement.individualapproveOrReject(User_id, status)
-        return redirect(url_for('showApprovedUsers'))
-    
-@app.route('/massapprovalform', methods=["POST"])
-def massApprovalFormRoute():
-    if request.method == "POST":
-        status = int(request.form.get("status"))
-        
-        AdminManagement = Admin()
-        AdminManagement.massapprove(status)
-        return redirect(url_for('showAdmin'))
-
-
-@app.route('/clubapprovalform', methods=["POST"])
-def clubApprovalFormRoute():
-    if request.method == "POST":
-        status = int(request.form.get("status"))
-
-        Inboxinfo = Inbox()
-        Inboxinfo.massapprove(status)
-        return redirect(url_for('Inboxs'))
 
 
 @app.route('/create_club', methods=('GET', 'POST'))
@@ -155,18 +119,40 @@ def create_club():
 
     if request.method == 'POST':
 
-        #get data from html from to create a new club
+        # get data from html from to create a new club
         club_name = request.form['club-name']
         club_description = request.form['description']
         ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
     else:
 
-        #if user has a club, display warning
+        # if user has a club, display warning
         print('you have a club.')
         warning = 'you have a club.'
 
     return render_template('create_club.html', warning=warning)
 
+
+##############################################################################Profile##############################################################################
+
+@app.route('/UpdateProfileStud')
+def updateStudentProfileDisplay():
+    return render_template('UpdateProfileStud.html')
+
+
+@app.route('/changeDetails', methods=["POST"])
+def changeDetailsRoute():
+    if request.method == "POST":
+        new_value = request.form.get("newvalue")
+        column = request.form.get("column")
+        user_id = user_session.getUser_id()
+        table = None
+        if column == "Username":
+            table = "USER_LOGIN"
+        else:
+            table = "USER_DETAILS"
+        user_information_handler = User()
+        user_information_handler.updateUserInformation(table, column, new_value, user_id)
+        return redirect(url_for('updateStudentProfileDisplay'))
 
 
 @app.route('/Profile')
@@ -180,27 +166,6 @@ def Profile():
         clubMembership = Verification.clubMemberships(user_session.getUser_id())
         return render_template('ProfileStud.html', details=details, clubMembership=clubMembership)
 
-@app.route('/Inbox')
-def Inboxs():
-    if not user_session.isAdministrator():
-        AdminInfo = Admin()
-        userList = AdminInfo.getUserList(1, 0)
-        return render_template('Admin.html', userList=userList)
-    elif user_session.isCoordinator():
-        Coordinfo = Inbox()
-        clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
-        return render_template('Inbox.html', clubWaitingList=clubWaitingList)
-
-
-
-@app.route('/UserDetails', methods=["POST"])
-def  UserDetails():
-    if request.method =="POST":
-        UserID = request.form.get("userdeets")
-        UserInfo = Admin()
-        userinformation = UserInfo.getUserDetails(UserID)
-        return render_template('UserDetails.html', userinformation=userinformation)
-
 
 @app.route('/UpdateProfile')
 def UpdateProfile():
@@ -209,49 +174,140 @@ def UpdateProfile():
     else:
         return render_template('UpdateProfileStud.html')
 
-@app.route('/changeDetails', methods=['POST'])
-def submit_form():
-    User_id = user_session.getUser_id()
-    firstname = request.form['Firstname']
-    lastname = request.form['Lastname']
-    username = request.form['Username']
-    email = request.form['Email']
-    phoneNum = request.form['Contact_number']
 
-    print(User_id)
-    print(firstname)
-    print(lastname)
-    print(username)
-    print(email)
-    print(phoneNum)
+##############################################################################Admin Inbox##############################################################################
+@app.route('/Admin')
+def showAdmin():
+    admin_info = Admin()
+    userList = admin_info.get_user_List(1, 0)
+    return render_template('Admin.html', userList=userList)
 
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
 
-    cursor.execute('UPDATE USER_DETAILS SET Firstname = ?, Lastname = ?, Contact_number = ?, Email = ? WHERE User_id = ?', (firstname, lastname, phoneNum, email, User_id))
-    cursor.execute('UPDATE USER_LOGIN SET Username = ? WHERE User_id = ?', (username, User_id))
+@app.route('/approvalform', methods=["POST"])
+def approvalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        AdminManagement = Admin()
+        AdminManagement.individual_approve_or_reject(User_id, status)
+        return redirect(url_for('showAdmin'))
 
-    conn.commit()
-    conn.close()
 
-    return Profile()
+@app.route('/deletionform', methods=["POST"])
+def deletionFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        AdminManagement = Admin()
+        AdminManagement.individual_approve_or_reject(User_id, status)
+        return redirect(url_for('showApprovedUsers'))
 
+
+@app.route('/ApprovedUsers')
+def showApprovedUsers():
+    AdminInfo = Admin()
+    userList = AdminInfo.get_user_list(0, 1)
+    return render_template('ApprovedUsers.html', userList=userList)
+
+
+@app.route('/massapprovalform', methods=["POST"])
+def massApprovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+
+        AdminManagement = Admin()
+        AdminManagement.mass_approve(status)
+        return redirect(url_for('showAdmin'))
+
+
+@app.route('/UserDetails', methods=["POST"])
+def UserDetails():
+    if request.method == "POST":
+        UserID = request.form.get("userdeets")
+        UserInfo = Admin()
+        userinformation = UserInfo.get_user_details(UserID)
+        return render_template('UserDetails.html', userinformation=userinformation)
+
+
+#########################################################################################Inbox#########################################################################
+@app.route('/EventRequests')
+def eventRequests():
+    if user_session.isAdministrator():
+        AdminInfo = Admin()
+        userList = AdminInfo.get_user_list(1, 0)
+        return render_template('Admin.html', userList=userList)
+    elif user_session.isCoordinator():
+        print("moving to inboxevents.html")
+        Coordinfo = Inbox()
+        clubWaitingList = Coordinfo.getEventWaitList(user_session.getUser_id(), 1)
+        return render_template('InboxEvents.html', clubWaitingList=clubWaitingList)
+
+
+@app.route('/Inbox')
+def InboxRoute():
+    print("in inbox")
+    if user_session.isAdministrator():
+        AdminInfo = Admin()
+        userList = AdminInfo.get_user_list(1, 0)
+        return render_template('Admin.html', userList=userList)
+    elif user_session.isCoordinator():
+        Coordinfo = Inbox()
+        clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
+        return render_template('Inbox.html', clubWaitingList=clubWaitingList)
+
+
+@app.route('/clubjoinform', methods=["POST"])
+def clubJoinFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        Inboxinfo = Inbox()
+        Inboxinfo.individualapproveOrReject(User_id, status)
+        return redirect(url_for('InboxRoute'))
+
+
+@app.route('/eventjoinform', methods=["POST"])
+def eventJoinFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        Inboxinfo = Inbox()
+        Inboxinfo.individualapproveOrRejectE(User_id, status)
+        return redirect(url_for('InboxRoute'))
+
+
+@app.route('/clubapprovalform', methods=["POST"])
+def clubApprovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+
+        Inboxinfo = Inbox()
+        Inboxinfo.massapprove(status)
+        return redirect(url_for('InboxRoute'))
+
+
+@app.route('/eventapprovalform', methods=["POST"])
+def eventApprovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+
+        Inboxinfo = Inbox()
+        Inboxinfo.massapproveE(status)
+        return redirect(url_for('InboxRoute'))
+
+
+##############################################################################Events###################################################################################
 
 @app.route("/EventDetails")
 def EventDetails():
     return render_template('EventDetails.html')
 
 
-def validate_event_form(EventTitle,Description, Date, Time, Venue):
-    if not all([EventTitle, Description, Date, Time, Venue]):
-        return False
-    return True
-
-@app.route("/CreateEvents" , methods=['GET', 'POST'])
+@app.route("/CreateEvents", methods=['GET', 'POST'])
 def CreateEvents():
     warning_message = None
     success_message = None
-    
+
     if request.method == 'POST':
         EventTitle = request.form.get('EventTitle').strip()
         Description = request.form.get('Description').strip()
@@ -259,27 +315,26 @@ def CreateEvents():
         Time = request.form.get('Time').strip()
         Venue = request.form.get('Venue').strip()
 
-        
-
         if user_session.isLoggedIn:
             user_id = user_session.getUser_id()
-            if user_session.isCoord():
-                club_id = Verification.CoordinatorClubId(user_id)
-                if club_id:
-                    event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
-                    event_date = event_datetime.date()
-                    event_time = event_datetime.time()
-                    register_events(EventTitle, Description, event_date, event_time, Venue, club_id)
-                    success_message="Event successfully created!!"
-                else:
-                    warning_message="You are not associated with any club!"
+            if user_session.isCoord:
+                try:
+                    Club_id = Verification.CoordinatorClubId(user_id)
+                    if Club_id:
+                        event_datetime = datetime.strptime(f"{Date} {Time}", "%Y-%m-%d %H:%M")
+                        event_date = event_datetime.date()
+                        event_time = event_datetime.strftime("%H:%M")
+                        register_events(EventTitle, Description, event_date, event_time, Venue, Club_id)
+                        success_message = "Event successfully created!!"
+                    else:
+                        warning_message = "You are not associated with any club!"
+                except Exception as e:
+                    warning_message = f"Error occurred: {e}"
             else:
-                warning_message="Only coordinators can create events."
-    else:
-        warning_message="Please fill out all fields!!"
+                warning_message = "Only coordinators can create events."
+        else:
+            warning_message = "Please fill out all fields!!"
     return render_template('CreateEvents.html', warning=warning_message, success_message=success_message)
-
-  
 
 
 @app.route("/EventMain")
@@ -287,59 +342,31 @@ def EventMain():
     dates = [datetime.now() + timedelta(days=i) for i in range(16)]
     return render_template('EventMain.html', dates=dates)
 
-@app.route('/club_mainpage')
-def club_mainpage():
 
-    return render_template('/club_mainpage.html', club_members=club_members)
+def validate_event_form(EventTitle, Description, Date, Time, Venue):
+    if not all([EventTitle, Description, Date, Time, Venue]):
+        return False
+    return True
 
 
+@app.route('/UserDeets', methods=["POST"])
+def UserDeets():
+    if request.method == "POST":
+        UserID = request.form.get("userdeets")
+        UserInfo = Admin()
+        userinformation = UserInfo.get_user_details(UserID)
+        return render_template('UserDetails.html', userinformation=userinformation)
 
+
+##############################################################################Error pages##############################################################################
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error404.html'), 404
 
+
 @app.errorhandler(AttributeError)
 def handle_attribute_error(error):
     return render_template('attributeError.html'), 500
-
-
-@app.route('/signup.html')
-def signUp():
-    return render_template('signup.html')
-
-
-@app.route('/login.html')
-def login():
-    return render_template('login.html')
-
-
-@app.route('/SignUpProcess_Form', methods=["POST"])
-def signupValidationRoute():
-    if request.method == "POST":
-        firstname = request.form.get("firstnamebar").strip()
-        lastname = request.form.get("lastnamebar").strip()
-        userId = request.form.get("IDbar").strip()
-        email = request.form.get("emailbar").strip()
-        phonenumber = request.form.get("phonenumberbar").strip()
-        username = request.form.get("usernamebar").strip()
-        password1 = request.form.get("password1bar").strip()
-        password2 = request.form.get("password2bar").strip()
-        usertype = request.form.get("usertype")
-        print(usertype)
-
-        signUpValidator = LoginValidation()
-        alerts = signUpValidator.signupValidation(firstname, lastname, userId, email, phonenumber, username, password1,
-                                                  password2, usertype)
-        if alerts == []:
-            signUpVerfier = LoginVerification()
-            if signUpVerfier.SignUp(userId, username, phonenumber, password1, firstname, lastname, email, usertype):
-                return redirect(url_for('login'))
-            else:
-                return render_template('signup.html', warning=signUpVerfier.alert)
-        else:
-            return render_template('signup.html', warning=alerts)
-
-
 
 
 if __name__ == '__main__':

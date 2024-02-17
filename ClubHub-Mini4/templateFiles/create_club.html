@@ -10,10 +10,11 @@
 <body>
     <header class="header"> ClubHub<i class="fa-solid fa-circle-nodes"></i> </header>
     <nav class="navigation-bar">
-        <a class="nav-link" href="/Profile">Proflie</a>
+        <a class="nav-link" href="/clubs_display">Clubs</a>
         <a class="nav-link" href="/EventMain">Events</a>
         <a class="nav-link" href="/Inbox">Inbox</a>
-        <a class="nav-link" href="/clubs_display">Clubs</a>
+        <a class="nav-link" href="/Profile">Profile</a>
+
     </nav>
     <div id="background">
     <h1 id="clubs_header">
@@ -26,7 +27,7 @@
             <input type="text" id="club-name" name="club-name" maxlength="40" value="{{ request.form['club-name'] }}" required>
             <br>
             <br>
-            <label for="description" id="description">Description: </label>
+            <label for="description" id="descriptionlabel">Description: </label>
             <br>
             <textarea class="text-area" name="description" id="description" cols="30" rows="10" maxlength="200" value="{{ request.form['description'] }}" required></textarea>
             <br>
