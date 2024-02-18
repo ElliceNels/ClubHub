@@ -43,7 +43,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    width = 100%;
+    width: 100%;
     background-color: #FA991C;
     padding: 1.25rem;
     display: flex;
@@ -94,7 +94,7 @@ body {
 }
 #club-member-display{
     display: flex;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;

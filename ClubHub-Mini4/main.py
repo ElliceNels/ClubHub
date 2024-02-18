@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from session import Session
 from Admin import Admin
 from EventsRegister import register_events
-from Club import ClubCreationVerification
+from Club import ClubCreationVerification, ClubDeletion
 from Coordinator import Coordinator
 from Inbox import Inbox
 from User import User
@@ -92,16 +92,30 @@ def signupValidationRoute():
 
 ##############################################################################Clubs##############################################################################
 
-@app.route('/club_mainpage')
-def club_mainpage():
-    return render_template('/club_mainpage.html', club_members=club_members)
+@app.route('/club_mainpage/<club_name>', methods=["GET", "POST"])
+def club_mainpage(club_name):
+
+    club_member_info = Coordinator.display_members(club_name)
+
+    if Verification.coordinatingClub(club_name, user_session.getUser_id()) == club_name:
+
+        if request.method == "POST":
+            club_name = request.form.get("delete_club")
+            ClubDeletion.deleteClub(club_name)
+
+            return redirect(url_for('clubs_display'))
+
+        return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
+    
+    return clubs_display()
 
 
 @app.route('/clubs_display', methods=["GET", "POST"])
 def clubs_display():
     # checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
-
+        if request.method == "POST":
+            club_name = request.form.get("club_link")
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     else:
         if request.method == "POST":
@@ -115,7 +129,6 @@ def clubs_display():
 
 @app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
-    warning = None
 
     if request.method == 'POST':
 
@@ -124,12 +137,10 @@ def create_club():
         club_description = request.form['description']
         ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
     else:
-
         # if user has a club, display warning
         print('you have a club.')
-        warning = 'you have a club.'
 
-    return render_template('create_club.html', warning=warning)
+    return render_template('create_club.html')
 
 
 ##############################################################################Profile##############################################################################

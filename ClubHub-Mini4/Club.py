@@ -1,8 +1,7 @@
 import sqlite3
 from Verification import Verification
-import os
+from Coordinator import Coordinator
 from constants import DB_PATH
-
 
 
 class ClubCreationVerification:
@@ -79,3 +78,22 @@ class ClubCreationVerification:
             print("error: ", e)
     
 # ClubCreationVerification.existing_club(412004)
+
+class ClubDeletion:
+    
+
+    def deleteClub(club_name):
+
+        try: 
+            club_id = Coordinator.club_getter(club_name)
+
+            with sqlite3.connect(DB_PATH) as conn:
+                cur = conn.cursor()
+
+                cur.execute( ''' PRAGMA foreign_keys = ON ''')
+                cur.execute(''' DELETE FROM CLUBS WHERE Club_id = ? ''', (club_id,))
+                conn.commit()
+
+
+        except sqlite3.Error as e:
+            print('error: ', e)
