@@ -41,16 +41,19 @@
                         <span>Phone Number: {{ member_info[3] }}</span><br>
                         <span>Email: {{ member_info[4] }}</span>
                     </p>
-                    <button class="remove-button" id="remove-member">Remove</button>
+                    <button class="remove-button" id="remove-member">Remove
+                    </button>
                 </div>
                 {% endfor %}
             </div>
         </div>
     </div>
-
-    <a href="" class="button" id="delete-club">
-        Delete Club
-    </a>
+    <form method="post" action="">
+        <input type="hidden" name="delete_club" value="{{club_name}}">
+        <button type="submit" class="button" id="delete-club" >
+            delete club
+        </button>
+    </form>
     </div>
 </body>
 </html>
