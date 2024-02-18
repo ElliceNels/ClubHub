@@ -102,7 +102,7 @@ def club_mainpage(club_name):
         if request.method == "POST":
             club_name = request.form.get("delete_club")
             ClubDeletion.deleteClub(club_name)
-            
+
             return redirect(url_for('clubs_display'))
 
         return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
@@ -129,7 +129,6 @@ def clubs_display():
 
 @app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
-    warning = None
 
     if request.method == 'POST':
 
@@ -138,12 +137,10 @@ def create_club():
         club_description = request.form['description']
         ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
     else:
-
         # if user has a club, display warning
         print('you have a club.')
-        warning = 'you have a club.'
 
-    return render_template('create_club.html', warning=warning)
+    return render_template('create_club.html')
 
 
 ##############################################################################Profile##############################################################################
