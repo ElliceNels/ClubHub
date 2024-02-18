@@ -181,6 +181,17 @@ END; ''')
 conn.commit()
 print("Update event attendees trigger created successfullly")
 
+cursor.execute('''CREATE TRIGGER Prevent_admin_deletion 
+BEFORE DELETE ON USER_DETAILS
+BEGIN
+    SELECT CASE
+        WHEN EXISTS (SELECT login_id FROM USER_LOGIN WHERE user_id = OLD.user_id AND login_id = 1) THEN
+            RAISE(ABORT, 'Admin deletion not allowed')
+    END;
+END ;''')
+conn.commit()
+print(" admin undeleteable trigger created")
+
 
 
 cursor.close()
