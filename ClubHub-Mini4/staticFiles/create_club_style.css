@@ -65,7 +65,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    width = 100%;
+    width : 100%;
     background-color: #FA991C;
     padding: 1.25rem;
     display: flex;
@@ -130,12 +130,4 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.alert {
-    padding: 3rem;
-    font-size: 2rem;
-    font-weight: bold;
-    border-radius: 0.5rem;
-    color: #FA991C;
-    background-color: #063a58;
 }
