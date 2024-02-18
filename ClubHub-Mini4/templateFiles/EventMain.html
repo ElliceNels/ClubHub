@@ -29,10 +29,11 @@
      <div class="datecontainer">
         <div class="date-list" id="dateList">
             {% for event in events %}
-                <div class="date">{{ event[2] }}</div>
+                <div class="date">{{ event[3] }}</div>
                 <div class="detailsbox" id="box">
                     <div>{{ event[0] }}</div> <!-- event title-->
                     <div>{{ event[1] }}</div> <!-- event time-->
+                    <div>{{ event[2] }}</div> <!--description-->
                 </div>
             {% endfor %}
         </div>
