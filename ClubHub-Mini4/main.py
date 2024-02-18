@@ -289,8 +289,9 @@ def CreateEvents():
 @app.route("/EventMain")
 def EventMain():
     events = eventsmainpage()
-    dates = [datetime.now() + timedelta(days=i) for i in range(16)]
-    return render_template('EventMain.html', dates=dates, events=events)
+    event_dates = [datetime.now() + timedelta(days=i) for i in range(16)]
+    print(events)
+    return render_template('EventMain.html', event_dates=event_dates, events=events, datetime=datetime)
 
 @app.route('/club_mainpage')
 def club_mainpage():
