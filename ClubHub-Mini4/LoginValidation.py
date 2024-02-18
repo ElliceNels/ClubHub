@@ -12,23 +12,25 @@ class Login_validation:
         self.username_validator(user_name)
         self.password_validator(password1, password2)
         self.email_validator(email)
-        self.phone_number_Validator(phone_number)
+        self.phone_number_validator(phone_number)
+        print("Has gone through all the steps")
         return self.alert
 
     def name_validator(self, first_name, last_name):
+        print("Has reached name")
         first_name = first_name.strip()
         last_name = last_name.strip()
         if len(first_name) <= 2 or len(last_name) <= 2:
             self.alert.append("First name and last name must both be at least 2 characters long")
 
     def account_type_validator(self, user_id, user_type):
+        print("Has reached acc type")
         if str(user_id).isdigit() == False:
             self.alert.append("User id must only contain numbers")
             return
         if len(str(user_id)) != 7:
             self.alert.append("User id must be 7 numbers long")
         identifier = str(user_id)[:3]
-        print(f" the first three are: {identifier}")
         if identifier == "233" and user_type != "Student":
             self.alert.append("You are a student, please create a student account")
         elif identifier == "412" and user_type != "Coordinator":
@@ -37,6 +39,7 @@ class Login_validation:
             self.alert.append("Invalid Id")
 
     def password_validator(self, password1, password2):
+        print("Has reached password")
         regex = r'^(?=.*[$%&@!€_-?/\£])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
         
         if password1 != password2:
@@ -53,12 +56,14 @@ class Login_validation:
                 self.alert.append("Your password needs both upper and lowercase letters")
     
     def email_validator(self, email):
+        print("Has reached email")
         regex = r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Za-z]{2,})+'
         
         if not re.search(regex, email):
             self.alert.append("Invalid email")
         
     def username_validator(self, user_name):
+        print("Has reached username")
         regex = "^[A-Za-z0-9_-]*$"
         if len(user_name) < 8:
             self.alert.append("Username must be at least 8 characters long")
@@ -68,6 +73,7 @@ class Login_validation:
             self.alert.append("Username must contain at least one number")
             
     def phone_number_validator(self, phone_number):
+        
         try:
             int(phone_number[1:])
             int(str(phone_number[0]))

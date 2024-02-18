@@ -87,6 +87,7 @@ class Login_verification:
 
     def Sign_up(self, user_id, user_name, phone_number, password, first_name, last_name, email, user_type):
         # Establish connection
+        print("sign up has been reached")
         conn = sqlite3.connect(DB_PATH)
         
 
@@ -150,7 +151,5 @@ class Login_verification:
           statuses = list(chain.from_iterable(cursor.fetchall()))
           if statuses[0] == 1 and statuses[1] == 0:
               return "Pending"
-          elif statuses[0] == 0 and statuses[1] == 0:
-              return "Rejected"
           else: 
               return True

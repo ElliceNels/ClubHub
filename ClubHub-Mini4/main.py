@@ -78,11 +78,11 @@ def signupValidationRoute():
         user_type = request.form.get("usertype")
 
         sign_up_validator = Login_validation()
-        alerts = sign_up_validator.signupValidation(first_name, last_name, user_id, email, phone_number, user_name, password1,
+        alerts = sign_up_validator.signup_validation(first_name, last_name, user_id, email, phone_number, user_name, password1,
                                                   password2, user_type)
         if alerts == []:
             sign_up_verfier = Login_verification()
-            if sign_up_verfier.SignUp(user_id, user_name, phone_number, password1, first_name, last_name, email, user_type):
+            if sign_up_verfier.Sign_up(user_id, user_name, phone_number, password1, first_name, last_name, email, user_type):
                 return redirect(url_for('login'))
             else:
                 return render_template('signup.html', warning=sign_up_verfier.alert)
@@ -162,7 +162,7 @@ def changeDetailsRoute():
         else:
             table = "USER_DETAILS"
         user_information_handler = User()
-        user_information_handler.updateUserInformation(table, column, new_value, user_id)
+        user_information_handler.update_user_information(table, column, new_value, user_id)
         return redirect(url_for('updateStudentProfileDisplay'))
 
 
@@ -190,27 +190,34 @@ def UpdateProfile():
 @app.route('/Admin')
 def showAdmin():
     admin_info = Admin()
-    userList = admin_info.get_user_List(1, 0)
+    userList = admin_info.get_user_list(1, 0)
     return render_template('Admin.html', userList=userList)
 
 
 @app.route('/approvalform', methods=["POST"])
 def approvalFormRoute():
     if request.method == "POST":
-        status = int(request.form.get("status"))
-        User_id = int(request.form.get("user"))
-        AdminManagement = Admin()
-        AdminManagement.individual_approve_or_reject(User_id, status)
+        user_id = int(request.form.get("user"))
+        admin_management = Admin()
+        admin_management.individual_approve(user_id)
         return redirect(url_for('showAdmin'))
-
-
-@app.route('/deletionform', methods=["POST"])
-def deletionFormRoute():
+ 
+@app.route('/predeletionform', methods=["POST"])
+def predeletionformroute():
     if request.method == "POST":
-        status = int(request.form.get("status"))
-        User_id = int(request.form.get("user"))
-        AdminManagement = Admin()
-        AdminManagement.individual_approve_or_reject(User_id, status)
+        user_id = int(request.form.get("user"))
+        admin_management = Admin()
+        admin_management.individual_reject(user_id)
+        return redirect(url_for('showAdmin'))
+        
+
+
+@app.route('/postdeletionform', methods=["POST"])
+def postdeletionFormRoute():
+    if request.method == "POST":
+        user_id = int(request.form.get("user"))
+        admin_management = Admin()
+        admin_management.individual_reject(user_id)
         return redirect(url_for('showApprovedUsers'))
 
 
@@ -225,7 +232,6 @@ def showApprovedUsers():
 def massApprovalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
-
         AdminManagement = Admin()
         AdminManagement.mass_approve(status)
         return redirect(url_for('showAdmin'))
@@ -238,8 +244,17 @@ def UserDetails():
         UserInfo = Admin()
         userinformation = UserInfo.get_user_details(UserID)
         return render_template('UserDetails.html', userinformation=userinformation)
-
-
+    
+@app.route('/UserClubs', methods=["POST"])
+def UserClubsRoute():
+    if request.method == "POST":
+        user_id = request.form.get("user")
+        clubMembership = Verification.clubMemberships(user_id)
+        if clubMembership == None:
+            return redirect(url_for('showApprovedUsers'))
+        else:
+            return render_template('UserClubs.html', clubMembership=clubMembership)
+    
 #########################################################################################Inbox#########################################################################
 @app.route('/EventRequests')
 def eventRequests():

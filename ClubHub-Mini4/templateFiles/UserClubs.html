@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUpRequests</title>
+    
+    <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <!-- SIDE NAVBAR -->
+    <nav class = sidenavbar>
+    </nav>
+
+    <!-- NAVBAR -->
+    <ul class = navbar>
+        <a href="/clubs_display">Clubs</a>
+        <a href="/EventMain">Events</a>
+        <a href="/Inbox">Inbox</a>
+        <a href="/Profile">Profile</a>
+    </ul>
+
+<main>
+
+    <!-- MAIN STUFF -->
+    <div class="content">
+
+
+
+        <!-- TITLE -->
+        <h1>Clubs</h1>
+        <br>
+
+        <!-- MAIL -->
+        {% for clubs in clubMembership %}
+        <div class="mail">
+
+            <div class="left">
+
+                <h2>{{clubs}}</h2>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+</main>
+</body>
+</html>
+
+
+
+</main>
+</body>
+</html>

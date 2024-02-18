@@ -80,3 +80,31 @@
     justify-self: center;
     align-self: center;
 }
+#clubs{
+    border: 3px solid white;
+    font-family: Signika Negative;
+    font-size: 1.25em;
+    background-color: #FA991C;
+    color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    text-decoration: none;
+    grid-area: 8/3/10/10;
+    justify-self: center;
+    align-self: flex-start;
+    width: 200px;
+    height: 50px;
+
+
+}
+
+
+#clubs:hover {
+    border: 3px solid black;
+    font-family: Signika Negative;
+    font-size: 1.25em;
+    background-color: #FA991C;
+    color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    text-decoration: none;
+
+}
