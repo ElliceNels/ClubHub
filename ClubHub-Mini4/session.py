@@ -2,7 +2,7 @@ from Verification import Verification
 
 class Session:
 
-    def __innit__(self):
+    def __init__(self):
         self.userId = None
         self.isCoord = False
         self.isAdmin = False

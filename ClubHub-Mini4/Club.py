@@ -1,7 +1,6 @@
 import sqlite3
 from Verification import Verification
 from Coordinator import Coordinator
-import os
 from constants import DB_PATH
 
 
