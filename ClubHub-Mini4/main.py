@@ -95,7 +95,9 @@ def signupValidationRoute():
 @app.route('/club_mainpage/<club_name>')
 def club_mainpage(club_name):
     club_member_info = Coordinator.display_members(club_name)
-    return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
+    if Verification.coordinatingClub(club_name, user_session.getUser_id()) == club_name:
+        return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
+    return clubs_display()
 
 
 @app.route('/clubs_display', methods=["GET", "POST"])
