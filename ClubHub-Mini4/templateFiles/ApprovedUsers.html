@@ -43,7 +43,15 @@
 
                 <h2>{{user[1]}} {{user[2]}}</h2>
                 <p>{{user[3]}}</p>
-
+            <div id = "options">
+                <form action="/UserDetails" method="POST">
+                <button type="submit" name ="userdeets" value="{{user[0]}}" id="userdeets">User Details</button>
+                </form>
+                <form action="/UserClubs" method="POST">
+                    <input type="hidden" value="{{ user[0] }}" name="user">
+                    <button type="submit" name="status" id="clubs">Clubs</button>
+                </form>
+            </div>
             </div>
 
 
@@ -52,6 +60,7 @@
                     <input type="hidden" value="{{ user[0] }}" name="user">
                     <button type="submit" name="status" class="button">Delete</button>
                 </form>
+
             </div>
 
         </div>
