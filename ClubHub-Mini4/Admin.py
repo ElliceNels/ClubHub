@@ -76,11 +76,7 @@ class Admin:
     def get_user_details(self, user_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        cursor.execute('''SELECT ud.user_id, ud.firstname, ud.lastname, ul.username, ud.email,contact_number
-        FROM USER_DETAILS as ud
-        INNER JOIN USER_LOGIN as ul
-        ON ud.User_id = ul.User_id
-        WHERE ud.User_id = ?;''', (user_id,))
+        cursor.execute('''SELECT * FROM USER_INFORMATION WHERE User_id = ?''', (user_id,))
         userinformation = list(chain.from_iterable(cursor.fetchall()))
         cursor.close()
         conn.close()

@@ -233,8 +233,17 @@ def UserDetails():
         UserInfo = Admin()
         userinformation = UserInfo.get_user_details(UserID)
         return render_template('UserDetails.html', userinformation=userinformation)
-
-
+    
+@app.route('/UserClubs', methods=["POST"])
+def UserClubsRoute():
+    if request.method == "POST":
+        user_id = request.form.get("user")
+        clubMembership = Verification.clubMemberships(user_id)
+        if clubMembership == None:
+            return redirect(url_for('showApprovedUsers'))
+        else:
+            return render_template('UserClubs.html', clubMembership=clubMembership)
+    
 #########################################################################################Inbox#########################################################################
 @app.route('/EventRequests')
 def eventRequests():

@@ -151,7 +151,5 @@ class Login_verification:
           statuses = list(chain.from_iterable(cursor.fetchall()))
           if statuses[0] == 1 and statuses[1] == 0:
               return "Pending"
-          elif statuses[0] == 0 and statuses[1] == 0:
-              return "Rejected"
           else: 
               return True
