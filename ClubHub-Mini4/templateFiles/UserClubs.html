@@ -15,7 +15,7 @@
     <ul class = navbar>
         <a href="/clubs_display">Clubs</a>
         <a href="/EventMain">Events</a>
-        <a href="/Inbox">Inbox</a>
+        <a href="/Admin">Inbox</a>
         <a href="/Profile">Profile</a>
     </ul>
 
@@ -39,9 +39,18 @@
                 <h2>{{clubs}}</h2>
 
             </div>
+            <div class = "right">
+                <a href="{{ url_for('club_mainpage', club_name=clubs) }}" class="link">
+                <form action="" method="POST">
+                    <input type="hidden" value={{clubs}} name="club_link">
+                 </form>
+                 Information
+                </a>
+            </div>
 
         </div>
         {% endfor %}
+
 
     </div>
 
