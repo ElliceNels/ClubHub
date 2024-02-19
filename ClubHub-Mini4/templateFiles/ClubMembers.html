@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Approved Users</title>
-    
+    <title>ClubHub</title>
+
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <!-- SIDE NAVBAR -->
-    <nav class = sidenavbar>
+     <!-- SIDE NAVBAR -->
+     <nav class = sidenavbar>
         <ul>
-            <a class = "discrete" href="/Admin">SignUp Requests</a>
+            <a class = "discrete" href="/EventRequests">Event Requests</a>
+            <a class = "discrete" href="/ClubInbox">Club Requests</a>
         </ul>
     </nav>
 
@@ -31,36 +32,27 @@
 
 
         <!-- TITLE -->
-        <h1>Approved Users</h1>
+        <h1>Club Members</h1>
         <br>
 
 
         <!-- MAIL -->
-        {% for user in userList %}
+        {% for user in membersList %}
         <div class="mail">
 
             <div class="left">
 
                 <h2>{{user[1]}} {{user[2]}}</h2>
                 <p>{{user[3]}}</p>
-            <div id = "options">
-                <form action="/UserDetails" method="POST">
-                <button type="submit" name ="userdeets" value="{{user[0]}}" id="userdeets">User Details</button>
-                </form>
-                <form action="/UserClubs" method="POST">
-                    <input type="hidden" value="{{ user[0] }}" name="user">
-                    <button type="submit" name="status" id="clubs">Clubs</button>
-                </form>
-            </div>
+
             </div>
 
 
             <div class="right">
-                <form action="/postdeletionform" method="POST">
+                <form action="/memberremovalform" method="POST">
                     <input type="hidden" value="{{ user[0] }}" name="user">
-                    <button type="submit" name="status" class="button">Delete</button>
+                    <button type="submit" name="status" value="0" class="button">Remove From Club</button>
                 </form>
-
             </div>
 
         </div>

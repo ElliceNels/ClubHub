@@ -10,8 +10,9 @@ from Admin import Admin
 from EventsRegister import register_events
 from Club import ClubCreationVerification, ClubDeletion
 from Coordinator import Coordinator
-from Inbox import Inbox
+from ClubInbox import ClubInbox
 from User import User
+from EventsInbox import EventsInbox
 from constants import DB_PATH
 
 # Provide template folder name
@@ -186,7 +187,7 @@ def UpdateProfile():
         return render_template('UpdateProfileStud.html')
 
 
-##############################################################################Admin Inbox##############################################################################
+##############################################################################Admin ClubInbox##############################################################################
 @app.route('/Admin')
 def showAdmin():
     admin_info = Admin()
@@ -254,8 +255,11 @@ def UserClubsRoute():
             return redirect(url_for('showApprovedUsers'))
         else:
             return render_template('UserClubs.html', clubMembership=clubMembership)
-    
-#########################################################################################Inbox#########################################################################
+
+
+
+#########################################################################################ClubInbox#########################################################################
+
 @app.route('/EventRequests')
 def eventRequests():
     if user_session.isAdministrator():
@@ -264,12 +268,12 @@ def eventRequests():
         return render_template('Admin.html', userList=userList)
     elif user_session.isCoordinator():
         print("moving to inboxevents.html")
-        Coordinfo = Inbox()
-        clubWaitingList = Coordinfo.getEventWaitList(user_session.getUser_id(), 1)
+        EventRequests = EventsInbox()
+        clubWaitingList = EventRequests.getEventWaitList(user_session.getUser_id(), 1)
         return render_template('InboxEvents.html', clubWaitingList=clubWaitingList)
 
 
-@app.route('/Inbox')
+@app.route('/ClubInbox')
 def InboxRoute():
     print("in inbox")
     if user_session.isAdministrator():
@@ -277,9 +281,15 @@ def InboxRoute():
         userList = AdminInfo.get_user_list(1, 0)
         return render_template('Admin.html', userList=userList)
     elif user_session.isCoordinator():
-        Coordinfo = Inbox()
+        Coordinfo = ClubInbox()
         clubWaitingList = Coordinfo.clubApprovalList(user_session.getUser_id(), 1)
-        return render_template('Inbox.html', clubWaitingList=clubWaitingList)
+        return render_template('ClubInbox.html', clubWaitingList=clubWaitingList)
+
+@app.route('/ClubMembers')
+def clubMembers():
+        Coordinfo = ClubInbox()
+        membersList = Coordinfo.membersList(user_session.getUser_id(), 0)
+        return render_template('ClubMembers.html', membersList=membersList)
 
 
 @app.route('/clubjoinform', methods=["POST"])
@@ -287,7 +297,7 @@ def clubJoinFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
         User_id = int(request.form.get("user"))
-        Inboxinfo = Inbox()
+        Inboxinfo = ClubInbox()
         Inboxinfo.individualapproveOrReject(User_id, status)
         return redirect(url_for('InboxRoute'))
 
@@ -297,8 +307,8 @@ def eventJoinFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
         User_id = int(request.form.get("user"))
-        Inboxinfo = Inbox()
-        Inboxinfo.individualapproveOrRejectE(User_id, status)
+        EventJoin = EventsInbox()
+        EventJoin.individualapproveOrRejectE(User_id, status)
         return redirect(url_for('InboxRoute'))
 
 
@@ -307,7 +317,7 @@ def clubApprovalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
 
-        Inboxinfo = Inbox()
+        Inboxinfo = ClubInbox()
         Inboxinfo.massapprove(status)
         return redirect(url_for('InboxRoute'))
 
@@ -317,9 +327,18 @@ def eventApprovalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
 
-        Inboxinfo = Inbox()
-        Inboxinfo.massapproveE(status)
+        EventsApproval = EventsInbox()
+        EventsApproval.massapproveE(status)
         return redirect(url_for('InboxRoute'))
+
+@app.route('/memberremovalform', methods=["POST"])
+def memberRemovalFormRoute():
+    if request.method == "POST":
+        status = int(request.form.get("status"))
+        User_id = int(request.form.get("user"))
+        InboxInfo = ClubInbox()
+        InboxInfo.individualapproveOrReject(User_id, status)
+        return redirect(url_for('clubMembers'))
 
 
 ##############################################################################Events###################################################################################
