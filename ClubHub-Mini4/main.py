@@ -55,18 +55,21 @@ def login_validation_route():
         user_name = request.form.get("usernamebar").strip()
         password1 = request.form.get("password1bar").strip()
         login_verifier = Login_verification()
-        user_id = int(login_verifier.get_user_id_from_username(user_name))
-        if login_verifier.Login(user_id, user_name, password1):
-            approval_status = login_verifier.approval_status(user_id)
-            if approval_status == True:
-                user_session.login(user_id)
+        user_id = login_verifier.get_user_id_from_username(user_name)
+        if user_id != False:
+            if login_verifier.Login(user_id, user_name, password1):
+                approval_status = login_verifier.approval_status(user_id)
+                if approval_status == True:
+                    user_session.login(user_id)
 
-                print(user_session.isAdministrator())
-                return EventMain()
+                    print(user_session.isAdministrator())
+                    return EventMain()
+                else:
+                    return render_template('postLogin.html', approvalmessage=approval_status)
             else:
-                return render_template('postLogin.html', approvalmessage=approval_status)
+                return render_template('login.html', warning=login_verifier.alert)
         else:
-            return render_template('login.html', warning=login_verifier.alert)
+            return render_template('login.html', warning="Account does not exist")
 
 
 @app.route('/SignUpProcess_Form', methods=["POST"])
