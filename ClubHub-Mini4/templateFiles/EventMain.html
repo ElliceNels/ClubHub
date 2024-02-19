@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/9a80590ec1.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    
     <div class="logo">
         <span class="clubhub-text">ClubHub</span>
         <i class="fa-solid fa-circle-nodes"></i>
@@ -15,7 +16,7 @@
     <div class="header">
     <h1> Events</h1>
     </div>
-
+    
 
     <nav class="navbar">
         <ul>
@@ -25,9 +26,7 @@
             <li><a href="/Profile">Profile</a></li>
         </ul>
      </nav>
-     <div class="image">
-        <img src="ClubHub-Mini4/staticFiles/field.jpg" alt=" ">
-     </div>
+     <div class="maincontent">
      <div class="datecontainer">
         <div class="date-list" id="dateList">
             {% for event in events %}
@@ -46,7 +45,7 @@
             {% endfor %}
         </div>
      </div>
-
+     </div>
 
 </body>
 </html>
