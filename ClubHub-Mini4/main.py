@@ -13,7 +13,7 @@ from Coordinator import Coordinator
 from Inbox import Inbox
 from User import User
 from constants import DB_PATH
-from EventMainPage import eventsmainpage
+from EventMainPage import eventsmainpage, eventDetails
 
 
 # Provide template folder name
@@ -30,6 +30,7 @@ user_session = Session()
 @app.route('/index')
 def index():
     return render_template('index.html')
+
 
 
 @app.route('/LoginProcess_Form', methods=["POST"])
@@ -238,9 +239,10 @@ def submit_form():
     return Profile()
 
 
-@app.route("/EventDetails")
-def EventDetails():
-    return render_template('EventDetails.html')
+@app.route("/EventDetails/<int:event_id>")
+def EventDetails(event_id):
+    event_details = eventDetails(event_id)
+    return render_template('EventDetails.html', event_details=event_details)
 
 
 def validate_event_form(EventTitle,Description, Date, Time, Venue):

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>  Event Details </title>
-    <link rel="stylesheet" href="staticFiles/DetailsStyle.CSS" />
+    <link rel="stylesheet" href="{{ url_for('static' , filename='DetailsStyle.CSS') }}" />
     <script src="https://kit.fontawesome.com/9a80590ec1.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -25,6 +25,21 @@
         </ul>
      </nav>
 
+     <div class="event-details-container">
+        {% for detail in event_details %}
+            <div class="event-detail">
+                <h2>{{ detail[0] }}</h2> <!-- event Title -->
+                <p>Date: {{ detail[3] }}</p> <!-- Date -->
+                <p>Time: {{ detail[1] }}</p> <!-- Time -->
+                <p>Description: {{ detail[2] }}</p> <!-- Description -->
+                <p>Venue: {{ detail[4] }}</p> <!--  Venue -->
+                <p>Club: {{ detail[5] }}</p> <!-- Club Name -->
+            </div>
+        {% endfor %}
+
+        
+
+    </div>
 
 
 </body>
