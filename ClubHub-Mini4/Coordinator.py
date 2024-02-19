@@ -131,5 +131,3 @@ class Coordinator:
         except sqlite3.Error as e:
             print("error: ", e )
 
-
-print(Coordinator.display_members('Chess'))
