@@ -133,15 +133,16 @@ def clubs_display():
 @app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
 
-    if request.method == 'POST':
+    if not user_session.isAdministrator():
+        if request.method == 'POST':
 
-        # get data from html from to create a new club
-        club_name = request.form['club-name']
-        club_description = request.form['description']
-        ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
-    else:
-        # if user has a club, display warning
-        print('you have a club.')
+            # get data from html from to create a new club
+            club_name = request.form['club-name']
+            club_description = request.form['description']
+            ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
+        else:
+            # if user has a club, display warning
+            print('you have a club.')
 
     return render_template('create_club.html')
 
