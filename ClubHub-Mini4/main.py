@@ -112,6 +112,9 @@ def club_mainpage(club_name):
 
         return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
     
+    if user_session.isAdministrator():
+        return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
+    
     return clubs_display()
 
 
