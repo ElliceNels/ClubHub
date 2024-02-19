@@ -112,7 +112,7 @@ def db_startup():
     ##triggers
 
     cursor.execute('''
-    CREATE TRIGGER updatelogin AFTER UPDATE ON USER_LOGIN
+    CREATE TRIGGER IF NOT EXISTS updatelogin AFTER UPDATE ON USER_LOGIN
     BEGIN
         UPDATE USER_LOGIN
         SET Updated = CURRENT_TIMESTAMP
@@ -122,7 +122,7 @@ def db_startup():
     print("Update login trigger created successfullly")
 
     cursor.execute(''' 
-    CREATE TRIGGER updateCoordinators AFTER UPDATE ON COORDINATORS 
+    CREATE TRIGGER IF NOT EXISTS updateCoordinators AFTER UPDATE ON COORDINATORS 
     BEGIN
         UPDATE COORDINATORS
         SET Updated = CURRENT_TIMESTAMP
@@ -131,7 +131,7 @@ def db_startup():
     print("Update coordinators trigger created successfullly")
 
     cursor.execute('''
-    CREATE TRIGGER updatedetails AFTER UPDATE ON USER_DETAILS
+    CREATE TRIGGER IF NOT EXISTS updatedetails AFTER UPDATE ON USER_DETAILS
     BEGIN
         UPDATE USER_DETAILS
         SET Updated = CURRENT_TIMESTAMP
@@ -141,7 +141,7 @@ def db_startup():
     print("Update details trigger created successfullly")
 
     cursor.execute('''
-    CREATE TRIGGER updateevents AFTER UPDATE ON EVENTS
+    CREATE TRIGGER IF NOT EXISTS updateevents AFTER UPDATE ON EVENTS
     BEGIN 
         UPDATE EVENTS
         SET Updated = CURRENT_TIMESTAMP
@@ -152,7 +152,7 @@ def db_startup():
 
     cursor.execute('''
     
-    CREATE TRIGGER update_clubs AFTER UPDATE ON CLUBS
+    CREATE TRIGGER IF NOT EXISTS update_clubs AFTER UPDATE ON CLUBS
     BEGIN
         UPDATE CLUBS
         SET Updated_at = CURRENT_TIMESTAMP
@@ -163,7 +163,7 @@ def db_startup():
 
     cursor.execute('''
                 
-    CREATE TRIGGER updated_trigger_club_memberships AFTER UPDATE ON CLUB_MEMBERSHIP
+    CREATE TRIGGER IF NOT EXISTS updated_trigger_club_memberships AFTER UPDATE ON CLUB_MEMBERSHIP
     BEGIN
         UPDATE CLUB_MEMBERSHIP
         SET Updated = CURRENT_TIMESTAMP
@@ -173,7 +173,7 @@ def db_startup():
     print("Update club membership trigger created successfullly")
 
     cursor.execute('''
-    CREATE TRIGGER updated_trigger_event_attendees AFTER UPDATE ON EVENT_ATTENDEES
+    CREATE TRIGGER IF NOT EXISTS updated_trigger_event_attendees AFTER UPDATE ON EVENT_ATTENDEES
     BEGIN
         UPDATE EVENT_ATTENDEES
         SET Updated = CURRENT_TIMESTAMP
@@ -182,7 +182,7 @@ def db_startup():
     conn.commit()
     print("Update event attendees trigger created successfullly")
 
-    cursor.execute('''CREATE TRIGGER Prevent_admin_deletion 
+    cursor.execute('''CREATE TRIGGER IF NOT EXISTS Prevent_admin_deletion 
     BEFORE DELETE ON USER_DETAILS
     BEGIN
         SELECT CASE
