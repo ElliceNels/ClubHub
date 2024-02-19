@@ -1,6 +1,7 @@
 import sqlite3
 
 from flask import Flask, render_template, request, redirect, url_for
+from databaseHandling import db_startup
 from LoginValidation import Login_validation
 from LoginVerification import Login_verification
 from Verification import Verification
@@ -23,8 +24,11 @@ club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "
                 "Frank Robinson", "Grace Lee", "Henry Davis", "Ivy Chen", "Jack Wilson", "Kelly Turner",
                 "Leo Martinez"]
 
+# session to store user_id for time logged in
 user_session = Session()
 
+# creates database if not existing
+db_startup()
 
 @app.route('/')
 @app.route('/index')
