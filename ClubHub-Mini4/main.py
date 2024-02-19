@@ -339,7 +339,7 @@ def eventApprovalFormRoute():
         EventsApproval.massapproveE(status)
         return redirect(url_for('InboxRoute'))
 
-@app.route('/memberremovalform', methods=["POST"])
+@app.route('/memberremovalform', methods=["GET", "POST"])
 def memberRemovalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))

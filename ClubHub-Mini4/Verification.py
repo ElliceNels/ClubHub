@@ -77,8 +77,8 @@ class Verification:
         cursor = conn.cursor()
 
         details = cursor.execute(
-            '''SELECT Club_name FROM CLUB_MEMBERSHIP cm INNER JOIN CLUBS c ON cm.Club_id = c.Club_id WHERE cm.User_id = ?''',
-            (User_id,))
+            '''SELECT Club_name FROM CLUB_MEMBERSHIP cm INNER JOIN CLUBS c ON cm.Club_id = c.Club_id WHERE cm.User_id = ? AND Is_approved = ?''',
+            (User_id, 1))
         clubMembership = []
         for row in details:
             for club in row:

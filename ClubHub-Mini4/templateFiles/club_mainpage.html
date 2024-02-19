@@ -41,8 +41,10 @@
                         <span>Phone Number: {{ member_info[3] }}</span><br>
                         <span>Email: {{ member_info[4] }}</span>
                     </p>
-                    <button class="remove-button" id="remove-member">Remove
-                    </button>
+                    <form action="/memberremovalform" method="POST">
+                    <input type="hidden" value="{{ member_info[5] }}" name="user">
+                    <button type="submit" name="status" value="0" class="button">Remove</button>
+                </form>
                 </div>
                 {% endfor %}
             </div>

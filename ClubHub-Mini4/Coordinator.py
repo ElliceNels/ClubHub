@@ -117,14 +117,19 @@ class Coordinator:
         club_id = Coordinator.club_getter(club)
 
         try:
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+            with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
             cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? ''', (club_id,))
             member_ids = cur.fetchall()
             member_details = [Verification.profileDetails(member[0]) for member in member_ids]
+
+            for members in member_details:
+                pop = cur.execute(''' SELECT User_id FROM USER_LOGIN Where Username = ?''', (members[2],))
+                members.append(pop.fetchall()[0][0])
             return member_details
 
         except sqlite3.Error as e:
             print("error: ", e )
 
 
+print(Coordinator.display_members('Chess'))
