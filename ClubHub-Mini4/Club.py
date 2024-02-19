@@ -28,6 +28,27 @@ class ClubCreationVerification:
         except sqlite3.Error as e:
             print("error: ", e)
 
+    def club_name_checker(club_name):
+        try: 
+    
+            with sqlite3.connect(DB_PATH) as conn:
+                cur = conn.cursor()
+
+                cur.execute(''' SELECT Club_name FROM CLUBS WHERE Club_name = ? ''', (club_name,))
+                verify = cur.fetchone()
+
+                if verify:
+                    print('club exists')
+                    return True
+                
+                else:
+                    print('club doesnt exist')
+                    return False
+                
+        except sqlite3.Error as e:
+            print("error: ", e)
+
+
 
     #function that lets the user creates new clubs 
     def create_new_club( club_name, club_description, user_id):
@@ -41,7 +62,7 @@ class ClubCreationVerification:
 
                 if ClubCreationVerification.valid_coordinator(user_id, coordinator_id):
 
-                    if not ClubCreationVerification.existing_club(user_id):
+                    if not ClubCreationVerification.existing_club(user_id) and not ClubCreationVerification.club_name_checker(club_name):
                         cur.execute(''' INSERT INTO CLUBS (Club_name, Coordinator_id, Description)
                                     VALUES ( ?, ?, ? ) ''', (club_name, coordinator_id, club_description,))
                         
