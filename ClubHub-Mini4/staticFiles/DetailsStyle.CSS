@@ -92,15 +92,20 @@
     float: left;
 }
 .event-details-container{
-    margin: 20px;
+    margin: 10px;
     padding: 80px 10px; /*add top and bottomt padding*/
+    position: relative;
 }
 
 .event-detail{
+    margin-top: 20px;
     padding:10px;
     border: 1px solid #023047;
-    margin-bottom:20px;
+    margin-bottom:10px;
     text-transform: capitalize;
+    border-radius: 10px;
+    font-family: 'Signika Negative';
+    
 }
 .content{
     position: fixed;
@@ -112,9 +117,29 @@
     background-size:cover;
     background-position: center center;
    z-index:0;
+   
 }
 .content-overlay{
     position: relative;
     z-index: 1000;
     padding-top: calc(50px + 10px);
+}
+
+.Clubinfo{
+    margin-left: 10px;
+    border: 1px solid #023047;
+    padding: 10px;
+    text-transform: capitalize;
+    width: 60%;
+    border-radius: 10px;
+    font-family: 'Signika Negative';
+
+}
+
+#eventbutton{
+    background-color: #FFB703;
+    border-radius: 10px;
+    position: absolute;
+    padding: 10px;
+    color:#FBF3F2;
 }
