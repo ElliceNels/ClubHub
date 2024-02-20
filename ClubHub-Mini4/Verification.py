@@ -53,6 +53,8 @@ class Verification:
 
         coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
         TCoordId = coordId.fetchone()
+        if not TCoordId:
+            return 'not a coord'
         for row in TCoordId:
             coordId = row
         conn.close()
