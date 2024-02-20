@@ -96,6 +96,12 @@ def signupValidationRoute():
                 return render_template('signup.html', warning=sign_up_verfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
+        
+
+@app.route('/logout')
+def user_logout():
+    user_session.logout()
+    return render_template('/index')
 
 
 ##############################################################################Clubs##############################################################################
@@ -108,10 +114,6 @@ def club_mainpage(club_name):
     if Verification.coordinatingClub(club_name, user_session.getUser_id()) == club_name:
 
         if request.method == "POST":
-
-            if "logout" in request.form:        
-                user_session.logout()
-                return redirect(url_for('index'))
 
             club_name = request.form.get("delete_club")
             ClubDeletion.deleteClub(club_name)
@@ -132,10 +134,6 @@ def clubs_display():
     if user_session.isCoordinator() or user_session.isAdministrator():
 
         if request.method == "POST":
-            if "logout" in request.form:        
-                user_session.logout()
-                return redirect(url_for('index'))
-            
             club_name = request.form.get("club_link")
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     
@@ -154,10 +152,6 @@ def create_club():
 
     if not user_session.isAdministrator():
         if request.method == 'POST':
-
-            if "logout" in request.form:        
-                user_session.logout()
-                return redirect(url_for('index'))
 
             # get data from html from to create a new club
             club_name = request.form['club-name']

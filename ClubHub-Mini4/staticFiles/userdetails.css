@@ -108,3 +108,15 @@
     text-decoration: none;
 
 }
+.logout-button {
+    width: 5rem;
+    height: 2rem;
+    font-size: medium;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: #032539;
+    border-radius: 0.5rem;
+    text-align: center;
+    align-items: center;
+    text-decoration: none;
+}

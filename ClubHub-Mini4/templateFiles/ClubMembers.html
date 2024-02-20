@@ -2,56 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SignUpRequests</title>
-    
+    <title>ClubHub</title>
+
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <!-- SIDE NAVBAR -->
-    <nav class = sidenavbar>
+     <!-- SIDE NAVBAR -->
+     <nav class = sidenavbar>
+        <ul>
+            <a class = "discrete" href="/EventRequests">Event Requests</a>
+            <a class = "discrete" href="/ClubInbox">Club Requests</a>
+        </ul>
     </nav>
 
     <!-- NAVBAR -->
-    <ul class = navbar>
+    <nav class = navbar>
         <a href="/clubs_display">Clubs</a>
         <a href="/EventMain">Events</a>
-        <a href="/Admin">Inbox</a>
+        <a href="/ClubInbox">Inbox</a>
         <a href="/Profile">Profile</a>
         <a class="logout-button" href="/index">Logout</a>
-    </ul>
+    </nav>
+
 
 <main>
+
 
     <!-- MAIN STUFF -->
     <div class="content">
 
 
-
         <!-- TITLE -->
-        <h1>Clubs</h1>
+        <h1>Club Members</h1>
         <br>
 
+
         <!-- MAIL -->
-        {% for clubs in clubMembership %}
+        {% for user in membersList %}
         <div class="mail">
 
             <div class="left">
 
-                <h2>{{clubs}}</h2>
+                <h2>{{user[1]}} {{user[2]}}</h2>
+                <p>{{user[3]}}</p>
 
             </div>
-            <div class = "right">
-                <a href="{{ url_for('club_mainpage', club_name=clubs) }}" class="link">
-                <form action="" method="POST">
-                    <input type="hidden" value={{clubs}} name="club_link">
-                 </form>
-                 Information
-                </a>
+
+
+            <div class="right">
+                
             </div>
 
         </div>
         {% endfor %}
-
 
     </div>
 
@@ -60,8 +63,3 @@
 </body>
 </html>
 
-
-
-</main>
-</body>
-</html>
