@@ -305,12 +305,6 @@ def InboxRoute():
         club_waiting_list = coord_info.clubApprovalList(user_session.getUser_id(), 1)
         return render_template('ClubInbox.html', clubWaitingList=club_waiting_list)
 
-@app.route('/ClubMembers')
-def clubMembers():
-        coord_info = ClubInbox()
-        members_list = coord_info.membersList(user_session.getUser_id(), 0)
-        return render_template('ClubMembers.html', membersList=members_list)
-
 
 @app.route('/clubjoinform', methods=["POST"])
 def clubJoinFormRoute():
