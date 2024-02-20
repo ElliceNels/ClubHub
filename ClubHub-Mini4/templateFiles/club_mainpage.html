@@ -12,8 +12,11 @@
     <nav class="navigation-bar">
         <a class="nav-link" href="/clubs_display">Clubs</a>
         <a class="nav-link" href="/EventMain">Events</a>
-        <a class="nav-link" href="/Inbox">Inbox</a>
-        <a class="nav-link" href="/ProfileCoord">Profile</a>
+        <a class="nav-link" href="/ClubInbox">Inbox</a>
+        <a class="nav-link" href="/Profile">Profile</a>
+        <form method="post">
+            <button type="submit" name="logout" class="logout-button">logout</button>
+        </form>
 
     </nav>
     <div id="background">
@@ -41,8 +44,10 @@
                         <span>Phone Number: {{ member_info[3] }}</span><br>
                         <span>Email: {{ member_info[4] }}</span>
                     </p>
-                    <button class="remove-button" id="remove-member">Remove
-                    </button>
+                    <form action="/memberremovalform" method="POST">
+                    <input type="hidden" value="{{ member_info[5] }}" name="user">
+                    <button type="submit" name="status" value="0" class="remove-button">Remove</button>
+                </form>
                 </div>
                 {% endfor %}
             </div>
