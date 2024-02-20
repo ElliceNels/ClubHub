@@ -7,6 +7,7 @@ def db_startup():
     print('Database connected')
     cursor = conn.cursor()
     cursor.execute('PRAGMA foreign_keys = ON')
+
     ## tables
     cursor.execute('''CREATE TABLE IF NOT EXISTS CLUB_MEMBERSHIP (
         Membership_id INTEGER PRIMARY KEY AUTOINCREMENT,

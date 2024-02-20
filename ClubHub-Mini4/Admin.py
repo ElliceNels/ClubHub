@@ -77,8 +77,8 @@ class Admin:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         cursor.execute('''SELECT * FROM USER_INFORMATION WHERE User_id = ?''', (user_id,))
-        userinformation = list(chain.from_iterable(cursor.fetchall()))
+        user_information = list(chain.from_iterable(cursor.fetchall()))
         cursor.close()
         conn.close()
-        return userinformation
+        return user_information
 
