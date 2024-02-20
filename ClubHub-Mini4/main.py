@@ -108,6 +108,11 @@ def club_mainpage(club_name):
     if Verification.coordinatingClub(club_name, user_session.getUser_id()) == club_name:
 
         if request.method == "POST":
+
+            if "logout" in request.form:        
+                user_session.logout()
+                return redirect(url_for('index'))
+
             club_name = request.form.get("delete_club")
             ClubDeletion.deleteClub(club_name)
 
@@ -125,9 +130,15 @@ def club_mainpage(club_name):
 def clubs_display():
     # checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
+
         if request.method == "POST":
+            if "logout" in request.form:        
+                user_session.logout()
+                return redirect(url_for('index'))
+            
             club_name = request.form.get("club_link")
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
+    
     else:
         if request.method == "POST":
             club_name = request.form.get("club_name")
@@ -143,6 +154,10 @@ def create_club():
 
     if not user_session.isAdministrator():
         if request.method == 'POST':
+
+            if "logout" in request.form:        
+                user_session.logout()
+                return redirect(url_for('index'))
 
             # get data from html from to create a new club
             club_name = request.form['club-name']
