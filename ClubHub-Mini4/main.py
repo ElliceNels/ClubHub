@@ -16,6 +16,7 @@ from User import User
 from EventsInbox import EventsInbox
 from constants import DB_PATH
 from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event
+from StudInbox import listOfAprrovedEvents
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -204,7 +205,7 @@ def UpdateProfile():
         return render_template('UpdateProfileStud.html')
 
 
-##############################################################################Admin ClubInbox##############################################################################
+##############################################################################Admin Inbox##############################################################################
 @app.route('/Admin')
 def showAdmin():
     admin_info = Admin()
@@ -275,7 +276,7 @@ def UserClubsRoute():
 
 
 
-#########################################################################################ClubInbox#########################################################################
+#########################################################################################Inbox#########################################################################
 
 @app.route('/EventRequests')
 def eventRequests():
@@ -301,6 +302,9 @@ def InboxRoute():
         coord_info = ClubInbox()
         club_waiting_list = coord_info.clubApprovalList(user_session.getUser_id(), 1)
         return render_template('ClubInbox.html', clubWaitingList=club_waiting_list)
+    else:
+        all_approved_events = listOfAprrovedEvents(user_session.getUser_id())
+        return render_template('StudInbox.html', all_approved_events=all_approved_events)
 
 
 @app.route('/clubjoinform', methods=["POST"])
@@ -350,6 +354,9 @@ def memberRemovalFormRoute():
         inbox_info = ClubInbox()
         inbox_info.individualapproveOrReject(user_id, status)
         return redirect(url_for('clubMembers'))
+
+# @app.route('/StudInbox')
+# def StudInbox():
 
 
 ##############################################################################Events###################################################################################

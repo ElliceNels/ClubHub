@@ -1,6 +1,7 @@
 import sqlite3
 from constants import DB_PATH
 
+
 def db_startup():
     conn = sqlite3.connect(DB_PATH)
     print('Database connected')
@@ -193,7 +194,7 @@ def db_startup():
     conn.commit()
     print(" admin undeleteable trigger created")
 
-    #views
+    # views
 
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
@@ -228,6 +229,11 @@ def db_startup():
                 WHERE cm.Is_approved = 1;
                    ''')
 
-    cursor.close()
+    cursor.execute('''CREATE VIEW IF NOT EXISTS SUB_EVENT_DETAILS AS 
+        SELECT ea.User_id, e.EventTitle, e.EventDate, ea.Is_approved
+        FROM EVENT_ATTENDEES ea INNER JOIN EVENTS e
+        ON e.Event_id = ea.Event_id;''')
+    conn.commit()
+
     cursor.close()
     conn.close()
