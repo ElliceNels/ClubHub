@@ -15,6 +15,7 @@ from ClubInbox import ClubInbox
 from User import User
 from EventsInbox import EventsInbox
 from constants import DB_PATH
+from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -33,8 +34,6 @@ def index():
 
 
 
-##############################################################################Login#################################################################################
-
 @app.route('/signup.html')
 def signUp():
     return render_template('signup.html')
@@ -43,6 +42,8 @@ def signUp():
 @app.route('/login.html')
 def login():
     return render_template('login.html')
+
+
 
 
 @app.route('/LoginProcess_Form', methods=["POST"])
@@ -353,9 +354,23 @@ def memberRemovalFormRoute():
 
 ##############################################################################Events###################################################################################
 
-@app.route("/EventDetails")
-def EventDetails():
-    return render_template('EventDetails.html')
+@app.route("/EventDetails/<int:event_id>" , methods=['GET', 'POST'])
+def EventDetails(event_id):
+    event_details = eventDetails(event_id)
+    Club_id = event_details[0][5]
+    club_info_data = club_info(Club_id)
+    success_message = None
+   
+    if request.method == 'POST':
+        user_id = user_session.getUser_id()
+        if user_id:
+            signup_event(Club_id, user_id, event_id)
+
+            success_message = 'You have signed up for the event!'
+            
+    
+
+    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data, success_message=success_message)
 
 
 @app.route("/CreateEvents", methods=['GET', 'POST'])
@@ -394,8 +409,10 @@ def CreateEvents():
 
 @app.route("/EventMain")
 def EventMain():
-    dates = [datetime.now() + timedelta(days=i) for i in range(16)]
-    return render_template('EventMain.html', dates=dates)
+    events = eventsmainpage()
+    event_dates = [datetime.now() + timedelta(days=i) for i in range(16)]
+    print(events)
+    return render_template('EventMain.html', event_dates=event_dates, events=events, datetime=datetime)
 
 
 def validate_event_form(EventTitle, Description, Date, Time, Venue):
