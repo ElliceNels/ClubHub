@@ -364,9 +364,8 @@ def EventDetails(event_id):
     if request.method == 'POST':
         user_id = user_session.getUser_id()
         if user_id:
-            signup_event(Club_id, user_id, event_id)
-
-            success_message = 'You have signed up for the event!'
+            success_message = signup_event(Club_id, user_id, event_id)
+            
             
     
 
