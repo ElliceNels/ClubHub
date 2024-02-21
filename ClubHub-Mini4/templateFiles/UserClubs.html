@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUpRequests</title>
+    
+    <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <!-- SIDE NAVBAR -->
+    <nav class = sidenavbar>
+    </nav>
+
+    <!-- NAVBAR -->
+    <ul class = navbar>
+        <a href="/clubs_display">Clubs</a>
+        <a href="/EventMain">Events</a>
+        <a href="/Admin">Inbox</a>
+        <a href="/Profile">Profile</a>
+        <a class="logout-button" href="/logout">Logout</a>
+    </ul>
+
+<main>
+
+    <!-- MAIN STUFF -->
+    <div class="content">
+
+
+
+        <!-- TITLE -->
+        <h1>Clubs</h1>
+        <br>
+
+        <!-- MAIL -->
+        {% for clubs in clubMembership %}
+        <div class="mail">
+
+            <div class="left">
+
+                <h2>{{clubs}}</h2>
+
+            </div>
+            <div class = "right">
+                <a href="{{ url_for('club_mainpage', club_name=clubs) }}" class="link">
+                <form action="" method="POST">
+                    <input type="hidden" value={{clubs}} name="club_link">
+                 </form>
+                 Information
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+
+</main>
+</body>
+</html>
+
+
+
+</main>
+</body>
+</html>

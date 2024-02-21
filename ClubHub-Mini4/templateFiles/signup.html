@@ -22,9 +22,9 @@
               <form class="formlayout" action="SignUpProcess_Form" method="POST" >
                 <input type="text" id="firstnamebar" name="firstnamebar" placeholder="First Name" required>
                 <input type="text" id="lastnamebar" name="lastnamebar" placeholder="Last Name" required>
-                <input type="text" id="IDbar" name="IDbar" placeholder="ID Number" required>
-                <input type="text" id="emailbar" name="emailbar" placeholder="Email" required>
-                <input type="text" id="phonenumberbar" name="phonenumberbar" placeholder="Phone number" required>
+                <input type="number" id="IDbar" name="IDbar" placeholder="ID Number" required>
+                <input type="email" id="emailbar" name="emailbar" placeholder="Email" required>
+                <input type="number" id="phonenumberbar" name="phonenumberbar" placeholder="Phone number" required>
                 <input type="text" id="usernamebar" name="usernamebar" placeholder="Username" required>
                 <input type="password" id="password1bar" name="password1bar" placeholder="Password" required>
                 <input type="password" id="password2bar" name="password2bar" placeholder="Re-enter Password" required>
@@ -33,10 +33,17 @@
                 <input type="submit" id="submit" name="submit" placeholder="submit" >
               </form>
           </div>
+
           <p id="warningbox">{{warning}}</p>
           <div id="rightside"></div>
           <footer class="footer"></i></footer>
           <a href="index.html" id="homelink"><i class="fa-solid fa-arrow-left"></i></a>
+          <div class="requirements">
+              <p id ="usernamereq"> Username must contain at least 8 characters</p>
+              <p id="passwordreq"> Password must contain at least 8 characters; at least one number, one special character and upper
+               and lowercase letters
+              </p>
+              </div>
         </div>
  </body>
 </html>

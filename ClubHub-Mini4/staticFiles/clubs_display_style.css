@@ -25,6 +25,7 @@ body {
     font-family: "Fjalla One" ;
     font-size: 4.375rem;
     text-align: center;
+    margin-top: 7rem;
 }
 .fa-circle-nodes{
     color: #032539;
@@ -38,11 +39,16 @@ body {
 
 }
 .navigation-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     background-color: #FA991C;
     padding: 1.25rem;
-    text-align: center;
     display: flex;
     justify-content: space-around;
+    z-index: 100;
     
 }
 .nav-link {
@@ -64,8 +70,12 @@ body {
 }
 .club-list {
     display: block;
-    margin: 0 auto;
-    height: 500px;
+    overflow: inherit;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: 30px;
+    padding: 30px;
 }
 .club-box {
     background-color: #1C768F ;
@@ -129,4 +139,20 @@ body {
     width: 6rem;
     height: 2rem;
     font-size: 1rem;
+}
+.logout-button {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: transparent;
+    text-align: center;
+    align-items: center;
+    text-decoration: none;
+    border: 0;
+    font-family: Signika Negative;
+}
+.logout-button:hover{
+    cursor: pointer;
 }

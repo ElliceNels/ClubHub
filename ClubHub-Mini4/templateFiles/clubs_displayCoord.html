@@ -8,14 +8,19 @@
     <title>Clubs Display</title>
 </head>
 <body>
-    <header class="header"> ClubHub<i class="fa-solid fa-circle-nodes"></i> </header>
+
     <nav class="navigation-bar">
         <a class="nav-link" href="/clubs_display">Clubs</a>
         <a class="nav-link" href="/EventMain">Events</a>
-        <a class="nav-link" href="/Inbox">Inbox</a>
+        <a class="nav-link" href="/ClubInbox">Inbox</a>
         <a class="nav-link" href="/Profile">Profile</a>
+        <a class="logout-button" href="/logout">Logout</a>
+        
     </nav>
-    <br>
+
+
+    <header class="header"> ClubHub<i class="fa-solid fa-circle-nodes"></i> </header>
+
     <br>
     <div id="background">
     <h1 id="clubs_header">
@@ -25,7 +30,10 @@
         {% for club in clubs %}
         <div class="club-box">
                 <div class="club-name">
-                    <a class="link" href="">
+                    <a href="{{ url_for('club_mainpage', club_name=club[0]) }}" class="link">
+                        <form method="post" action="">
+                            <input type="hidden" name="club_link" value="{{club[0]}}">
+                        </form>
                         {{club[0]}}
                     </a>
                 </div>
@@ -33,18 +41,18 @@
             <div class="coordinator-name">
                 {{club[2]}}
                 <br>
-                <br>
             </div>
             <div class="club-description">
                 <p>{{club[1]}}</p>
+                <br>
             </div>
         {% endfor %}
     </div>
     <br>
     <br>
     <div class="temp">
-        <a class="button" id ="create-club-button" href="{{ url_for('create_club') }}">create club</a>
-        <a class="button" id ="club-mainpage-button" href="{{ url_for('club_mainpage') }}">see club</a>
+        <a class="button" id ="create-club-button" href="{{ url_for('create_club') }}">create a new club</a>
+       
     </div>
     <br>
     <br>

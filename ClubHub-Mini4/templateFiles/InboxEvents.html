@@ -2,74 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Approved Users</title>
-    
+    <title>SignUpRequests</title>
+
     <link href="staticFiles\main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<main>
+
+
+
+
+
     <!-- SIDE NAVBAR -->
     <nav class = sidenavbar>
         <ul>
-            <a class = "discrete" href="/Admin">SignUp Requests</a>
+            <form action="/eventapprovalform" method="POST">
+             <button type="submit" name ="status" value="3" class = "discrete" onclick="alert('All Requests Approved')">Approve All</button>
+            <br>
+             </form>
+            <a class = "discrete" href="/ClubInbox">Club Requests</a>
         </ul>
     </nav>
-
-    <!-- NAVBAR -->
-    <nav class = navbar>
-        <a href="/clubs_display">Clubs</a>
-        <a href="/EventMain">Events</a>
-        <a href="/ClubInbox">Inbox</a>
-        <a href="/Profile">Profile</a>
-        <a class="logout-button" href="/logout">Logout</a>
-    </nav>
-
-
-<main>
 
 
     <!-- MAIN STUFF -->
     <div class="content">
 
+    <!-- NAVBAR -->
+    <ul class = navbar>
+        <a href="/clubs_display">Clubs</a>
+        <a href="/EventMain">Events</a>
+        <a href="/ClubInbox">Inbox</a>
+        <a href="/Profile">Profile</a>
+        <a class="logout-button" href="/logout">Logout</a>
+    </ul>
 
         <!-- TITLE -->
-        <h1>Approved Users</h1>
-        <br>
-
+        <h1>Event Requests</h1>
 
         <!-- MAIL -->
-        {% for user in userList %}
+        {% for user in clubWaitingList %}
         <div class="mail">
 
             <div class="left">
 
                 <h2>{{user[1]}} {{user[2]}}</h2>
                 <p>{{user[3]}}</p>
-            <div id = "options">
-                <form action="/UserDetails" method="POST">
+                <form action="/UserDeets" method="POST">
                 <button type="submit" name ="userdeets" value="{{user[0]}}" id="userdeets">User Details</button>
                 </form>
 
-                <form action="/UserClubs" method="POST">
-                    <input type="hidden" value="{{ user[0] }}" name="user">
-                    <button type="submit" name="status" id="clubs">Clubs</button>
-                </form>
-                
-            </div>
             </div>
 
 
             <div class="right">
-                <form action="/postdeletionform" method="POST">
-                    <input type="hidden" value="{{ user[0] }}" name="user">
-                    <button type="submit" name="status" class="button">Delete</button>
-                </form>
-
+                <form action="/eventjoinform" method="POST">
+                <input type="hidden" value={{user[0]}} name="user">
+                <button type="submit" name="status" value="1" class="button" >Accept</button>
+                <button type="submit" name="status" class="button" value="0" >Reject</button>
+               </form>
             </div>
 
         </div>
         {% endfor %}
 
     </div>
+
+
+</main>
+</body>
+</html>
+
 
 
 </main>

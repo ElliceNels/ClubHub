@@ -1,5 +1,8 @@
 import sqlite3
 from Verification import Verification
+from Coordinator import Coordinator
+from constants import DB_PATH
+
 
 class ClubCreationVerification:
 
@@ -8,7 +11,7 @@ class ClubCreationVerification:
 
         try: 
     
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn:
+            with sqlite3.connect(DB_PATH) as conn:
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ? ''', (user_id,))
@@ -25,6 +28,27 @@ class ClubCreationVerification:
         except sqlite3.Error as e:
             print("error: ", e)
 
+    def club_name_checker(club_name):
+        try: 
+    
+            with sqlite3.connect(DB_PATH) as conn:
+                cur = conn.cursor()
+
+                cur.execute(''' SELECT Club_name FROM CLUBS WHERE Club_name = ? ''', (club_name,))
+                verify = cur.fetchone()
+
+                if verify:
+                    print('club exists')
+                    return True
+                
+                else:
+                    print('club doesnt exist')
+                    return False
+                
+        except sqlite3.Error as e:
+            print("error: ", e)
+
+
 
     #function that lets the user creates new clubs 
     def create_new_club( club_name, club_description, user_id):
@@ -33,12 +57,12 @@ class ClubCreationVerification:
 
             coordinator_id = Verification.UserIdToCoordId(user_id)
 
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+            with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
 
                 if ClubCreationVerification.valid_coordinator(user_id, coordinator_id):
 
-                    if not ClubCreationVerification.existing_club(user_id):
+                    if not ClubCreationVerification.existing_club(user_id) and not ClubCreationVerification.club_name_checker(club_name):
                         cur.execute(''' INSERT INTO CLUBS (Club_name, Coordinator_id, Description)
                                     VALUES ( ?, ?, ? ) ''', (club_name, coordinator_id, club_description,))
                         
@@ -56,7 +80,7 @@ class ClubCreationVerification:
 
             coordinator_id = Verification.UserIdToCoordId(user_id)
 
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+            with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Coordinator_id, Is_valid FROM CLUBS WHERE Coordinator_id = ? ''', (coordinator_id,))
@@ -73,5 +97,24 @@ class ClubCreationVerification:
 
         except sqlite3.Error as e:
             print("error: ", e)
-
+    
 # ClubCreationVerification.existing_club(412004)
+
+class ClubDeletion:
+    
+
+    def deleteClub(club_name):
+
+        try: 
+            club_id = Coordinator.club_getter(club_name)
+
+            with sqlite3.connect(DB_PATH) as conn:
+                cur = conn.cursor()
+
+                cur.execute( ''' PRAGMA foreign_keys = ON ''')
+                cur.execute(''' DELETE FROM CLUBS WHERE Club_id = ? ''', (club_id,))
+                conn.commit()
+
+
+        except sqlite3.Error as e:
+            print('error: ', e)
