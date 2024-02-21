@@ -6,11 +6,11 @@ class Login_validation:
     def __init__(self):
         self.alert = []
 
-    def signup_validation(self, first_name, last_name, user_id, email, phone_number, user_name, password1, password2, user_type):
+    def signup_validation(self, first_name, last_name, user_id, email, phone_number, user_name, password_1, password_2, user_type):
         self.name_validator(first_name, last_name)
         self.account_type_validator(user_id, user_type)
         self.username_validator(user_name)
-        self.password_validator(password1, password2)
+        self.password_validator(password_1, password_2)
         self.email_validator(email)
         self.phone_number_validator(phone_number)
         print("Has gone through all the steps")
