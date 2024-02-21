@@ -14,5 +14,3 @@ def listOfAprrovedEvents(user_id):
         else:
             event.append('Awaiting approval')
     return all_approved_events
-
-print(listOfAprrovedEvents(2330001))
