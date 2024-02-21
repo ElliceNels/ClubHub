@@ -101,7 +101,7 @@
         }
 
 
-        .button:hover {
+        .button:hover{
             border: 3px solid black;
             font-family: Signika Negative;
             font-size: 1.25em;
@@ -111,7 +111,22 @@
             text-decoration: none;
 
         }
-
+        .link:hover{
+            font-family: Signika Negative;
+            font-size: 1.25em;
+            background-color: #d78518;
+            color: white;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            text-decoration: none;
+        }
+        .link{
+            font-family: Signika Negative;
+            font-size: 1.25em;
+            background-color: #FA991C;
+            color: white;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            text-decoration: none;
+        }
 
         h1 {
             font-family: Nobile;
@@ -120,6 +135,17 @@
             color: #FA991C;
         }
 
+        .logout-button {
+            width: 5rem;
+            height: 2rem;
+            font-size: medium;
+            font-weight: bold;
+            color: #FBF3F2;
+            background-color: transparent;
+            border-radius: 0.5rem;
+            text-align: center;
+            text-decoration: none;
+        }
 
         h2{
             font-family: Signika Negative;
@@ -180,7 +206,7 @@
             order: 2;
         }
 
-        #userdeets{
+        #userdeets, #clubs{
             border: 3px solid white;
             font-family: Signika Negative;
             font-size: 1.25em;
@@ -189,7 +215,7 @@
             box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
             text-decoration: none;
         }
-        #userdeets:hover{
+        #userdeets:hover, #clubs:hover{
             border: 3px solid black;
             font-family: Signika Negative;
             font-size: 1.25em;
@@ -197,5 +223,21 @@
             color: white;
             box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
             text-decoration: none;
+        }
+        .logout-button {
+            width: 5rem;
+            height: 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FBF3F2;
+            background-color: transparent;
+            text-align: center;
+            align-items: center;
+            text-decoration: none;
+            border: 0;
+            font-family: Signika Negative;
+        }
+        .logout-button:hover{
+            cursor: pointer;
         }
        

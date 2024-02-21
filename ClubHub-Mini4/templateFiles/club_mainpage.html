@@ -12,18 +12,19 @@
     <nav class="navigation-bar">
         <a class="nav-link" href="/clubs_display">Clubs</a>
         <a class="nav-link" href="/EventMain">Events</a>
-        <a class="nav-link" href="/Inbox">Inbox</a>
-        <a class="nav-link" href="/ProfileCoord">Profile</a>
+        <a class="nav-link" href="/ClubInbox">Inbox</a>
+        <a class="nav-link" href="/Profile">Profile</a>
+        <a class="logout-button" href="/logout">Logout</a>
 
     </nav>
     <div id="background">
-    <h1  id="clubs_header">CLUB NAME</h1>
+    <h1  id="clubs_header">{{club_name}}</h1>
     <div id="coordinator-controls">
         <a href="/CreateEvents" class="button" id="create-event">
             Create event
         </a>
         <br>
-        <a href="" class="button" id="club-requests">
+        <a href="/Inbox" class="button" id="club-requests">
             Requests
         </a>
         <br>
@@ -32,20 +33,30 @@
     <div class="members-container">
         <div id="list-of-members">  
             <br>
-            {% for club_member in club_members %}
             <div id="club-member-display">
-                <p>
-                    {{loop.index}}. {{club_member}}
-                </p>
-                <button class="remove-button" id="remove-member">remove</button>
+                {% for member_info in club_member_info %}
+                <div class="member-info">
+                    <p>
+                        <strong>{{ member_info[0] }} {{ member_info[1] }}</strong><br>
+                        <span>Username: {{ member_info[2] }}</span><br>
+                        <span>Phone Number: {{ member_info[3] }}</span><br>
+                        <span>Email: {{ member_info[4] }}</span>
+                    </p>
+                    <form action="/memberremovalform" method="POST">
+                    <input type="hidden" value="{{ member_info[5] }}" name="user">
+                    <button type="submit" name="status" value="0" class="remove-button">Remove</button>
+                </form>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-
-    <a href="" class="button" id="delete-club">
-        Delete Club
-    </a>
+    <form method="post" action="">
+        <input type="hidden" name="delete_club" value="{{club_name}}">
+        <button type="submit" class="button" id="delete-club" >
+            delete club
+        </button>
+    </form>
     </div>
 </body>
 </html>

@@ -36,13 +36,19 @@ body {
     font-family: "Fjalla One" ;
     font-size: 4.375rem;
     text-align: center;
+    margin-top: 7rem;
 }
 .navigation-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     background-color: #FA991C;
     padding: 1.25rem;
-    text-align: center;
     display: flex;
     justify-content: space-around;
+    z-index: 100;
     
 }
 .nav-link {
@@ -72,7 +78,6 @@ body {
     justify-content: center;
 }
 .remove-button {
-    /* padding: 3px 8px; */
     width: 5rem;
     height: 1.5rem;
     font-size: medium;
@@ -82,16 +87,13 @@ body {
     border-radius: 0.5rem;
     text-align: center;
     text-decoration: none;
-    /* align-items: right; */
-    /* justify-content: center; */
-    /* margin-left: 10rem; */
 }
 #club-member-display{
-    display: flex;
-    font-size: 1.75rem;
+    display: block;
+    font-size: 1.5rem;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 20px;
 }
 #coordinator-controls {
     display: flex;
@@ -124,4 +126,20 @@ body {
 }
 #delete-club {
     margin-bottom: 30px;
+}
+.logout-button {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: transparent;
+    text-align: center;
+    align-items: center;
+    text-decoration: none;
+    border: 0;
+    font-family: Signika Negative;
+}
+.logout-button:hover{
+    cursor: pointer;
 }

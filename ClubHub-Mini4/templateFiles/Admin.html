@@ -22,8 +22,9 @@
     <ul class = navbar>
         <a href="/clubs_display">Clubs</a>
         <a href="/EventMain">Events</a>
-        <a href="/Inbox">Inbox</a>
+        <a href="/ClubInbox">Inbox</a>
         <a href="/Profile">Profile</a>
+        <a class="logout-button" href="/logout">Logout</a>
     </ul>
 
 <main>
@@ -55,8 +56,12 @@
             <div class="right">
                 <form action="/approvalform" method="POST">
                 <input type="hidden" value={{user[0]}} name="user">
-                <button type="submit" name="status" value="1" class="button" >Accept</button>
-                <button type="submit" name="status" class="button" value="0" >Reject</button>
+                <button type="submit" name="status"class="button" >Accept</button>
+                </form>
+                
+                <form action="/predeletionform" method="POST">
+                <input type="hidden" value={{user[0]}} name="user">
+                <button type="submit" name="status" class="button" >Reject</button>
                </form>
             </div>
 

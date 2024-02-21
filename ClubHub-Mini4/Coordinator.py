@@ -2,31 +2,11 @@ import sqlite3
 from Verification import Verification
 
 from constants import DB_PATH
-# conn = sqlite3.connect(DB_PATH)
-# cur = conn.cursor()
-
-# club_data = cur.execute('''SELECT Club_name,Coordinator_id, Description FROM CLUBS ''')
-
-# user_data = cur.execute(''' SELECT Firstname, Lastname, Contact_number FROM USER_DETAILS ''')
-
-# for row in user_data:
-#     print(row)
-
-# for row in club_data:
-#     for column in row:
-#         coordinator_name = cur.execute(''' SELECT Firstname, Lastname, Contact_number FROM USER_DETAILS WHERE User_id = ? ''', (column[1],))
-#         print(coordinator_name)
-
-
-# cur.close()
-# conn.close()
-
 
 class Coordinator:
 
     #gets club data to display on the html page
     def get_club_data():
-
 
         #initialize an empty club list
         club_details = []
@@ -84,9 +64,12 @@ class Coordinator:
 
                 cur.execute(''' SELECT Club_id FROM CLUBS WHERE Club_name = ? ''', (club_name,))
                 club_id = cur.fetchone()
-                print(club_id[0])
-
-                return club_id[0]
+                if club_id is not None:
+                    return club_id[0]
+            
+                else:
+                    print(f"No matching record found for club: {club_name}")
+                    return None
 
         except sqlite3.Error as e:
             print('error: ', e)
@@ -134,16 +117,18 @@ class Coordinator:
         club_id = Coordinator.club_getter(club)
 
         try:
-            with sqlite3.connect('ClubHub-Mini4\database\Clubhub.db') as conn :
+            with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
             cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? ''', (club_id,))
-            members = cur.fetchone()
-            member_details = Verification.profileDetails(members[0])
-            print(members[0])
-            print(member_details)
-
+            member_ids = cur.fetchall()
+            member_details = [Verification.profileDetails(member_id[0]) for member_id in member_ids]
+            print(member_ids)
+            for members in member_details:
+                for member_id in member_ids:
+                    print(members)
+                    members.append(member_id[0])
+            return member_details
 
         except sqlite3.Error as e:
             print("error: ", e )
-
 
