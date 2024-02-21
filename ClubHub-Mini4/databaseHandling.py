@@ -193,6 +193,8 @@ def db_startup():
     conn.commit()
     print(" admin undeleteable trigger created")
 
+    #views
+
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
 
@@ -220,5 +222,13 @@ def db_startup():
         conn.commit()
         print("Club membership view created successfully")
 
+    cursor.execute('''
+          CREATE VIEW user_club_event AS SELECT cm.Club_id , cm.User_id ,e.Event_id, cm.Is_approved
+               FROM  CLUB_MEMBERSHIP cm JOIN EVENTS e ON cm.Club_id = e.Club_id
+                WHERE cm.Is_aprroved = 1;
+
+                   ''')
+
+    cursor.close()
     cursor.close()
     conn.close()
