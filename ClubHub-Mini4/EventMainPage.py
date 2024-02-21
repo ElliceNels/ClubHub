@@ -1,7 +1,7 @@
 import datetime
 from constants import DB_PATH
 import sqlite3
-from main import Session
+
 
 def eventsmainpage():
     connection = sqlite3.connect(DB_PATH)
