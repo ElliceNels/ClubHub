@@ -40,7 +40,7 @@ class Login_validation:
 
     def password_validator(self, password_1, password_2):
         print("Has reached password")
-        regex = r'^(?=.*[$%&@!€_-?/\£#+*()])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
+        regex = r'^(?=.*[$%&@!€_\-\?/\£#+*()])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
         
         if password_1 != password_2:
             self.alert.append("Passwords do not match")
@@ -48,7 +48,7 @@ class Login_validation:
         else:
             if len(password_1) < 8 or len(password_1) > 16:
                 self.alert.append("Your password must be between 8 and 18 characters")
-            if not re.search(r'[$%&@!€_-?/\£#+*()]', password_1):
+            if not re.search(r'[$%&@!€_\-\?/\£#+*()]', password_1):
                 self.alert.append("Your password needs at least one special character")
             if not re.search(r'[0-9]', password_1):
                 self.alert.append("Your password needs at least one number")
