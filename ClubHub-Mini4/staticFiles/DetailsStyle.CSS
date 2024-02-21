@@ -2,10 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nobile:wght@500&family=Signika+Negative:wght@300&display=swap');
 
+
 .header{
     padding-bottom:10px;
     color: #023047;
-    font-family: "Fjalla-One";
+    font-family: "Fjalla One";
     font-weight: 1000;
     text-decoration: underline;
     text-align: center;
@@ -29,7 +30,7 @@
     color: #FA991C;
     
     margin-right: 10px;
-    font-family: "Fjalla-One";
+    font-family: "Fjalla One";
 }
 
 .fa-circle-nodes{
@@ -42,6 +43,7 @@
     padding: 0;
     margin:0;
     overflow: hidden;
+    font-family: 'Signika Negative';
 }
 .navbar a{
     color:#FBF3F2;
