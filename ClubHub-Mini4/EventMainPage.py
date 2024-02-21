@@ -71,11 +71,11 @@ def signup_event(club_id, user_id, event_id):
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
-    cursor.execute('SELECT COUNT(*) FROM user_club_event WHERE Club_id =? AND User_id = ? AND Event_id = ?', (club_id, user_id, event_id))
+    cursor.execute('SELECT COUNT(*) FROM user_club_event WHERE Club_id =? AND User_id = ? AND Event_id = ? And Is_approved = 1', (club_id, user_id, event_id))
     club_mem_count = cursor.fetchone()[0]
 
     if club_mem_count >0:
-        cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id, Is_approved) VALUES (?, ?, 1)', (user_id, event_id))
+        cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id, Is_approved, Is_pending) VALUES (?, ?, 1, 0)', (user_id, event_id))
         connection.commit()
         print("User attended to event attendess approved")
     else:
