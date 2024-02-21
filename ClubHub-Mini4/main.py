@@ -13,7 +13,7 @@ from Coordinator import Coordinator
 from Inbox import Inbox
 from User import User
 from constants import DB_PATH
-from EventMainPage import eventsmainpage, eventDetails, club_info
+from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event
 
 
 # Provide template folder name
@@ -239,12 +239,23 @@ def submit_form():
     return Profile()
 
 
-@app.route("/EventDetails/<int:event_id>")
+@app.route("/EventDetails/<int:event_id>" , methods=['GET', 'POST'])
 def EventDetails(event_id):
     event_details = eventDetails(event_id)
     Club_id = event_details[0][5]
     club_info_data = club_info(Club_id)
-    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data)
+    success_message = None
+   
+    if request.method == 'POST':
+        user_id = user_session.getUser_id()
+        if user_id:
+            signup_event(Club_id, user_id, event_id)
+
+            success_message = 'You have signed up for the event!'
+            
+    
+
+    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data, success_message=success_message)
 
 
 def validate_event_form(EventTitle,Description, Date, Time, Venue):

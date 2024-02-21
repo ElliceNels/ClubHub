@@ -1,7 +1,7 @@
 import datetime
 from constants import DB_PATH
 import sqlite3
-
+from main import Session
 
 def eventsmainpage():
     connection = sqlite3.connect(DB_PATH)
@@ -59,7 +59,29 @@ def club_info(Club_id):
         print("Noclub id found")
         return None
     
-def userClub():
+def eventideasy(url):
+   try:
+       event_id = int(url.split("/")[-1])
+       return event_id
+   except(ValueError,IndexError):
+       return None
+   
+
+def signup_event(club_id, user_id, event_id):
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
-    cursor.execute('SELECT ')
+
+    cursor.execute('SELECT COUNT(*) FROM user_club_event WHERE Club_id =? AND User_id = ? AND Event_id = ?', (club_id, user_id, event_id))
+    club_mem_count = cursor.fetchone()[0]
+
+    if club_mem_count >0:
+        cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id, Is_approved) VALUES (?, ?, 1)', (user_id, event_id))
+        connection.commit()
+        print("User attended to event attendess approved")
+    else:
+        cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id) VALUES (?, ?)', (user_id, event_id))
+        connection.commit()
+        print("user is pending")
+
+    connection.close()
+    

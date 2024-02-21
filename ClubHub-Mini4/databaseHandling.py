@@ -181,6 +181,13 @@ END; ''')
 conn.commit()
 print("Update event attendees trigger created successfullly")
 
+##views
+cursor.execute('''
+      CREATE VIEW user_club_event AS SELECT cm.Club_id , cm.User_id ,e.Event_id, cm.Is_approved
+           FROM  CLUB_MEMBERSHIP cm JOIN EVENTS e ON cm.Club_id = e.Club_id
+            WHERE cm.Is_aprroved = 1;
+               
+               ''')
 
 
 cursor.close()

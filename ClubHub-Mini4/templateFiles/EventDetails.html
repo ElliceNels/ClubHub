@@ -37,7 +37,14 @@
                 <p>Club: {{ detail[6] }}</p> <!-- Club Name -->
             </div>
         {% endfor %}
-        <button type="submit" id="eventbutton" > Sign up for event</button>
+        {% if success_message %}
+        <div class="success-message">
+                <p>{{ success_message }}</p>
+        </div>
+        {% endif %}
+        <form method="post">
+            <button type="submit" id="eventbutton" > Sign up for event</button>
+        </form>
     </div>
     
     <div class="Clubinfo">
