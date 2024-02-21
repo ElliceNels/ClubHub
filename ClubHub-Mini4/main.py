@@ -19,11 +19,6 @@ from constants import DB_PATH
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
 app.secret_key = 'who_would_have_thought_teehee'
-
-club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "Eva Garcia",
-                "Frank Robinson", "Grace Lee", "Henry Davis", "Ivy Chen", "Jack Wilson", "Kelly Turner",
-                "Leo Martinez"]
-
 # session to store user_id for time logged in
 user_session = Session()
 
@@ -33,6 +28,7 @@ db_startup()
 @app.route('/')
 @app.route('/index')
 def index():
+    print(user_session.getUser_id())
     return render_template('index.html')
 
 
@@ -101,7 +97,7 @@ def signupValidationRoute():
 @app.route('/logout')
 def user_logout():
     user_session.logout()
-    return render_template('/index')
+    return redirect(url_for('index'))
 
 
 ##############################################################################Clubs##############################################################################
