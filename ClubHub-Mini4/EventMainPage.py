@@ -84,11 +84,11 @@ def signup_event(club_id, user_id, event_id):
         else:
             cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id, Is_approved, Is_pending) VALUES (?, ?, 1, 0)', (user_id, event_id))
             connection.commit()
-            return "User attended to event attendess approved"
+            return "You are signed up for the event. See you there!"
     else:#if the user isnt part of the group, it adds them to the event attend table as pending so the co-ordinator can see whether or not to approve them for the event
             cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id) VALUES (?, ?)', (user_id, event_id))
             connection.commit()
-            return "user is pending"
+            return "event request is pending"
 
     connection.close()
     
