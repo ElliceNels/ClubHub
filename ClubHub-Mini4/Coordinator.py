@@ -100,7 +100,7 @@ class Coordinator:
                 cur.execute(''' SELECT Club_id FROM CLUB_MEMBERSHIP WHERE User_id = ? ''', (user_id,))
                 club_requests = cur.fetchone()
 
-                if club_requests is not None and (len(club_requests) >=3 or (club_requests[0] == club_id)):
+                if club_requests is not None and (len(club_requests) >=3 or (club_requests[0] == club_id) or not Verification.isCoord(user_id)):
                     print('true')
                     return True
                 
