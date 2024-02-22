@@ -169,11 +169,9 @@ def create_club():
 def updateStudentProfileDisplay():
     return render_template('UpdateProfileStud.html')
 
-def handle_update(validation_method, table):
+def handle_update(validation_method, table, new_value, column):
     if request.method == "POST":
-            new_value = request.form.get("newvalue")
             user_id = user_session.getUser_id()
-            column = request.form.get("column")
             update_validator = Login_validation()
             validation_method(update_validator, new_value)
             if update_validator.alert != []:
@@ -187,25 +185,33 @@ def handle_update(validation_method, table):
 def changeNameRoute():
    table = "USER_DETAILS"
    validation_method = Login_validation.name_validator
-   return handle_update(validation_method, table)
+   column = request.form.get("column")
+   new_value = request.form.get("newvalue")
+   return handle_update(validation_method, table, new_value, column)
          
 @app.route('/changeUsername', methods=["POST"])
 def changeUsernameRoute():
      table = "USER_LOGIN"
      validation_method = Login_validation.username_validator
-     return handle_update(validation_method, table)
+     column = request.form.get("column")
+     new_value = request.form.get("newvalue")
+     return handle_update(validation_method, table, new_value, column)
          
 @app.route('/changeEmail', methods=["POST"])
 def changeEmailRoute():
      table = "USER_DETAILS"
      validation_method = Login_validation.email_validator
-     return handle_update(validation_method, table)
+     column = request.form.get("column")
+     new_value = request.form.get("newvalue")
+     return handle_update(validation_method, table, new_value, column)
          
 @app.route('/changePhoneNumber', methods=["POST"])
 def changePhoneNumberRoute():
     table = "USER_DETAILS"
     validation_method = Login_validation.phone_number_validator
-    return handle_update(validation_method, table)
+    column = request.form.get("column")
+    new_value = request.form.get("newvalue")
+    return handle_update(validation_method, table, new_value, column)
         
 
 @app.route('/Profile')
