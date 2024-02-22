@@ -385,12 +385,16 @@ def CreateEvents():
     success_message = None
 
     if request.method == 'POST':
-        event_title = request.form.get('EventTitle').strip()
-        description = request.form.get('Description').strip()
-        date = request.form.get('Date').strip()
-        time = request.form.get('Time').strip()
-        venue = request.form.get('Venue').strip()
+        event_title = request.form.get('EventTitle','').strip()
+        description = request.form.get('Description','').strip()
+        date = request.form.get('Date','').strip()
+        time = request.form.get('Time','').strip()
+        venue = request.form.get('Venue','').strip()
+    
 
+        if not event_title or not description or not event_title.strip() or not description.strip():
+            warning_message = 'Please fill in all fields!'
+            return render_template('CreateEvents.html', warning=warning_message)
         if user_session.is_logged_in:
             user_id = user_session.getUser_id()
             if user_session.is_coord:
