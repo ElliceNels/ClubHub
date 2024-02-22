@@ -121,15 +121,14 @@ class Coordinator:
                 cur = conn.cursor()
             cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? ''', (club_id,))
             member_ids = cur.fetchall()
-            member_details = [Verification.profileDetails(member[0]) for member in member_ids]
-
+            member_details = [Verification.profileDetails(member_id[0]) for member_id in member_ids]
+            print(member_ids)
             for members in member_details:
-                pop = cur.execute(''' SELECT User_id FROM USER_LOGIN Where Username = ?''', (members[2],))
-                members.append(pop.fetchall()[0][0])
+                for member_id in member_ids:
+                    print(members)
+                    members.append(member_id[0])
             return member_details
 
         except sqlite3.Error as e:
             print("error: ", e )
 
-
-print(Coordinator.display_members('Chess'))

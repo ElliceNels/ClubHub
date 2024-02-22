@@ -131,3 +131,19 @@ body {
     align-items: center;
     justify-content: center;
 }
+.logout-button {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FBF3F2;
+    background-color: transparent;
+    text-align: center;
+    align-items: center;
+    text-decoration: none;
+    border: 0;
+    font-family: Signika Negative;
+}
+.logout-button:hover{
+    cursor: pointer;
+}

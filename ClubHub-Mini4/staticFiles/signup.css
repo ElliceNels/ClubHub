@@ -22,6 +22,16 @@
     grid-template-columns: repeat(10, 1fr);
 }
 
+.requirements{
+    grid-area: 3/2/4/3;
+    align-self: center;
+    justify-content: center;
+}
+#usernamereq, #passwordreq{
+    padding-bottom: 3px;
+    color: #C87B16;
+
+}
 .header {
     grid-area: 1 / 1 / 2 / 4;
     color: #FA991C;

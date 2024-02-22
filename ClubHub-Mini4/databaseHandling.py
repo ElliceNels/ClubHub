@@ -1,5 +1,6 @@
 import sqlite3
 from constants import DB_PATH
+from LoginVerification import Login_verification
 
 
 def db_startup():
@@ -7,7 +8,9 @@ def db_startup():
     print('Database connected')
     cursor = conn.cursor()
     cursor.execute('PRAGMA foreign_keys = ON')
+
     ## tables
+
     cursor.execute('''CREATE TABLE IF NOT EXISTS CLUB_MEMBERSHIP (
         Membership_id INTEGER PRIMARY KEY AUTOINCREMENT,
         User_id INTEGER,
@@ -65,12 +68,12 @@ def db_startup():
         FOREIGN KEY (Coordinator_id) REFERENCES COORDINATORS(Coordinator_id) ON DELETE CASCADE
     );''')
     conn.commit()
-    print("Clubs table created successfullly")
+    print("Clubs table created successful")
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS COORDINATORS (
         Coordinator_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        User_id INTEGER,
+        User_id INTEGER Unique,
         Created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         Updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id) ON DELETE CASCADE
@@ -193,6 +196,8 @@ def db_startup():
     conn.commit()
     print(" admin undeleteable trigger created")
 
+    ##views
+
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
 
@@ -220,5 +225,20 @@ def db_startup():
         conn.commit()
         print("Club membership view created successfully")
 
+    cursor.execute('''
+          CREATE VIEW IF NOT EXISTS user_club_event AS SELECT cm.Club_id , cm.User_id ,e.Event_id, cm.Is_approved
+               FROM  CLUB_MEMBERSHIP cm JOIN EVENTS e ON cm.Club_id = e.Club_id
+                WHERE cm.Is_approved = 1;
+                   ''')
+
+    cursor.execute('''CREATE VIEW IF NOT EXISTS SUB_EVENT_DETAILS AS 
+        SELECT ea.User_id, e.EventTitle, e.EventDate, ea.Is_approved
+        FROM EVENT_ATTENDEES ea INNER JOIN EVENTS e
+        ON e.Event_id = ea.Event_id;''')
+    conn.commit()
+
+    #Admin account autocreate
+    Login_verification.insert_login_and_details(Login_verification, conn, 4121234, "Admincoordinator", 0000000000 , "DefaultPassword123!", "Admin", "Coordinator", "defaultmail@mail.com")
+    Login_verification.insert_coordinator(Login_verification, conn, 4121234)
     cursor.close()
     conn.close()

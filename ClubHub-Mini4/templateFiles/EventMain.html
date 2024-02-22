@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/9a80590ec1.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    
     <div class="logo">
         <span class="clubhub-text">ClubHub</span>
         <i class="fa-solid fa-circle-nodes"></i>
@@ -15,7 +16,7 @@
     <div class="header">
     <h1> Events</h1>
     </div>
-
+    
 
     <nav class="navbar">
         <ul>
@@ -23,21 +24,29 @@
             <li><a href="/EventMain">Events</a></li>
             <li><a href="/ClubInbox">Inbox</a></li>
             <li><a href="/Profile">Profile</a></li>
+            <li><a class="logout-button" href="/logout">Logout</a></li>
         </ul>
      </nav>
-
-<div class="datecontainer">
-    <div class="date-list" id="dateList">
-        {% for date in dates %}
-        <div class="date">{{ date.strftime('%a, %b %d') }}</div>
-        <div class="detailsbox" id="box">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptas dicta ea odio voluptatibus, ad architecto rem nostrum sit obcaecati labore ullam necessitatibus iusto. Non impedit odio quis voluptate nihil.
+     <div class="maincontent">
+     <div class="datecontainer">
+        <div class="date-list" id="dateList">
+            {% for event in events %}
+                <div class="date">{{ event[3] }}</div>
+                <div class="detailsbox" id="box">
+                    <div class="boldness">{{ event[0] }}</div> <!-- event title-->
+                    <div>
+                        <span>&#128339;</span><!--span holds objects together to be edited as one-->
+                        <span>{{ event[1] }}</span> <!-- event time-->
+                    </div>
+                    <div>{{ event[2] }}</div> <!--description-->
+                    <a href="/EventDetails/{{ event[4]}}" class="arrow-link" >
+                        <i class="fas fa-arrow-right arrow-icon"></i> <!-- arrow icon-->
+                    </a>    
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-
-    </div>
-</div>
-
+     </div>
+     </div>
 
 </body>
 </html>

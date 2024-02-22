@@ -13,7 +13,8 @@
         <a class="nav-link" href="/clubs_display">Clubs</a>
         <a class="nav-link" href="/EventMain">Events</a>
         <a class="nav-link" href="/ClubInbox">Inbox</a>
-        <a class="nav-link" href="/ProfileCoord">Profile</a>
+        <a class="nav-link" href="/Profile">Profile</a>
+        <a class="logout-button" href="/logout">Logout</a>
 
     </nav>
     <div id="background">
@@ -43,7 +44,7 @@
                     </p>
                     <form action="/memberremovalform" method="POST">
                     <input type="hidden" value="{{ member_info[5] }}" name="user">
-                    <button type="submit" name="status" value="0" class="button">Remove</button>
+                    <button type="submit" name="status" value="0" class="remove-button">Remove</button>
                 </form>
                 </div>
                 {% endfor %}

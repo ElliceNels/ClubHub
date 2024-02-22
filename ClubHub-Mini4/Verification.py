@@ -4,11 +4,11 @@ from constants import DB_PATH
 
 class Verification:
 
-    def isCoord(User_id):
+    def isCoord(user_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
-        identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
+        identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ?''', (user_id,))
         id = identity.fetchall()
 
         if not id:
@@ -18,12 +18,12 @@ class Verification:
             print('Coordinator')
             return True
 
-    def isAdmin(User_id):
+    def isAdmin(user_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         identity = cursor.execute('''SELECT User_id FROM COORDINATORS WHERE User_id = ? AND Coordinator_id = 1''',
-                                  (User_id,))
+                                  (user_id,))
         id = identity.fetchall()
 
         if not id:
@@ -33,77 +33,79 @@ class Verification:
             print('Admin')
             return True
 
-    def profileDetails(User_id):
+    def profileDetails(user_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         details = cursor.execute(
             '''SELECT Firstname, Lastname, Username, Contact_number, Email FROM USER_DETAILS ud INNER JOIN USER_LOGIN ul ON ud.User_id = ul.User_id WHERE ud.User_id = ?''',
-            (User_id,))
-        profileDetails = []
+            (user_id,))
+        profile_details = []
         for row in details:
             for column in row:
-                profileDetails.append(column)
-        return profileDetails
+                profile_details.append(column)
+        return profile_details
 
-    def UserIdToCoordId(User_id):
+    def UserIdToCoordId(user_id):
         conn = sqlite3.connect(DB_PATH)
 
         cursor = conn.cursor()
 
-        coordId = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
-        TCoordId = coordId.fetchone()
-        for row in TCoordId:
-            coordId = row
+        coord_id = cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (user_id,))
+        t_coord_id = coord_id.fetchone()
+        if not t_coord_id:
+            return 'not a coord'
+        for row in t_coord_id:
+            coord_id = row
         conn.close()
-        return coordId
+        return coord_id
 
-    def coordinatingClub(cls, User_id):
-        coordId = Verification.UserIdToCoordId(User_id)
+    def coordinatingClub(cls, user_id):
+        coord_id = Verification.UserIdToCoordId(user_id)
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
-        coordinatingClubs = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coordId,))
-        coordinatingClub = coordinatingClubs.fetchone()
-        if not coordinatingClub:
+        coordinating_clubs = cursor.execute('''SELECT Club_name FROM CLUBS WHERE Coordinator_id = ?''', (coord_id,))
+        coordinating_club = coordinating_clubs.fetchone()
+        if not coordinating_club:
             return 'No existing club'
         else:
-            for club in coordinatingClub:
+            for club in coordinating_club:
                 return club
 
 
-    def clubMemberships(User_id):   #needs to be tested when clubs are added
+    def clubMemberships(user_id):   #needs to be tested when clubs are added
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         details = cursor.execute(
             '''SELECT Club_name FROM CLUB_MEMBERSHIP cm INNER JOIN CLUBS c ON cm.Club_id = c.Club_id WHERE cm.User_id = ? AND Is_approved = ?''',
-            (User_id, 1))
-        clubMembership = []
+            (user_id, 1))
+        club_membership = []
         for row in details:
             for club in row:
-                clubMembership.append(club)
+                club_membership.append(club)
 
-        if not clubMembership:
+        if not club_membership:
             return None 
         else:
-            return clubMembership
+            return club_membership
         
 
-    def CoordinatorClubId(User_id):
+    def CoordinatorClubId(user_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         try:
-            cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (User_id,))
+            cursor.execute('''SELECT Coordinator_id FROM COORDINATORS WHERE User_id = ?''', (user_id,))
             result = cursor.fetchone()
 
             if result:
-                Coordinator_id = result[0]
-                cursor.execute('''SELECT Club_id FROM CLUBS WHERE Coordinator_id = ?''', (Coordinator_id,))
-                Club_id = cursor.fetchone()
-                if Club_id:
-                    return Club_id[0]
+                coordinator_id = result[0]
+                cursor.execute('''SELECT Club_id FROM CLUBS WHERE Coordinator_id = ?''', (coordinator_id,))
+                club_id = cursor.fetchone()
+                if club_id:
+                    return club_id[0]
                 else:
                     return "Not associated with any clubs"
             else:

@@ -11,7 +11,7 @@ class Login_validation:
         self.name_validator(last_name)
         self.account_type_validator(user_id, user_type)
         self.username_validator(user_name)
-        self.password_validator(password1, password2)
+        self.password_validator(password_1, password_2)
         self.email_validator(email)
         self.phone_number_validator(phone_number)
         print("Has gone through all the steps")
@@ -37,21 +37,21 @@ class Login_validation:
         elif identifier not in ["233", "412"]:
             self.alert.append("Invalid Id")
 
-    def password_validator(self, password1, password2):
+    def password_validator(self, password_1, password_2):
         print("Has reached password")
-        regex = r'^(?=.*[$%&@!€_-?/\£])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
+        regex = r'^(?=.*[$%&@!€_\-\?/\£#+*()])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9$%&@!€]{8,16}'
         
-        if password1 != password2:
+        if password_1 != password_2:
             self.alert.append("Passwords do not match")
             return
         else:
-            if len(password1) < 8 or len(password1) > 16:
+            if len(password_1) < 8 or len(password_1) > 16:
                 self.alert.append("Your password must be between 8 and 18 characters")
-            if not re.search(r'[$%&@!€]', password1):
+            if not re.search(r'[$%&@!€_\-\?/\£#+*()]', password_1):
                 self.alert.append("Your password needs at least one special character")
-            if not re.search(r'[0-9]', password1):
+            if not re.search(r'[0-9]', password_1):
                 self.alert.append("Your password needs at least one number")
-            if not re.search(r'[A-Za-z]', password1):
+            if not re.search(r'[A-Za-z]', password_1):
                 self.alert.append("Your password needs both upper and lowercase letters")
     
     def email_validator(self, email):
@@ -82,7 +82,7 @@ class Login_validation:
         if len(str(phone_number)) != 10:
             self.alert.append("Irish phone numbers must be 10 digits long")
             
-    def do_passwords_match(self, password1, password2):
-        if password1 != password2:
+    def do_passwords_match(self, password_1, password_2):
+        if password_1 != password_2:
             self.alert.append("Passwords dont match")
         return self.alert

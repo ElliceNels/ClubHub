@@ -139,10 +139,12 @@ class Login_verification:
         cursor = conn.cursor()
         cursor.execute(''' SELECT User_id FROM USER_LOGIN WHERE Username = ? ''', (user_name, ))
         user_id_list = list(chain.from_iterable(cursor.fetchall()))
-        user_id = int(user_id_list[0])
-        cursor.close()
-        conn.close()
-        return user_id
+        if user_id_list != []:
+            user_id = int(user_id_list[0])
+            cursor.close()
+            conn.close()
+            return user_id
+        return False
     
     def approval_status(self, User_id):
           conn = sqlite3.connect(DB_PATH)
