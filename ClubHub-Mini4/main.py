@@ -183,7 +183,7 @@ def handle_update(validation_method, table):
                 user_information_handler.update_user_information(table, column, new_value, user_id)
                 return redirect(url_for('UpdateProfile'))
     
-@app.route('/changename', methods=["POST"])
+@app.route('/changeName', methods=["POST"])
 def changeNameRoute():
    table = "USER_DETAILS"
    validation_method = Login_validation.name_validator
@@ -204,7 +204,7 @@ def changeEmailRoute():
 @app.route('/changePhoneNumber', methods=["POST"])
 def changePhoneNumberRoute():
     table = "USER_DETAILS"
-    validation_method = Login_validation.email_validator
+    validation_method = Login_validation.phone_number_validator
     return handle_update(validation_method, table)
         
 

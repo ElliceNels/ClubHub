@@ -11,7 +11,7 @@ class Login_validation:
         self.name_validator(last_name)
         self.account_type_validator(user_id, user_type)
         self.username_validator(user_name)
-        self.password_validator(password_1, password_2)
+        self.password_validator(password1, password2)
         self.email_validator(email)
         self.phone_number_validator(phone_number)
         print("Has gone through all the steps")
