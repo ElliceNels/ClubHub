@@ -32,7 +32,7 @@ class Coordinator:
             return club_details
         
         except sqlite3.Error as e:
-            print('error: ', e)
+            raise ValueError(f"Error retrieving club details: {e}")
 
 
     #gets the coordinator name from their coordinator id
@@ -54,7 +54,7 @@ class Coordinator:
                 return full_name
 
         except sqlite3.Error as e:
-            print('error: ', e)
+            raise ValueError(f"Error retrieving coord name: {e}")
 
     def club_getter(club_name):
         try:
@@ -72,7 +72,7 @@ class Coordinator:
                     return None
 
         except sqlite3.Error as e:
-            print('error: ', e)
+            raise ValueError(f"Error retrieving club: {e}")
 
 
     def request_club_membership(user_id, club_name):
@@ -87,7 +87,7 @@ class Coordinator:
                 print("data entered successfully")
 
         except sqlite3.Error as e:
-            print("error: ", e)
+            raise ValueError(f"Error requesting membership: {e}")
 
     def check_club_requests(user_id, club_name):
         try: 
@@ -100,7 +100,7 @@ class Coordinator:
                 cur.execute(''' SELECT Club_id FROM CLUB_MEMBERSHIP WHERE User_id = ? ''', (user_id,))
                 club_requests = cur.fetchone()
 
-                if club_requests is not None and (len(club_requests) >=3 or (club_requests[0] == club_id)):
+                if club_requests is not None and (len(club_requests) >= 3 or (club_requests[0] == club_id) or not Verification.isCoord(user_id)):
                     print('true')
                     return True
                 
@@ -110,7 +110,7 @@ class Coordinator:
 
 
         except sqlite3.Error as e:
-            print("error: ", e)
+            raise ValueError(f"Error checking membership: {e}")
 
     
     def display_members(club):
@@ -119,7 +119,7 @@ class Coordinator:
         try:
             with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
-            cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? ''', (club_id,))
+            cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? AND Is_approved = 1''' , (club_id,))
             member_ids = cur.fetchall()
             member_details = [Verification.profileDetails(member_id[0]) for member_id in member_ids]
             print(member_ids)
@@ -130,5 +130,5 @@ class Coordinator:
             return member_details
 
         except sqlite3.Error as e:
-            print("error: ", e )
+            raise ValueError(f"Error retrieving members: {e}")
 

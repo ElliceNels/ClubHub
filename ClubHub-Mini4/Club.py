@@ -26,7 +26,7 @@ class ClubCreationVerification:
                     return False
                 
         except sqlite3.Error as e:
-            print("error: ", e)
+            raise ValueError(f"Error retrieving validation: {e}")
 
     def club_name_checker(club_name):
         try: 
@@ -46,7 +46,7 @@ class ClubCreationVerification:
                     return False
                 
         except sqlite3.Error as e:
-            print("error: ", e)
+            raise ValueError(f"Error retrieving club: {e}")
 
 
 
@@ -70,7 +70,7 @@ class ClubCreationVerification:
                         print("data entered successfully")
 
         except sqlite3.Error as e:
-            print("error: ", e)
+            raise ValueError(f"Error creating club: {e}")
             
     
     #checks if the user already has a club
@@ -96,7 +96,7 @@ class ClubCreationVerification:
 
 
         except sqlite3.Error as e:
-            print("error: ", e)
+            raise ValueError(f"Error retrieving club: {e}")
     
 # ClubCreationVerification.existing_club(412004)
 
@@ -117,4 +117,4 @@ class ClubDeletion:
 
 
         except sqlite3.Error as e:
-            print('error: ', e)
+            raise ValueError(f"Error deleting club: {e}")

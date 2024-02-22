@@ -234,7 +234,7 @@ def UpdateProfile():
         return render_template('UpdateProfileStud.html')
 
 
-##############################################################################Admin Inbox##############################################################################
+##############################################################################AdminInbox##############################################################################
 @app.route('/Admin')
 def showAdmin():
     admin_info = Admin()
@@ -382,7 +382,7 @@ def memberRemovalFormRoute():
         user_id = int(request.form.get("user"))
         inbox_info = ClubInbox()
         inbox_info.individualapproveOrReject(user_id, status)
-        return redirect(url_for('clubMembers'))
+        return redirect(url_for('clubs_display'))
 
 # @app.route('/StudInbox')
 # def StudInbox():
