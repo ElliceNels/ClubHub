@@ -119,7 +119,7 @@ class Coordinator:
         try:
             with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
-            cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? ''', (club_id,))
+            cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? AND Is_approved = 1''' , (club_id,))
             member_ids = cur.fetchall()
             member_details = [Verification.profileDetails(member_id[0]) for member_id in member_ids]
             print(member_ids)
