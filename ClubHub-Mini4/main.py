@@ -151,9 +151,10 @@ def create_club():
         if request.method == 'POST':
 
             # get data from html from to create a new club
-            club_name = request.form['club-name']
-            club_description = request.form['description']
-            if not (club_name.isspace() or club_description.isspace()) :
+            club_name = request.form.get('club-name', '').strip()
+            club_description = request.form.get('description', '').strip()
+
+            if club_name and club_description:
                 ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
         else:
             # if user has a club, display warning
