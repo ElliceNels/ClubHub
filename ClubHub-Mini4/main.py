@@ -14,7 +14,6 @@ from Coordinator import Coordinator
 from ClubInbox import ClubInbox
 from User import User
 from EventsInbox import EventsInbox
-from constants import DB_PATH
 from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event
 from StudInbox import listOfAprrovedEvents
 
@@ -84,8 +83,8 @@ def signupValidationRoute():
         user_type = request.form.get("usertype")
 
         sign_up_validator = Login_validation()
-        alerts = sign_up_validator.signup_validation(first_name, last_name, user_id, email, phone_number, user_name, password_1,
-                                                     password_2, user_type)
+        alerts = sign_up_validator.signup_validation(first_name, last_name, user_id, email, phone_number, user_name,
+                                                     password_1, password_2, user_type)
         if alerts == []:
             sign_up_verfier = Login_verification()
             if sign_up_verfier.Sign_up(user_id, user_name, phone_number, password_1, first_name, last_name, email, user_type):
@@ -182,7 +181,7 @@ def changeDetailsRoute():
             table = "USER_DETAILS"
         user_information_handler = User()
         user_information_handler.update_user_information(table, column, new_value, user_id)
-        return redirect(url_for('updateStudentProfileDisplay'))
+        return redirect(url_for('Profile'))
 
 
 @app.route('/Profile')

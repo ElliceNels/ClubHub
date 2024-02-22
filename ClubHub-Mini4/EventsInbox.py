@@ -25,7 +25,7 @@ class EventsInbox:
 
         return ids
 
-    def isMemberOfClub(user_id):
+    def isMemberOfClub(self, user_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
@@ -40,8 +40,7 @@ class EventsInbox:
 
         cursor = conn.cursor()
 
-        # cursor.execute('''INSERT INTO CLUB_MEMBERSHIP (User_id, Club_id) VALUES(?,?)''', (4121234, 3))
-        # conn.commit()
+
         coord_id = Verification.UserIdToCoordId(user_id)
         events = self.CoordIDtoEventsID(coord_id)
 
@@ -57,7 +56,7 @@ class EventsInbox:
 
         for entries in all_data:
 
-            if self.isMemberOfClub():
+            if self.isMemberOfClub(user_id):
                 print('is a member, auto accept')
                 self.individualapproveOrRejectE(entries[0], 1)
             else:

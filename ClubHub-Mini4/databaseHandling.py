@@ -1,5 +1,6 @@
 import sqlite3
 from constants import DB_PATH
+from LoginVerification import Login_verification
 
 
 def db_startup():
@@ -9,6 +10,7 @@ def db_startup():
     cursor.execute('PRAGMA foreign_keys = ON')
 
     ## tables
+
     cursor.execute('''CREATE TABLE IF NOT EXISTS CLUB_MEMBERSHIP (
         Membership_id INTEGER PRIMARY KEY AUTOINCREMENT,
         User_id INTEGER,
@@ -66,12 +68,12 @@ def db_startup():
         FOREIGN KEY (Coordinator_id) REFERENCES COORDINATORS(Coordinator_id) ON DELETE CASCADE
     );''')
     conn.commit()
-    print("Clubs table created successfullly")
+    print("Clubs table created successful")
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS COORDINATORS (
         Coordinator_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        User_id INTEGER,
+        User_id INTEGER Unique,
         Created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         Updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id) ON DELETE CASCADE
@@ -194,7 +196,7 @@ def db_startup():
     conn.commit()
     print(" admin undeleteable trigger created")
 
-    # views
+    ##views
 
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
@@ -235,5 +237,8 @@ def db_startup():
         ON e.Event_id = ea.Event_id;''')
     conn.commit()
 
+    #Admin account autocreate
+    Login_verification.insert_login_and_details(Login_verification, conn, 4121234, "Admincoordinator", 0000000000 , "DefaultPassword123!", "Admin", "Coordinator", "defaultmail@mail.com")
+    Login_verification.insert_coordinator(Login_verification, conn, 4121234)
     cursor.close()
     conn.close()
