@@ -158,22 +158,44 @@ def create_club():
 def updateStudentProfileDisplay():
     return render_template('UpdateProfileStud.html')
 
-
-@app.route('/changeDetails', methods=["POST"])
-def changeDetailsRoute():
+def handle_update(validation_method, table):
     if request.method == "POST":
-        new_value = request.form.get("newvalue")
-        column = request.form.get("column")
-        user_id = user_session.getUser_id()
-        table = None
-        if column == "Username":
-            table = "USER_LOGIN"
-        else:
-            table = "USER_DETAILS"
-        user_information_handler = User()
-        user_information_handler.update_user_information(table, column, new_value, user_id)
-        return redirect(url_for('updateStudentProfileDisplay'))
-
+            new_value = request.form.get("newvalue")
+            user_id = user_session.getUser_id()
+            column = request.form.get("column")
+            update_validator = Login_validation()
+            validation_method(update_validator, new_value)
+            if update_validator.alert != []:
+                return "Error: " + ", ".join(update_validator.alert)
+            else:
+                user_information_handler = User()
+                user_information_handler.update_user_information(table, column, new_value, user_id)
+                return redirect(url_for('UpdateProfile'))
+    
+@app.route('/changename', methods=["POST"])
+def changeNameRoute():
+   table = "USER_DETAILS"
+   validation_method = Login_validation.name_validator
+   return handle_update(validation_method, table)
+         
+@app.route('/changeUsername', methods=["POST"])
+def changeUsernameRoute():
+     table = "USER_LOGIN"
+     validation_method = Login_validation.username_validator
+     return handle_update(validation_method, table)
+         
+@app.route('/changeEmail', methods=["POST"])
+def changeEmailRoute():
+     table = "USER_DETAILS"
+     validation_method = Login_validation.email_validator
+     return handle_update(validation_method, table)
+         
+@app.route('/changePhoneNumber', methods=["POST"])
+def changePhoneNumberRoute():
+    table = "USER_DETAILS"
+    validation_method = Login_validation.email_validator
+    return handle_update(validation_method, table)
+        
 
 @app.route('/Profile')
 def Profile():

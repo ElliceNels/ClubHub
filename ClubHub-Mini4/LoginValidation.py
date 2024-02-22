@@ -7,7 +7,8 @@ class Login_validation:
         self.alert = []
 
     def signup_validation(self, first_name, last_name, user_id, email, phone_number, user_name, password1, password2, user_type):
-        self.name_validator(first_name, last_name)
+        self.name_validator(first_name)
+        self.name_validator(last_name)
         self.account_type_validator(user_id, user_type)
         self.username_validator(user_name)
         self.password_validator(password1, password2)
@@ -16,12 +17,10 @@ class Login_validation:
         print("Has gone through all the steps")
         return self.alert
 
-    def name_validator(self, first_name, last_name):
-        print("Has reached name")
-        first_name = first_name.strip()
-        last_name = last_name.strip()
-        if len(first_name) <= 2 or len(last_name) <= 2:
-            self.alert.append("First name and last name must both be at least 2 characters long")
+    def name_validator(self, name):
+        name = name.strip()
+        if len(name) <= 2:
+            self.alert.append("name fields must be at least 2 characters long")
 
     def account_type_validator(self, user_id, user_type):
         print("Has reached acc type")
