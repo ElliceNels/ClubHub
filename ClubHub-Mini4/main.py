@@ -127,6 +127,7 @@ def club_mainpage(club_name):
 
 @app.route('/clubs_display', methods=["GET", "POST"])
 def clubs_display():
+    warning = ''
     # checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
 
@@ -140,12 +141,15 @@ def clubs_display():
             user_id = user_session.getUser_id()
             if not Coordinator.check_club_requests(user_id, club_name):
                 Coordinator.request_club_membership(user_id, club_name)
+            else:
+                warning = 'You cannot join more than 3 clubs/the same club.'
 
-        return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data())
+        return render_template('clubs_displayStud.html', clubs=Coordinator.get_club_data(), warning=warning)
 
 
 @app.route('/create_club', methods=('GET', 'POST'))
 def create_club():
+    warning_message = ''
 
     if not user_session.isAdministrator():
         if request.method == 'POST':
@@ -154,13 +158,14 @@ def create_club():
             club_name = request.form.get('club-name', '').strip()
             club_description = request.form.get('description', '').strip()
 
+            if ClubCreationVerification.existing_club(user_session.getUser_id()):
+                warning_message = 'You already have a club'
+                return render_template('create_club.html', warning=warning_message)  
+            
             if club_name and club_description:
-                ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
-        else:
-            # if user has a club, display warning
-            print('you have a club.')
+                ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())   
 
-    return render_template('create_club.html')
+    return render_template('create_club.html', warning=warning_message)
 
 
 ##############################################################################Profile##############################################################################

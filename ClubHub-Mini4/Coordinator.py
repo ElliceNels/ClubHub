@@ -132,18 +132,3 @@ class Coordinator:
         except sqlite3.Error as e:
             raise ValueError(f"Error retrieving members: {e}")
 
-def display_club_events(club_name):
-    club_id = Coordinator.club_getter(club_name)
-    try:
-        with sqlite3.connect(DB_PATH) as conn:
-            cur = conn.cursor()
-            cur.execute(''' SELECT EventTitle FROM EVENTS WHERE club_id = ?  ''', (club_id,))
-            events = cur.fetchone()[0]
-            print(events)
-            return events
-    
-    except sqlite3.Error as e:
-        raise ValueError(f"error displaying events: {e}")
-
-
-display_club_events('rap battles')
