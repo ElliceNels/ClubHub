@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>  Event Details </title>
-    <link rel="stylesheet" href="staticFiles/DetailsStyle.CSS" />
+    <link rel="stylesheet" href="{{ url_for('static' , filename='DetailsStyle.CSS') }}" />
     <script src="https://kit.fontawesome.com/9a80590ec1.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -19,14 +19,43 @@
 
      <nav class="navbar">
         <ul>
-            <li><a href="/EventMain">Events Page</a></li>
+            <li><a href="/clubs_display">Clubs</a></li>
+            <li><a href="/EventMain">Events</a></li>
+            <li><a href="/ClubInbox">Inbox</a></li>
             <li><a href="/Profile">Profile</a></li>
-            <li><a href="/clubs_display">Club info</a></li>
-            <li><a class="logout-button" href="/index">Logout</a></li>
+            <li><a class="logout-button" href="/logout">Logout</a></li>
         </ul>
      </nav>
+     <div class="content">
+    <div class="content-overlay">
+     <div class="event-details-container">
+        {% for detail in event_details %}
+            <div class="event-detail">
+                <h2>{{ detail[0] }}</h2> <!-- event Title -->
+                <p>Date: {{ detail[3] }}</p> <!-- Date -->
+                <p>Time: {{ detail[1] }}</p> <!-- Time -->
+                <p>Description: {{ detail[2] }}</p> <!-- Description -->
+                <p>Venue: {{ detail[4] }}</p> <!--  Venue -->
+                <p>Club: {{ detail[6] }}</p> <!-- Club Name -->
+            </div>
+        {% endfor %}
+        {% if success_message %}
+        <div class="success-message">
+                <p>{{ success_message }}</p>
+        </div>
+        {% endif %}
+        <form method="post">
+            <button type="submit" id="eventbutton" > Sign up for event</button>
+        </form>
+    </div>
+    
+    <div class="Clubinfo">
+        <h2> Club :{{club_info_data[0][0]}}</h2>
+        <p>Club Description: {{club_info_data[0][1]}}</p>
+        <p>Created on: {{club_info_data[0][2]}}</p>
+    </div>
 
-
-
+    </div>
+    </div>
 </body>
 </html>

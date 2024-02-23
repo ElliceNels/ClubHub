@@ -5,26 +5,25 @@
 .header{
     padding-bottom:10px;
     color: #023047;
-    font-family: "Fjalla-One";
+    font-family: "Fjalla One";
     font-weight: 1000;
     text-decoration: underline;
-    text-align: center;
-    margin-top:10px;
+    text-align: center; 
    
 }
 .logo{
     position: relative;
-    margin: 20px;
     display: flex;
     align-items: center;
     z-index: 1;
 }
 .clubhub-text{
-    padding-top: 5px;
+   
     color: #FA991C;
     
     margin-right: 10px;
-    font-family: "Fjalla-One";
+    font-family: "Fjalla One";
+    margin-left: 10px;
 }
 
 .fa-circle-nodes{
@@ -67,6 +66,7 @@
     }
     .clubhub-text{
         font-size: 40px;
+        margin-left: 5px;
     }
     .fa-circle-nodes{
         font-size: 40px;
@@ -75,12 +75,12 @@
 }
 .navbar{
     margin:0;
-    padding:0;
+    padding:0; 
     width:100%;
-    margin-bottom: 20px;
+    z-index:2;
 }
 .navbar a:hover{
-    background-color: #FA991C;
+    background-color: #FBAD49;
 
 }
 .navbar li{
@@ -88,32 +88,40 @@
 }
 
 .datecontainer{
-    display: grid;
+    display: flex;
     gap: 20px;
+    flex-direction: column;
+    align-items: left;
+    z-index:1;
+    padding-left: 20px;
 }
 
 .date{
     padding : 20px;
+    padding-left: 10px;
     background-color: #023047;
     border: 1px solid #023047;
     border-radius: 5px;
     color: #FBF3F2;
-   width: 100px;
-   text-align: center;
-  float:left;
-  margin-left: 10px;
+   width: fit-content;
+   text-align: left;
+  margin-bottom: 20px;
 
 }
 .detailsbox{
+    position: relative;
     padding: 20px;
-    background-color: #1C768F;
+    padding-left: 40px;
+    background-color: #FBF3F2;
     border: 1px solid #023047;
     border-radius: 5px;
-   color: #FBF3F2;
-   float:left;
+   color: #023047;
    margin-bottom: 20px;
+    width:25%;
+
    margin-left: 10px;
 }
+
 .logout-button {
     width: 5rem;
     height: 2rem;
@@ -125,4 +133,45 @@
     text-align: center;
     align-items: center;
     text-decoration: none;
+
+   width:25%;
+}
+.boldness{
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: capitalize;
+}
+.image{
+    position: relative;
+    z-index: -1;
+
+}
+.arrow-icon{
+    position: absolute;
+    top :50%;
+    left: 300px;
+    transform: translateY(-50%);
+    color:#023047;
+    font-size: 1.2rem;
+    transition: color 0.3s; /*colour transition smoothly over 0.3seconds*/
+}
+
+.arrow-icon:hover{
+    color: #FA991C;
+}
+.maincontent::before{ /*pseudo-element*/
+    content: " ";/*this is pseudo - if the content is empty style like this*/
+    position: absolute;
+    top:0;
+    left:0;
+    background-image: url('/staticFiles/Events.png') ;
+    background-size:cover;
+    background-position: center center;
+    z-index:-1;
+    width:100%;
+    height:100%;
+}
+.maincontent{
+    min-height: 100vh; /*makes ure that maincontent is atleast 100% of view port*/
+    position: relative;
 }

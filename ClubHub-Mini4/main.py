@@ -14,16 +14,12 @@ from Coordinator import Coordinator
 from ClubInbox import ClubInbox
 from User import User
 from EventsInbox import EventsInbox
-from constants import DB_PATH
+from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event
+from StudInbox import listOfAprrovedEvents
 
 # Provide template folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
 app.secret_key = 'who_would_have_thought_teehee'
-
-club_members = ["Alice Smith", "Bob Johnson", "Charlie Brown", "David Miller", "Eva Garcia",
-                "Frank Robinson", "Grace Lee", "Henry Davis", "Ivy Chen", "Jack Wilson", "Kelly Turner",
-                "Leo Martinez"]
-
 # session to store user_id for time logged in
 user_session = Session()
 
@@ -33,11 +29,10 @@ db_startup()
 @app.route('/')
 @app.route('/index')
 def index():
+    print(user_session.getUser_id())
     return render_template('index.html')
 
 
-
-##############################################################################Login#################################################################################
 
 @app.route('/signup.html')
 def signUp():
@@ -47,6 +42,8 @@ def signUp():
 @app.route('/login.html')
 def login():
     return render_template('login.html')
+
+
 
 
 @app.route('/LoginProcess_Form', methods=["POST"])
@@ -86,8 +83,8 @@ def signupValidationRoute():
         user_type = request.form.get("usertype")
 
         sign_up_validator = Login_validation()
-        alerts = sign_up_validator.signup_validation(first_name, last_name, user_id, email, phone_number, user_name, password_1,
-                                                     password_2, user_type)
+        alerts = sign_up_validator.signup_validation(first_name, last_name, user_id, email, phone_number, user_name,
+                                                     password_1, password_2, user_type)
         if alerts == []:
             sign_up_verfier = Login_verification()
             if sign_up_verfier.Sign_up(user_id, user_name, phone_number, password_1, first_name, last_name, email, user_type):
@@ -101,7 +98,7 @@ def signupValidationRoute():
 @app.route('/logout')
 def user_logout():
     user_session.logout()
-    return render_template('/index')
+    return redirect(url_for('index'))
 
 
 ##############################################################################Clubs##############################################################################
@@ -154,9 +151,11 @@ def create_club():
         if request.method == 'POST':
 
             # get data from html from to create a new club
-            club_name = request.form['club-name']
-            club_description = request.form['description']
-            ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
+            club_name = request.form.get('club-name', '').strip()
+            club_description = request.form.get('description', '').strip()
+
+            if club_name and club_description:
+                ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
         else:
             # if user has a club, display warning
             print('you have a club.')
@@ -170,22 +169,50 @@ def create_club():
 def updateStudentProfileDisplay():
     return render_template('UpdateProfileStud.html')
 
-
-@app.route('/changeDetails', methods=["POST"])
-def changeDetailsRoute():
+def handle_update(validation_method, table, new_value, column):
     if request.method == "POST":
-        new_value = request.form.get("newvalue")
-        column = request.form.get("column")
-        user_id = user_session.getUser_id()
-        table = None
-        if column == "Username":
-            table = "USER_LOGIN"
-        else:
-            table = "USER_DETAILS"
-        user_information_handler = User()
-        user_information_handler.update_user_information(table, column, new_value, user_id)
-        return redirect(url_for('updateStudentProfileDisplay'))
-
+            user_id = user_session.getUser_id()
+            update_validator = Login_validation()
+            validation_method(update_validator, new_value)
+            if update_validator.alert != []:
+                return "Error: " + ", ".join(update_validator.alert)
+            else:
+                user_information_handler = User()
+                user_information_handler.update_user_information(table, column, new_value, user_id)
+                return redirect(url_for('UpdateProfile'))
+    
+@app.route('/changeName', methods=["POST"])
+def changeNameRoute():
+   table = "USER_DETAILS"
+   validation_method = Login_validation.name_validator
+   column = request.form.get("column")
+   new_value = request.form.get("newvalue")
+   return handle_update(validation_method, table, new_value, column)
+         
+@app.route('/changeUsername', methods=["POST"])
+def changeUsernameRoute():
+     table = "USER_LOGIN"
+     validation_method = Login_validation.username_validator
+     column = request.form.get("column")
+     new_value = request.form.get("newvalue")
+     return handle_update(validation_method, table, new_value, column)
+         
+@app.route('/changeEmail', methods=["POST"])
+def changeEmailRoute():
+     table = "USER_DETAILS"
+     validation_method = Login_validation.email_validator
+     column = request.form.get("column")
+     new_value = request.form.get("newvalue")
+     return handle_update(validation_method, table, new_value, column)
+         
+@app.route('/changePhoneNumber', methods=["POST"])
+def changePhoneNumberRoute():
+    table = "USER_DETAILS"
+    validation_method = Login_validation.phone_number_validator
+    column = request.form.get("column")
+    new_value = request.form.get("newvalue")
+    return handle_update(validation_method, table, new_value, column)
+        
 
 @app.route('/Profile')
 def Profile():
@@ -207,7 +234,7 @@ def UpdateProfile():
         return render_template('UpdateProfileStud.html')
 
 
-##############################################################################Admin ClubInbox##############################################################################
+##############################################################################AdminInbox##############################################################################
 @app.route('/Admin')
 def showAdmin():
     admin_info = Admin()
@@ -278,7 +305,7 @@ def UserClubsRoute():
 
 
 
-#########################################################################################ClubInbox#########################################################################
+#########################################################################################Inbox#########################################################################
 
 @app.route('/EventRequests')
 def eventRequests():
@@ -304,12 +331,9 @@ def InboxRoute():
         coord_info = ClubInbox()
         club_waiting_list = coord_info.clubApprovalList(user_session.getUser_id(), 1)
         return render_template('ClubInbox.html', clubWaitingList=club_waiting_list)
-
-@app.route('/ClubMembers')
-def clubMembers():
-        coord_info = ClubInbox()
-        members_list = coord_info.membersList(user_session.getUser_id(), 0)
-        return render_template('ClubMembers.html', membersList=members_list)
+    else:
+        all_approved_events = listOfAprrovedEvents(user_session.getUser_id())
+        return render_template('StudInbox.html', all_approved_events=all_approved_events)
 
 
 @app.route('/clubjoinform', methods=["POST"])
@@ -358,14 +382,30 @@ def memberRemovalFormRoute():
         user_id = int(request.form.get("user"))
         inbox_info = ClubInbox()
         inbox_info.individualapproveOrReject(user_id, status)
-        return redirect(url_for('clubMembers'))
+        return redirect(url_for('clubs_display'))
+
+# @app.route('/StudInbox')
+# def StudInbox():
 
 
 ##############################################################################Events###################################################################################
 
-@app.route("/EventDetails")
-def EventDetails():
-    return render_template('EventDetails.html')
+@app.route("/EventDetails/<int:event_id>" , methods=['GET', 'POST'])
+def EventDetails(event_id):
+    event_details = eventDetails(event_id)
+    Club_id = event_details[0][5]
+    club_info_data = club_info(Club_id)
+    success_message = None
+   
+    if request.method == 'POST':
+        user_id = user_session.getUser_id()
+        if user_id:
+            success_message = signup_event(Club_id, user_id, event_id)
+            
+            
+    
+
+    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data, success_message=success_message)
 
 
 @app.route("/CreateEvents", methods=['GET', 'POST'])
@@ -374,12 +414,16 @@ def CreateEvents():
     success_message = None
 
     if request.method == 'POST':
-        event_title = request.form.get('EventTitle').strip()
-        description = request.form.get('Description').strip()
-        date = request.form.get('Date').strip()
-        time = request.form.get('Time').strip()
-        venue = request.form.get('Venue').strip()
+        event_title = request.form.get('EventTitle','').strip()
+        description = request.form.get('Description','').strip()
+        date = request.form.get('Date','').strip()
+        time = request.form.get('Time','').strip()
+        venue = request.form.get('Venue','').strip()
+    
 
+        if not event_title or not description or not event_title.strip() or not description.strip():
+            warning_message = 'Please fill in all fields!'
+            return render_template('CreateEvents.html', warning=warning_message)
         if user_session.is_logged_in:
             user_id = user_session.getUser_id()
             if user_session.is_coord:
@@ -404,8 +448,10 @@ def CreateEvents():
 
 @app.route("/EventMain")
 def EventMain():
-    dates = [datetime.now() + timedelta(days=i) for i in range(16)]
-    return render_template('EventMain.html', dates=dates)
+    events = eventsmainpage()
+    event_dates = [datetime.now() + timedelta(days=i) for i in range(16)]
+    print(events)
+    return render_template('EventMain.html', event_dates=event_dates, events=events, datetime=datetime)
 
 
 def validate_event_form(EventTitle, Description, Date, Time, Venue):

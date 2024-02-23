@@ -28,7 +28,7 @@
         <a href="/EventMain">Events</a>
         <a href="/ClubInbox">Inbox</a>
         <a href="/Profile">Profile</a>
-        <a class="logout-button" href="/index">Logout</a>
+        <a class="logout-button" href="/logout">Logout</a>
     </ul>
 
         <!-- TITLE -->
@@ -38,14 +38,13 @@
         <div class="updatedprofile">
 
             <div class="left">
-                <form action="/changeDetails" method="post">
-                    <form action="/changeFirstname" method="post">
+                    <form action="/changeName" method="post">
                         <p><input type="text" placeholder="Firstname" id="firstname" name="Firstname" minlength="2" maxlength="30" required></p>
                         <input type="submit" value="Save changes" class="button">
                         <br>
                     </form>
 
-                    <form action="/changeLastname" method="post">
+                    <form action="/changeName" method="post">
                         <p><input type="text" placeholder="Lastname" id="lastname" name="Lastname" minlength="2" maxlength="30" required></p>
                         <input type="submit" value="Save changes" class="button">
                         <br>
@@ -68,7 +67,6 @@
                         <input type="submit" value="Save changes" class="button">
                         <br>
                     </form>
-                </form>
                 <br>
                 <br>
                 <p>Club:</p>
