@@ -237,6 +237,12 @@ def db_startup():
         ON e.Event_id = ea.Event_id;''')
     conn.commit()
 
+    cursor.execute('''
+          CREATE VIEW IF NOT EXISTS Coord_Event AS SELECT c.Club_id, c.Coordinator_id, e.Event_id
+                FROM CLUBS c JOIN EVENTS e ON c.Club_id = e.Club_id;
+                  ''')
+    
+  
     #Admin account autocreate
     Login_verification.insert_login_and_details(Login_verification, conn, 4121234, "Admincoordinator", 0000000000 , "DefaultPassword123!", "Admin", "Coordinator", "defaultmail@mail.com")
     Login_verification.insert_coordinator(Login_verification, conn, 4121234)
