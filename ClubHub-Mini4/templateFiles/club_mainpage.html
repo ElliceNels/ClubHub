@@ -8,7 +8,10 @@
     <title>Club Mainpage</title>
 </head>
 <body>
+
     <header class="header"> ClubHub<i class="fa-solid fa-circle-nodes"></i> </header>
+
+
     <nav class="navigation-bar">
         <a class="nav-link" href="/clubs_display">Clubs</a>
         <a class="nav-link" href="/EventMain">Events</a>
@@ -17,46 +20,70 @@
         <a class="logout-button" href="/logout">Logout</a>
 
     </nav>
+
+
     <div id="background">
-    <h1  id="clubs_header">{{club_name}}</h1>
-    <div id="coordinator-controls">
-        <a href="/CreateEvents" class="button" id="create-event">
-            Create event
-        </a>
-        <br>
-        <a href="/ClubInbox" class="button" id="club-requests">
-            Requests
-        </a>
-        <br>
-    </div>
-    <h2 id="members-header"> List of members: </h2>
-    <div class="members-container">
-        <div id="list-of-members">  
+
+
+        <h1  id="clubs_header">{{club_name}}</h1>
+
+        <div id="coordinator-controls">
+            <a href="/CreateEvents" class="button" id="create-event">
+                Create event
+            </a>
             <br>
-            <div id="club-member-display">
-                {% for member_info in club_member_info %}
-                <div class="member-info">
-                    <p>
-                        <strong>{{ member_info[0] }} {{ member_info[1] }}</strong><br>
-                        <span>Username: {{ member_info[2] }}</span><br>
-                        <span>Phone Number: {{ member_info[3] }}</span><br>
-                        <span>Email: {{ member_info[4] }}</span>
-                    </p>
-                    <form action="/memberremovalform" method="POST">
-                    <input type="hidden" value="{{ member_info[5] }}" name="user">
-                    <button type="submit" name="status" value="0" class="remove-button">Remove</button>
-                </form>
-                </div>
-                {% endfor %}
-            </div>
+            <a href="/ClubInbox" class="button" id="club-requests">
+                Requests
+            </a>
+            <br>
         </div>
-    </div>
-    <form method="post" action="">
-        <input type="hidden" name="delete_club" value="{{club_name}}">
-        <button type="submit" class="button" id="delete-club" >
-            delete club
-        </button>
-    </form>
+        <h2 id="members-header"> List of members: </h2>
+        <div class="members-container">
+
+
+                <div id="list-of-members">  
+
+                    <br>
+
+                    <div id="club-member-display">
+
+                        {% for member_info in club_member_info %}
+                        <div class="member-info">
+
+                            <p>
+                                <strong>{{ member_info[0] }} {{ member_info[1] }}</strong><br>
+                                <span>Username: {{ member_info[2] }}</span><br>
+                                <span>Phone Number: {{ member_info[3] }}</span><br>
+                                <span>Email: {{ member_info[4] }}</span>
+                            </p>
+
+                            <form action="/memberremovalform" method="POST">
+
+                            <input type="hidden" value="{{ member_info[5] }}" name="user">
+                            <button type="submit" name="status" value="0" class="remove-button">Remove</button>
+
+                            </form>
+
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+        </div>
+
+
+        <form method="post" action="">
+
+            <input type="hidden" name="delete_club" value="{{club_name}}">
+            <button type="submit" class="button" id="delete-club" >
+                delete club
+            </button>
+            
+        </form>
+
+
     </div>
 </body>
 </html>

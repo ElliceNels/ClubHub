@@ -106,12 +106,14 @@ def user_logout():
 @app.route('/club_mainpage/<club_name>', methods=["GET", "POST"])
 def club_mainpage(club_name):
 
+    # gets all member info and stores it in a list
     club_member_info = Coordinator.display_members(club_name)
 
     if Verification.coordinatingClub(club_name, user_session.getUser_id()) == club_name:
 
         if request.method == "POST":
 
+            # deletes club and redirects to the diaplay club page
             club_name = request.form.get("delete_club")
             ClubDeletion.deleteClub(club_name)
 
@@ -119,6 +121,7 @@ def club_mainpage(club_name):
 
         return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
     
+    # if the user is the admin, has access to info of members from all the clubs
     if user_session.isAdministrator():
         return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
     
@@ -127,20 +130,26 @@ def club_mainpage(club_name):
 
 @app.route('/clubs_display', methods=["GET", "POST"])
 def clubs_display():
+
     warning = ''
+
     # checks if user is a coordinator or an admin.
     if user_session.isCoordinator() or user_session.isAdministrator():
 
         if request.method == "POST":
             club_name = request.form.get("club_link")
+
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
     
     else:
         if request.method == "POST":
+
             club_name = request.form.get("club_name")
             user_id = user_session.getUser_id()
+
             if not Coordinator.check_club_requests(user_id, club_name):
                 Coordinator.request_club_membership(user_id, club_name)
+
             else:
                 warning = 'You cannot join more than 3 clubs/the same club.'
 
@@ -151,6 +160,7 @@ def clubs_display():
 def create_club():
     warning_message = ''
 
+    # checks if user is admin
     if not user_session.isAdministrator():
         if request.method == 'POST':
 
@@ -158,10 +168,12 @@ def create_club():
             club_name = request.form.get('club-name', '').strip()
             club_description = request.form.get('description', '').strip()
 
+            # checks if user has a club
             if ClubCreationVerification.existing_club(user_session.getUser_id()):
                 warning_message = 'You already have a club'
                 return render_template('create_club.html', warning=warning_message)  
             
+            # if the input is value, creates club
             if club_name and club_description:
                 ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())   
 
