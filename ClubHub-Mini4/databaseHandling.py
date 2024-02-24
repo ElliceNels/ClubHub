@@ -241,6 +241,7 @@ def db_startup():
           CREATE VIEW IF NOT EXISTS Coord_Event AS SELECT c.Club_id, c.Coordinator_id, e.Event_id
                 FROM CLUBS c JOIN EVENTS e ON c.Club_id = e.Club_id;
                   ''')
+    conn.commit()
     
   
     #Admin account autocreate
