@@ -56,6 +56,8 @@ class Coordinator:
         except sqlite3.Error as e:
             raise ValueError(f"Error retrieving coord name: {e}")
 
+
+    # gets club id from club name
     def club_getter(club_name):
         try:
 
@@ -75,6 +77,7 @@ class Coordinator:
             raise ValueError(f"Error retrieving club: {e}")
 
 
+    # function to request membership to a club
     def request_club_membership(user_id, club_name):
         try:
 
@@ -89,18 +92,21 @@ class Coordinator:
         except sqlite3.Error as e:
             raise ValueError(f"Error requesting membership: {e}")
 
+    # checks if user can request membership to a new club
     def check_club_requests(user_id, club_name):
         try: 
             
             club_requests = []
             club_id = Coordinator.club_getter(club_name)
+
             with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Club_id FROM CLUB_MEMBERSHIP WHERE User_id = ? ''', (user_id,))
-                club_requests = cur.fetchone()
+                club_requests = cur.fetchall()
 
-                if club_requests is not None and (len(club_requests) >= 3 or (club_requests[0] == club_id) or not Verification.isCoord(user_id)):
+                # if user is/requested 3 clubs returns false else returns true
+                if len(club_requests) >= 3 or any(requested_club[0] == club_id for requested_club in club_requests):
                     print('true')
                     return True
                 
@@ -113,20 +119,26 @@ class Coordinator:
             raise ValueError(f"Error checking membership: {e}")
 
     
+    # funtion what displays member details in that club
     def display_members(club):
         club_id = Coordinator.club_getter(club)
 
         try:
+
             with sqlite3.connect(DB_PATH) as conn :
                 cur = conn.cursor()
+
             cur.execute(''' SELECT User_id FROM CLUB_MEMBERSHIP WHERE Club_id = ? AND Is_approved = 1''' , (club_id,))
             member_ids = cur.fetchall()
+
             member_details = [Verification.profileDetails(member_id[0]) for member_id in member_ids]
-            print(member_ids)
+
             for members in member_details:
+
                 for member_id in member_ids:
-                    print(members)
+
                     members.append(member_id[0])
+                    
             return member_details
 
         except sqlite3.Error as e:
