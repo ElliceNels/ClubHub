@@ -89,6 +89,47 @@ def signup_event(club_id, user_id, event_id):
             cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id) VALUES (?, ?)', (user_id, event_id))
             connection.commit()
             return "event request is pending"
-
-    connection.close()
     
+    connection.close()
+
+#def delete_event(user_id,event_id, club_id ):
+   # connection = sqlite3.connect(DB_PATH)
+  #  cursor = connection.cursor()
+
+
+def coord_event(user_id, event_id):
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+
+    print("Event ID:", event_id)
+
+    cursor.execute('SELECT Coordinator_id FROM COORDINATORS WHERE user_id = ?',(user_id,))
+    coordinator_id = cursor.fetchone()
+    if coordinator_id:
+        coordinator_id = coordinator_id[0] #this accesses the first and only element in the tuple(only one cuz we only selected one column)
+    else:
+        print("no co-ord found for user id")
+        cursor.close()
+        connection.close()
+        return False
+    
+    
+    
+    cursor.execute('SELECT Coordinator_id FROM Coord_Event WHERE event_id = ? ' ,(event_id,))
+    coord_from_view= cursor.fetchone()
+    
+    if coord_from_view:
+        coord_from_view = coord_from_view[0]
+        print(coord_from_view)
+    else:
+        print("no records for event_id", event_id)
+        cursor.close()
+        connection.close()
+        return False
+
+    is_coordinator = (coordinator_id == coord_from_view)
+    print("is coordinator", is_coordinator)
+
+    cursor.close()
+    connection.close()
+    return is_coordinator

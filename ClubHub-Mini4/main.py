@@ -14,7 +14,7 @@ from Coordinator import Coordinator
 from ClubInbox import ClubInbox
 from User import User
 from EventsInbox import EventsInbox
-from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event
+from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event, coord_event
 from StudInbox import listOfAprrovedEvents
 
 # Provide template folder name
@@ -402,22 +402,25 @@ def EventDetails(event_id):
     club_info_data = club_info(Club_id)
     success_message = None
    
-    if request.method == 'POST':
-        user_id = user_session.getUser_id()
-        if user_id:
+    user_id = user_session.getUser_id()
+    if user_id is not None:
+        if request.method == 'POST':
             success_message = signup_event(Club_id, user_id, event_id)
             
+        is_coordinator = coord_event(user_id, event_id)
+    else:
+        is_coordinator = False
             
     
 
-    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data, success_message=success_message)
+    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data, success_message=success_message, is_coordinator=is_coordinator, event_id=event_id)
 
 
 @app.route("/CreateEvents", methods=['GET', 'POST'])
 def CreateEvents():
     warning_message = None
     success_message = None
-
+ 
     if request.method == 'POST':
         event_title = request.form.get('EventTitle','').strip()
         description = request.form.get('Description','').strip()

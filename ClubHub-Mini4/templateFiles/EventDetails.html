@@ -54,7 +54,13 @@
         <p>Club Description: {{club_info_data[0][1]}}</p>
         <p>Created on: {{club_info_data[0][2]}}</p>
     </div>
-
+    {% if is_coordinator %}
+    <form action="/delete_button" method="POST">
+        <input type="hidden" name="event_id" value="{{ event_id}}"> 
+        <!--hidden input making the button only visile when is_coordinator is true-->
+        <button class="delete_button" type="submit">Delete event</button>
+    </form>
+    {% endif %}
     </div>
     </div>
 </body>
