@@ -1,5 +1,6 @@
 import sqlite3
 
+import bcrypt
 from flask import Flask, render_template, request, redirect, url_for
 from databaseHandling import db_startup
 from LoginValidation import Login_validation
@@ -26,12 +27,12 @@ user_session = Session()
 # creates database if not existing
 db_startup()
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     print(user_session.getUser_id())
     return render_template('index.html')
-
 
 
 @app.route('/signup.html')
@@ -42,8 +43,6 @@ def signUp():
 @app.route('/login.html')
 def login():
     return render_template('login.html')
-
-
 
 
 @app.route('/LoginProcess_Form', methods=["POST"])
@@ -87,13 +86,14 @@ def signupValidationRoute():
                                                      password_1, password_2, user_type)
         if alerts == []:
             sign_up_verfier = Login_verification()
-            if sign_up_verfier.Sign_up(user_id, user_name, phone_number, password_1, first_name, last_name, email, user_type):
+            if sign_up_verfier.Sign_up(user_id, user_name, phone_number, password_1, first_name, last_name, email,
+                                       user_type):
                 return redirect(url_for('login'))
             else:
                 return render_template('signup.html', warning=sign_up_verfier.alert)
         else:
             return render_template('signup.html', warning=alerts)
-        
+
 
 @app.route('/logout')
 def user_logout():
@@ -105,23 +105,21 @@ def user_logout():
 
 @app.route('/club_mainpage/<club_name>', methods=["GET", "POST"])
 def club_mainpage(club_name):
-
     club_member_info = Coordinator.display_members(club_name)
 
     if Verification.coordinatingClub(club_name, user_session.getUser_id()) == club_name:
 
         if request.method == "POST":
-
             club_name = request.form.get("delete_club")
             ClubDeletion.deleteClub(club_name)
 
             return redirect(url_for('clubs_display'))
 
         return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
-    
+
     if user_session.isAdministrator():
         return render_template('/club_mainpage.html', club_member_info=club_member_info, club_name=club_name)
-    
+
     return clubs_display()
 
 
@@ -134,7 +132,7 @@ def clubs_display():
         if request.method == "POST":
             club_name = request.form.get("club_link")
         return render_template('clubs_displayCoord.html', clubs=Coordinator.get_club_data())
-    
+
     else:
         if request.method == "POST":
             club_name = request.form.get("club_name")
@@ -160,10 +158,10 @@ def create_club():
 
             if ClubCreationVerification.existing_club(user_session.getUser_id()):
                 warning_message = 'You already have a club'
-                return render_template('create_club.html', warning=warning_message)  
-            
+                return render_template('create_club.html', warning=warning_message)
+
             if club_name and club_description:
-                ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())   
+                ClubCreationVerification.create_new_club(club_name, club_description, user_session.getUser_id())
 
     return render_template('create_club.html', warning=warning_message)
 
@@ -174,43 +172,71 @@ def create_club():
 def updateStudentProfileDisplay():
     return render_template('UpdateProfileStud.html')
 
+
 def handle_update(validation_method, table, new_value, column):
     if request.method == "POST":
-            user_id = user_session.getUser_id()
-            update_validator = Login_validation()
-            validation_method(update_validator, new_value)
-            if update_validator.alert != []:
-                error_message = update_validator.alert
-                return render_template('Error.html', error_message=error_message)
-            else:
-                user_information_handler = User()
-                user_information_handler.update_user_information(table, column, new_value, user_id)
-                return redirect(url_for('UpdateProfile'))
-    
+        user_id = user_session.getUser_id()
+        update_validator = Login_validation()
+        validation_method(update_validator, new_value)
+        if update_validator.alert != []:
+            error_message = update_validator.alert
+            return render_template('Error.html', error_message=error_message)
+        else:
+            user_information_handler = User()
+            user_information_handler.update_user_information(table, column, new_value, user_id)
+            return redirect(url_for('Profile'))
+
+def handle_password_update(validation_method, table, new_value, column):
+    if request.method == "POST":
+        user_id = user_session.getUser_id()
+        update_validator = Login_validation()
+        validation_method(update_validator, new_value)
+        if update_validator.alert != []:
+            error_message = update_validator.alert
+            return render_template('Error.html', error_message=error_message)
+        else:
+            new_value_encrypt = bcrypt.hashpw(new_value.encode(), bcrypt.gensalt())
+            user_information_handler = User()
+            user_information_handler.update_user_information(table, column, new_value_encrypt, user_id)
+            return redirect(url_for('Profile'))
+
+
 @app.route('/changeName', methods=["POST"])
 def changeNameRoute():
-   table = "USER_DETAILS"
-   validation_method = Login_validation.name_validator
-   column = request.form.get("column")
-   new_value = request.form.get("newvalue")
-   return handle_update(validation_method, table, new_value, column)
-         
+    table = "USER_DETAILS"
+    validation_method = Login_validation.name_validator
+    column = request.form.get("column")
+    new_value = request.form.get("newvalue")
+    return handle_update(validation_method, table, new_value, column)
+
+
 @app.route('/changeUsername', methods=["POST"])
 def changeUsernameRoute():
-     table = "USER_LOGIN"
-     validation_method = Login_validation.username_validator
-     column = request.form.get("column")
-     new_value = request.form.get("newvalue")
-     return handle_update(validation_method, table, new_value, column)
-         
+    table = "USER_LOGIN"
+    validation_method = Login_validation.username_validator
+    column = request.form.get("column")
+    new_value = request.form.get("newvalue")
+    return handle_update(validation_method, table, new_value, column)
+
+
+@app.route('/changePassword', methods=["POST"])
+def changePasswordRoute():
+    table = "USER_LOGIN"
+    validation_method = Login_validation.password_requirements
+    column = request.form.get("column")
+    new_value = request.form.get("newvalue")
+    return handle_password_update(validation_method, table, new_value, column)
+
+
 @app.route('/changeEmail', methods=["POST"])
 def changeEmailRoute():
-     table = "USER_DETAILS"
-     validation_method = Login_validation.email_validator
-     column = request.form.get("column")
-     new_value = request.form.get("newvalue")
-     return handle_update(validation_method, table, new_value, column)
-         
+    table = "USER_DETAILS"
+    validation_method = Login_validation.email_validator
+    column = request.form.get("column")
+    new_value = request.form.get("newvalue")
+    return handle_update(validation_method, table, new_value, column)
+
+
 @app.route('/changePhoneNumber', methods=["POST"])
 def changePhoneNumberRoute():
     table = "USER_DETAILS"
@@ -218,7 +244,7 @@ def changePhoneNumberRoute():
     column = request.form.get("column")
     new_value = request.form.get("newvalue")
     return handle_update(validation_method, table, new_value, column)
-        
+
 
 @app.route('/Profile')
 def Profile():
@@ -256,7 +282,8 @@ def approvalFormRoute():
         admin_management = Admin()
         admin_management.individual_approve(user_id)
         return redirect(url_for('showAdmin'))
- 
+
+
 @app.route('/predeletionform', methods=["POST"])
 def predeletionformroute():
     if request.method == "POST":
@@ -264,7 +291,6 @@ def predeletionformroute():
         admin_management = Admin()
         admin_management.individual_reject(user_id)
         return redirect(url_for('showAdmin'))
-        
 
 
 @app.route('/postdeletionform', methods=["POST"])
@@ -299,7 +325,8 @@ def UserDetails():
         user_info = Admin()
         user_information = user_info.get_user_details(user_id)
         return render_template('UserDetails.html', userinformation=user_information)
-    
+
+
 @app.route('/UserClubs', methods=["POST"])
 def UserClubsRoute():
     if request.method == "POST":
@@ -309,7 +336,6 @@ def UserClubsRoute():
             return redirect(url_for('showApprovedUsers'))
         else:
             return render_template('UserClubs.html', clubMembership=club_membership)
-
 
 
 #########################################################################################Inbox#########################################################################
@@ -383,6 +409,7 @@ def eventApprovalFormRoute():
         events_approval.massapproveE(status)
         return redirect(url_for('InboxRoute'))
 
+
 @app.route('/memberremovalform', methods=["GET", "POST"])
 def memberRemovalFormRoute():
     if request.method == "POST":
@@ -392,28 +419,27 @@ def memberRemovalFormRoute():
         inbox_info.individualapproveOrReject(user_id, status)
         return redirect(url_for('clubs_display'))
 
+
 # @app.route('/StudInbox')
 # def StudInbox():
 
 
 ##############################################################################Events###################################################################################
 
-@app.route("/EventDetails/<int:event_id>" , methods=['GET', 'POST'])
+@app.route("/EventDetails/<int:event_id>", methods=['GET', 'POST'])
 def EventDetails(event_id):
     event_details = eventDetails(event_id)
     Club_id = event_details[0][5]
     club_info_data = club_info(Club_id)
     success_message = None
-   
+
     if request.method == 'POST':
         user_id = user_session.getUser_id()
         if user_id:
             success_message = signup_event(Club_id, user_id, event_id)
-            
-            
-    
 
-    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data, success_message=success_message)
+    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data,
+                           success_message=success_message)
 
 
 @app.route("/CreateEvents", methods=['GET', 'POST'])
@@ -422,12 +448,11 @@ def CreateEvents():
     success_message = None
 
     if request.method == 'POST':
-        event_title = request.form.get('EventTitle','').strip()
-        description = request.form.get('Description','').strip()
-        date = request.form.get('Date','').strip()
-        time = request.form.get('Time','').strip()
-        venue = request.form.get('Venue','').strip()
-    
+        event_title = request.form.get('EventTitle', '').strip()
+        description = request.form.get('Description', '').strip()
+        date = request.form.get('Date', '').strip()
+        time = request.form.get('Time', '').strip()
+        venue = request.form.get('Venue', '').strip()
 
         if not event_title or not description or not event_title.strip() or not description.strip():
             warning_message = 'Please fill in all fields!'
