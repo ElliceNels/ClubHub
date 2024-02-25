@@ -58,7 +58,6 @@ class EventsInbox:
 
             if self.isMemberOfClub(user_id):
                 print('is a member, auto accept')
-                self.individualapproveOrRejectE(entries[0], 1)
             else:
                 print('not member, waiting verification')
                 self.event_list = [list(row) for row in all_data]
@@ -73,35 +72,6 @@ class EventsInbox:
             return ''
         else:
             return self.event_list
-
-    def individualapproveOrRejectE(self, user_id, status):
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        # if user has been approved
-        if status == 1:
-            try:
-                with conn:
-                    cursor.execute(''' UPDATE EVENT_ATTENDEES SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''',
-                                   (0, 1, user_id))
-                    conn.commit()
-            except Exception as e:
-                print(f"for the developer: Error: {e}")
-        elif status == 0:
-            try:
-                with conn:
-                    cursor.execute('PRAGMA foreign_keys = ON')
-                    conn.commit()
-                    cursor.execute('''DELETE FROM EVENT_ATTENDEES WHERE User_id = ?''', (user_id,))
-                    conn.commit()
-                    print("Deleted from details table")
-
-            except Exception as e:
-                print(f"for the developer: Error: {e}")
-            finally:
-                cursor.close()
-                conn.close()
-        return
-
 
     def massapproveE(self, status):
         conn = sqlite3.connect(DB_PATH)

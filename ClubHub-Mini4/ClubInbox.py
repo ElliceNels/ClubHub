@@ -70,35 +70,6 @@ class ClubInbox:
         else:
             return self.waiting_list
 
-    def individualapproveOrReject(self, user_id, status):
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        # if user has been approved
-        if status == 1:
-            try:
-                with conn:
-                    cursor.execute(''' UPDATE CLUB_MEMBERSHIP SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''',
-                                   (0, 1, user_id))
-                    conn.commit()
-            except Exception as e:
-                print(f"for the developer: Error: {e}")
-        elif status == 0:
-            try:
-                with conn:
-                    cursor.execute('PRAGMA foreign_keys = ON')
-                    conn.commit()
-                    cursor.execute('''DELETE FROM CLUB_MEMBERSHIP WHERE User_id = ?''', (user_id,))
-                    conn.commit()
-                    print("Deleted from details table")
-
-            except Exception as e:
-                print(f"for the developer: Error: {e}")
-            finally:
-                cursor.close()
-                conn.close()
-        return
-
-
     def massapprove(self, status):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()

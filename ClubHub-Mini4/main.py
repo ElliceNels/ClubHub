@@ -373,8 +373,8 @@ def clubJoinFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
         user_id = int(request.form.get("user"))
-        inbox_info = ClubInbox()
-        inbox_info.individualapproveOrReject(user_id, status)
+        approvals = Verification()
+        approvals.individualapproveOrReject(user_id, status, 'CLUB_MEMBERSHIP', 'Is_pending', 'Is_approved')
         return redirect(url_for('InboxRoute'))
 
 
@@ -383,8 +383,8 @@ def eventJoinFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
         user_id = int(request.form.get("user"))
-        event_join = EventsInbox()
-        event_join.individualapproveOrRejectE(user_id, status)
+        event_join = Verification()
+        event_join.individualapproveOrReject(user_id, status, 'EVENT_ATTENDEES')
         return redirect(url_for('InboxRoute'))
 
 
@@ -413,8 +413,8 @@ def memberRemovalFormRoute():
     if request.method == "POST":
         status = int(request.form.get("status"))
         user_id = int(request.form.get("user"))
-        inbox_info = ClubInbox()
-        inbox_info.individualapproveOrReject(user_id, status)
+        approvals = Verification()
+        approvals.individualapproveOrReject(user_id, status, 'CLUB_MEMBERSHIP')
         return redirect(url_for('clubs_display'))
 
 
