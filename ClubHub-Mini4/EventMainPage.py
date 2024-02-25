@@ -92,10 +92,6 @@ def signup_event(club_id, user_id, event_id):
     
     connection.close()
 
-#def delete_event(user_id,event_id, club_id ):
-   # connection = sqlite3.connect(DB_PATH)
-  #  cursor = connection.cursor()
-
 
 def coord_event(user_id, event_id):
     connection = sqlite3.connect(DB_PATH)
@@ -133,3 +129,15 @@ def coord_event(user_id, event_id):
     cursor.close()
     connection.close()
     return is_coordinator
+
+
+
+def delete_event(event_id):
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+
+    cursor.execute('DELETE FROM EVENTS WHERE Event_id = ?', (event_id,))
+    connection.commit()
+        
+    cursor.close()
+    connection.close()

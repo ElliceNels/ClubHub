@@ -14,7 +14,7 @@ from Coordinator import Coordinator
 from ClubInbox import ClubInbox
 from User import User
 from EventsInbox import EventsInbox
-from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event, coord_event
+from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event, coord_event, delete_event
 from StudInbox import listOfAprrovedEvents
 
 # Provide template folder name
@@ -22,6 +22,7 @@ app = Flask(__name__, template_folder='templateFiles', static_folder='staticFile
 app.secret_key = 'who_would_have_thought_teehee'
 # session to store user_id for time logged in
 user_session = Session()
+
 
 # creates database if not existing
 db_startup()
@@ -405,6 +406,9 @@ def EventDetails(event_id):
     user_id = user_session.getUser_id()
     if user_id is not None:
         if request.method == 'POST':
+            if 'delete_event' in request.form: #looks for delete_event in the form so it knows which button user pressed
+                delete_event(event_id)
+                return redirect('/EventMain')
             success_message = signup_event(Club_id, user_id, event_id)
             
         is_coordinator = coord_event(user_id, event_id)
