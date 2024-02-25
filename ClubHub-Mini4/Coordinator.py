@@ -103,10 +103,10 @@ class Coordinator:
                 cur = conn.cursor()
 
                 cur.execute(''' SELECT Club_id FROM CLUB_MEMBERSHIP WHERE User_id = ? ''', (user_id,))
-                club_requests = cur.fetchone()
+                club_requests = cur.fetchall()
 
                 # if user is/requested 3 clubs returns false else returns true
-                if club_requests is not None and (len(club_requests) >= 3 or (club_requests[0] == club_id) or not Verification.isCoord(user_id)):
+                if len(club_requests) >= 3 or any(requested_club[0] == club_id for requested_club in club_requests):
                     print('true')
                     return True
                 
