@@ -243,7 +243,8 @@ def UpdateProfile():
 @app.route('/Admin')
 def showAdmin():
     admin_info = Admin()
-    user_list = admin_info.get_user_list(1, 0)
+    admin_id = user_session.getUser_id()
+    user_list = admin_info.get_user_list(1, 0, admin_id)
     return render_template('Admin.html', userList=user_list)
 
 
@@ -277,16 +278,16 @@ def postdeletionFormRoute():
 @app.route('/ApprovedUsers')
 def showApprovedUsers():
     admin_info = Admin()
-    user_list = admin_info.get_user_list(0, 1)
+    admin_id = user_session.getUser_id()
+    user_list = admin_info.get_user_list(0, 1, admin_id)
     return render_template('ApprovedUsers.html', userList=user_list)
 
 
 @app.route('/massapprovalform', methods=["POST"])
 def massApprovalFormRoute():
     if request.method == "POST":
-        status = int(request.form.get("status"))
         admin_management = Admin()
-        admin_management.mass_approve(status)
+        admin_management.mass_approve()
         return redirect(url_for('showAdmin'))
 
 
@@ -330,7 +331,8 @@ def InboxRoute():
     print("in inbox")
     if user_session.isAdministrator():
         admin_info = Admin()
-        user_list = admin_info.get_user_list(1, 0)
+        admin_id = user_session.getUser_id()
+        user_list = admin_info.get_user_list(1, 0, admin_id)
         return render_template('Admin.html', userList=user_list)
     elif user_session.isCoordinator():
         coord_info = ClubInbox()
