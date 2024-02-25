@@ -71,24 +71,80 @@ def signup_event(club_id, user_id, event_id):
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
     
-    
+    try:
     #checks if user is part of the club that is hosting the event 
-    cursor.execute('SELECT COUNT(*) FROM user_club_event WHERE Club_id =? AND User_id = ? AND Event_id = ? And Is_approved = 1', (club_id, user_id, event_id))
-    club_mem_count = cursor.fetchone()[0]
+        cursor.execute('SELECT COUNT(*) FROM user_club_event WHERE Club_id =? AND User_id = ? AND Event_id = ? And Is_approved = 1', (club_id, user_id, event_id))
+        club_mem_count = cursor.fetchone()[0]
 
-    if club_mem_count >0:#if user is part of the club, it then checks if they have already signed up to the event
-        cursor.execute('SELECT COUNT(*) FROM EVENT_ATTENDEES WHERE User_id = ? AND Event_id = ?', (user_id, event_id))
-        event_attendee = cursor.fetchone()[0]
-        if  event_attendee >0:#if the user is part of the club its approves them instantly to the event
-            return "You already signed up for this event"
-        else:
-            cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id, Is_approved, Is_pending) VALUES (?, ?, 1, 0)', (user_id, event_id))
-            connection.commit()
-            return "You are signed up for the event. See you there!"
-    else:#if the user isnt part of the group, it adds them to the event attend table as pending so the co-ordinator can see whether or not to approve them for the event
-            cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id) VALUES (?, ?)', (user_id, event_id))
-            connection.commit()
-            return "event request is pending"
+        if club_mem_count >0:#if user is part of the club, it then checks if they have already signed up to the event
+            cursor.execute('SELECT COUNT(*) FROM EVENT_ATTENDEES WHERE User_id = ? AND Event_id = ?', (user_id, event_id))
+            event_attendee = cursor.fetchone()[0]
+            if  event_attendee >0:#if the user is part of the club its approves them instantly to the event
+                return "You already signed up for this event"
+        
+            else:
+                    cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id, Is_approved, Is_pending) VALUES (?, ?, 1, 0)', (user_id, event_id))
+                    connection.commit()
+                    return "You are signed up for the event. See you there!"
+        else:#if the user isnt part of the group, it adds them to the event attend table as pending so the co-ordinator can see whether or not to approve them for the event
+                cursor.execute('SELECT COUNT(*) FROM EVENT_ATTENDEES WHERE User_id = ? AND Event_id = ? AND Is_pending = 1', (user_id, event_id))
+                already_pending = cursor.fetchone()[0]
 
-    connection.close()
+                if already_pending >0:
+                    return "You have already requested to sign up to this event and your status is currently pending"
+                else:
+                    cursor.execute('INSERT INTO EVENT_ATTENDEES (User_id, Event_id) VALUES (?, ?)', (user_id, event_id))
+                    connection.commit()
+                    return "event request is pending"
+    finally:
+        connection.close()
+
+
+def coord_event(user_id, event_id):
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+
+    print("Event ID:", event_id)
+
+    cursor.execute('SELECT Coordinator_id FROM COORDINATORS WHERE user_id = ?',(user_id,))
+    coordinator_id = cursor.fetchone()
+    if coordinator_id:
+        coordinator_id = coordinator_id[0] #this accesses the first and only element in the tuple(only one cuz we only selected one column)
+    else:
+        print("no co-ord found for user id")
+        cursor.close()
+        connection.close()
+        return False
     
+    
+    
+    cursor.execute('SELECT Coordinator_id FROM Coord_Event WHERE event_id = ? ' ,(event_id,))
+    coord_from_view= cursor.fetchone()
+    
+    if coord_from_view:
+        coord_from_view = coord_from_view[0]
+        print(coord_from_view)
+    else:
+        print("no records for event_id", event_id)
+        cursor.close()
+        connection.close()
+        return False
+
+    is_coordinator = (coordinator_id == coord_from_view)
+    print("is coordinator", is_coordinator)
+
+    cursor.close()
+    connection.close()
+    return is_coordinator
+
+
+
+def delete_event(event_id):
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+
+    cursor.execute('DELETE FROM EVENTS WHERE Event_id = ?', (event_id,))
+    connection.commit()
+        
+    cursor.close()
+    connection.close()
