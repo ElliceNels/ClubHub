@@ -73,7 +73,7 @@ def db_startup():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS COORDINATORS (
         Coordinator_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        User_id INTEGER Unique,
+        User_id INTEGER UNIQUE NOT NULL,
         Created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         Updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id) ON DELETE CASCADE
@@ -85,8 +85,8 @@ def db_startup():
     CREATE TABLE IF NOT EXISTS USER_LOGIN(
       Login_id INTEGER PRIMARY KEY AUTOINCREMENT,
       User_id INTEGER,
-      Username VARCHAR(50) Unique,
-      Password VARCHAR(70),
+      Username VARCHAR(50) UNIQUE NOT NULL,
+      Password VARCHAR(70) UNIQUE NOT NULL,
       Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
       Created DATETIME DEFAULT CURRENT_TIMESTAMP,
       Is_pending INT(1) DEFAULT 1,
@@ -98,11 +98,11 @@ def db_startup():
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS USER_DETAILS(
-      User_id INTEGER,
-      Firstname VARCHAR (50),
-      Lastname VARCHAR (50),
+      User_id INTEGER UNIQUE NOT NULL,
+      Firstname VARCHAR (50) NOT NULL,
+      Lastname VARCHAR (50) NOT NULL,
       Contact_number INTEGER,
-      Email VARCHAR (80),
+      Email VARCHAR (80) UNIQUE NOT NULL,
       Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
       Created DATETIME DEFAULT CURRENT_TIMESTAMP, 
       Is_pending INT(1) DEFAULT 1,
@@ -237,8 +237,17 @@ def db_startup():
         ON e.Event_id = ea.Event_id;''')
     conn.commit()
 
+    cursor.execute('''
+          CREATE VIEW IF NOT EXISTS Coord_Event AS SELECT c.Club_id, c.Coordinator_id, e.Event_id
+                FROM CLUBS c JOIN EVENTS e ON c.Club_id = e.Club_id;
+                  ''')
+    conn.commit()
+    
+  
     #Admin account autocreate
-    Login_verification.insert_login_and_details(Login_verification, conn, 4121234, "Admincoordinator", 0000000000 , "DefaultPassword123!", "Admin", "Coordinator", "defaultmail@mail.com")
-    Login_verification.insert_coordinator(Login_verification, conn, 4121234)
+    cursor.execute(''' SELECT Login_id FROM USER_LOGIN WHERE Login_id == ? ''', (1, ))
+    if not cursor.fetchone():
+        Login_verification.insert_login_and_details(Login_verification, 4121234, "Admincoordinator", 0000000000 , "DefaultPassword123!", "Admin", "Coordinator", "defaultmail@mail.com")
+        Login_verification.insert_coordinator(Login_verification,  4121234)
     cursor.close()
     conn.close()

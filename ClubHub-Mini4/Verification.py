@@ -73,8 +73,7 @@ class Verification:
             for club in coordinating_club:
                 return club
 
-
-    def clubMemberships(user_id):   #needs to be tested when clubs are added
+    def clubMemberships(user_id):  # needs to be tested when clubs are added
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
@@ -87,10 +86,9 @@ class Verification:
                 club_membership.append(club)
 
         if not club_membership:
-            return None 
+            return None
         else:
             return club_membership
-        
 
     def CoordinatorClubId(user_id):
         conn = sqlite3.connect(DB_PATH)
@@ -114,3 +112,30 @@ class Verification:
             conn.close()
 
 
+    def individualapproveOrReject(self, user_id, status, table):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        # if user has been approved
+        if status == 1:
+            try:
+                with conn:
+                    cursor.execute(f''' UPDATE {table} SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''',
+                                   (0, 1, user_id))
+                    conn.commit()
+            except Exception as e:
+                print(f"for the developer: Error: {e}")
+        elif status == 0:
+            try:
+                with conn:
+                    cursor.execute('PRAGMA foreign_keys = ON')
+                    conn.commit()
+                    cursor.execute(f'''DELETE FROM {table} WHERE User_id = ?''', (user_id,))
+                    conn.commit()
+                    print("Deleted from details table")
+
+            except Exception as e:
+                print(f"for the developer: Error: {e}")
+            finally:
+                cursor.close()
+                conn.close()
+        return
