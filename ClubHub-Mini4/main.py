@@ -175,7 +175,8 @@ def handle_update(validation_method, table, new_value, column):
             update_validator = Login_validation()
             validation_method(update_validator, new_value)
             if update_validator.alert != []:
-                return "Error: " + ", ".join(update_validator.alert)
+                error_message = update_validator.alert
+                return render_template('Error.html', error_message=error_message)
             else:
                 user_information_handler = User()
                 user_information_handler.update_user_information(table, column, new_value, user_id)
@@ -472,7 +473,8 @@ def UserDeets():
 ##############################################################################Error pages##############################################################################
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('error404.html'), 404
+    error_message = 'UHHHH, Something went wrong...'
+    return render_template('error404.html', error_message=error_message), 404
 
 
 @app.errorhandler(AttributeError)
