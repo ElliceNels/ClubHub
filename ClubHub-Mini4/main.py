@@ -170,7 +170,7 @@ def create_club():
 
 @app.route('/UpdateProfileStud')
 def updateStudentProfileDisplay():
-    return render_template('UpdateProfileStud.html')
+    return render_template('UpdateProfile.html')
 
 
 def handle_update(validation_method, table, new_value, column):
@@ -185,6 +185,7 @@ def handle_update(validation_method, table, new_value, column):
             user_information_handler = User()
             user_information_handler.update_user_information(table, column, new_value, user_id)
             return redirect(url_for('Profile'))
+
 
 def handle_password_update(validation_method, table, new_value, column):
     if request.method == "POST":
@@ -260,10 +261,7 @@ def Profile():
 
 @app.route('/UpdateProfile')
 def UpdateProfile():
-    if user_session.isCoordinator() or user_session.isAdministrator():
-        return render_template('UpdateProfileCoord.html')
-    else:
-        return render_template('UpdateProfileStud.html')
+    return render_template('UpdateProfile.html')
 
 
 ##############################################################################AdminInbox##############################################################################
