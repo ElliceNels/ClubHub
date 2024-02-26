@@ -491,8 +491,11 @@ def CreateEvents():
                         event_datetime = datetime.strptime(f"{date} {time}", "%Y-%m-%d %H:%M")
                         event_date = event_datetime.date()
                         event_time = event_datetime.strftime("%H:%M")
-                        register_events(event_title, description, event_date, event_time, venue, club_id)
-                        success_message = "Event successfully created!!"
+                        error_message = register_events(event_title, description, event_date, event_time, venue, club_id)
+                        if error_message:
+                            warning_message = error_message
+                        else:
+                            success_message = "Event successfully created!!"
                     else:
                         warning_message = "You are not associated with any club!"
                 except Exception as e:
@@ -507,9 +510,7 @@ def CreateEvents():
 @app.route("/EventMain")
 def EventMain():
     events = eventsmainpage()
-    event_dates = [datetime.now() + timedelta(days=i) for i in range(16)]
-    print(events)
-    return render_template('EventMain.html', event_dates=event_dates, events=events, datetime=datetime)
+    return render_template('EventMain.html', events=events)
 
 
 def validate_event_form(EventTitle, Description, Date, Time, Venue):
