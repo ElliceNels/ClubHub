@@ -162,6 +162,8 @@
     position: absolute;
     padding: 10px;
     color:#FBF3F2;
+    bottom:35px;
+    left:10px;
 }
 
 .delete_button {
@@ -178,4 +180,10 @@
 
 .delete_button:hover{
     background-color: darkred;
+}
+
+h2{
+   
+    font-weight: 500;
+    font-family: 'Signika Negative';
 }

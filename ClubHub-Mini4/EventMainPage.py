@@ -6,7 +6,9 @@ import sqlite3
 def eventsmainpage():
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
-    cursor.execute('SELECT EventTitle, EventTime, Description, EventDate , Event_id FROM EVENTS')
+
+    current_date = datetime.datetime.now().date()
+    cursor.execute('SELECT EventTitle, EventTime, Description, EventDate , Event_id FROM EVENTS WHERE EventDate >= ?',(current_date,))
     eventsmainpage = cursor.fetchall()
 
 #coverting date strings to date objects since its being retrived as a string 
