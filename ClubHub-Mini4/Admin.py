@@ -7,7 +7,10 @@ class Admin:
         self.user_list = []
     
     def open_connection(self):
-        conn = sqlite3.connect(DB_PATH)
+        try:    
+             conn = sqlite3.connect(DB_PATH)
+        except Exception as e:
+            raise Exception(f"Error has occured connected to the database: {e}")
         return conn
         
     def get_user_list(self, pending_status, approved_status, admin_id):
@@ -26,7 +29,7 @@ class Admin:
                     else:
                         user.append("Student")
         except sqlite3.Error as e:
-            print(f"Error has occured while getting user list: {e}")
+            raise Exception(f"Error has occured while getting user list: {e}")
         return self.user_list
     
     def individual_approve(self, user_id):
@@ -37,7 +40,7 @@ class Admin:
                 cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ? WHERE User_id = ?''', (0, 1, user_id))
                 conn.commit()
         except sqlite3.Error as e:
-               print(f"Error has occured while individually approving users: {e}")
+               raise Exception(f"Error has occured while individually approving users: {e}")
             
     def individual_reject(self, user_id):
         try:
@@ -48,7 +51,7 @@ class Admin:
                 conn.commit() 
         except sqlite3.Error as e:
             # Consider raising custom exceptions or returning error messages
-           print(f"Error has occured while individually deleting users: {e}")
+           raise Exception(f"Error has occured while individually deleting users: {e}")
 
     def mass_approve(self):
         try:
@@ -58,7 +61,7 @@ class Admin:
                 cursor.execute(''' UPDATE USER_DETAILS SET Is_pending = ?, Is_approved = ?WHERE Is_pending = ? AND Is_approved = ?''', (0, 1,1,0))
                 conn.commit()
         except Exception as e:
-                print(f"Error has occured while mass approving users: {e}")
+                raise Exception(f"Error has occured while mass approving users: {e}")
                 
                 
     def get_user_details(self, user_id):
@@ -68,6 +71,6 @@ class Admin:
                 cursor.execute('''SELECT * FROM USER_INFORMATION WHERE User_id = ?''', (user_id,))
                 user_information = list(chain.from_iterable(cursor.fetchall()))
         except sqlite3.Error as e:
-            print(f"Error has occured while getting user details: {e}")
+            raise Exception(f"Error has occured while getting user details: {e}")
         return user_information
 

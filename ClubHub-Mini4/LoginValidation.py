@@ -57,7 +57,7 @@ class Login_validation:
             else:
                 self.password_requirements(password_1)
         except Exception as e:
-            print(f"An error occurred during password validation: {e}")
+            raise Exception(f"An error occurred during password validation: {e}")
             
     
     def email_validator(self, email):
@@ -78,9 +78,8 @@ class Login_validation:
             int(phone_number[1:])
             int(str(phone_number[0]))
         except ValueError as e:
-            print(f"An error occured while validating phone number: {e}")
             self.alert.append("Phone number must be a number")
-            return
+            raise Exception(f"An error occured while validating phone number: {e}")
         if len(str(phone_number)) != 10:
             self.alert.append("Irish phone numbers must be 10 digits long")
             

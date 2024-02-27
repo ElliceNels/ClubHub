@@ -9,7 +9,10 @@ class Login_verification:
         self.alert = []
         
     def open_connection(self):
-        conn = sqlite3.connect(DB_PATH)
+        try:
+            conn = sqlite3.connect(DB_PATH)
+        except sqlite3.Error as e:
+            raise Exception(f"There was an error connecting to the database: {e}")
         return conn
         
     def user_id_exists(self, user_id):
