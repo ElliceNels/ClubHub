@@ -162,5 +162,28 @@
     position: absolute;
     padding: 10px;
     color:#FBF3F2;
+    bottom:35px;
+    left:10px;
 }
 
+.delete_button {
+    background-color: red;
+    color: white;
+    border-radius:10px;
+    border: 1px solid #023047;
+    padding: 10px 20px;
+    font-size:16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin:20px;
+}
+
+.delete_button:hover{
+    background-color: darkred;
+}
+
+h2{
+   
+    font-weight: 500;
+    font-family: 'Signika Negative';
+}

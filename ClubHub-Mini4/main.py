@@ -15,7 +15,7 @@ from Coordinator import Coordinator
 from ClubInbox import ClubInbox
 from User import User
 from EventsInbox import EventsInbox
-from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event
+from EventMainPage import eventsmainpage, eventDetails, club_info, signup_event, coord_event, delete_event
 from StudInbox import listOfAprrovedEvents
 
 # Provide template folder name
@@ -23,6 +23,7 @@ app = Flask(__name__, template_folder='templateFiles', static_folder='staticFile
 app.secret_key = 'who_would_have_thought_teehee'
 # session to store user_id for time logged in
 user_session = Session()
+
 
 # creates database if not existing
 db_startup()
@@ -447,20 +448,30 @@ def EventDetails(event_id):
     club_info_data = club_info(Club_id)
     success_message = None
 
-    if request.method == 'POST':
-        user_id = user_session.getUser_id()
-        if user_id:
+   
+    user_id = user_session.getUser_id()
+    if user_id is not None:
+        if request.method == 'POST':
+            if 'delete_event' in request.form: #looks for delete_event in the form so it knows which button user pressed
+                delete_event(event_id)
+                return redirect('/EventMain')
             success_message = signup_event(Club_id, user_id, event_id)
+            
+        is_coordinator = coord_event(user_id, event_id)
+    else:
+        is_coordinator = False
+            
+    
 
-    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data,
-                           success_message=success_message)
+    return render_template('EventDetails.html', event_details=event_details, club_info_data=club_info_data, success_message=success_message, is_coordinator=is_coordinator, event_id=event_id)
+
 
 
 @app.route("/CreateEvents", methods=['GET', 'POST'])
 def CreateEvents():
     warning_message = None
     success_message = None
-
+ 
     if request.method == 'POST':
         event_title = request.form.get('EventTitle', '').strip()
         description = request.form.get('Description', '').strip()
@@ -480,8 +491,11 @@ def CreateEvents():
                         event_datetime = datetime.strptime(f"{date} {time}", "%Y-%m-%d %H:%M")
                         event_date = event_datetime.date()
                         event_time = event_datetime.strftime("%H:%M")
-                        register_events(event_title, description, event_date, event_time, venue, club_id)
-                        success_message = "Event successfully created!!"
+                        error_message = register_events(event_title, description, event_date, event_time, venue, club_id)
+                        if error_message:
+                            warning_message = error_message
+                        else:
+                            success_message = "Event successfully created!!"
                     else:
                         warning_message = "You are not associated with any club!"
                 except Exception as e:
@@ -496,9 +510,7 @@ def CreateEvents():
 @app.route("/EventMain")
 def EventMain():
     events = eventsmainpage()
-    event_dates = [datetime.now() + timedelta(days=i) for i in range(16)]
-    print(events)
-    return render_template('EventMain.html', event_dates=event_dates, events=events, datetime=datetime)
+    return render_template('EventMain.html', events=events)
 
 
 def validate_event_form(EventTitle, Description, Date, Time, Venue):
