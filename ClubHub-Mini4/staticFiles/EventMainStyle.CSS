@@ -159,11 +159,19 @@
 .arrow-icon:hover{
     color: #FA991C;
 }
-.maincontent{
+.maincontent::before{ /*pseudo-element*/
+    content: " ";/*this is pseudo - if the content is empty style like this*/
+    position: absolute;
+    top:0;
+    left:0;
     background-image: url('/staticFiles/Events.png') ;
     background-size:cover;
     background-position: center center;
-    z-index:0;
+    z-index:-1;
     width:100%;
     height:100%;
+}
+.maincontent{
+    min-height: 100vh; /*makes ure that maincontent is atleast 100% of view port*/
+    position: relative;
 }

@@ -22,41 +22,60 @@
     <header class="header"> ClubHub<i class="fa-solid fa-circle-nodes"></i> </header>
 
     <br>
+
     <div id="background">
-    <h1 id="clubs_header">
-        CLUBS
-    </h1>
-    <div class="club-list">
-        {% for club in clubs %}
-        <div class="club-box">
-                <div class="club-name">
-                    <a href="{{ url_for('club_mainpage', club_name=club[0]) }}" class="link">
-                        <form method="post" action="">
-                            <input type="hidden" name="club_link" value="{{club[0]}}">
-                        </form>
-                        {{club[0]}}
-                    </a>
-                </div>
-        </div>
+
+        <h1 id="clubs_header">
+            CLUBS
+        </h1>
+
+        <div class="club-list">
+
+            {% for club in clubs %}
+
+            <div class="club-box">
+
+                    <div class="club-name">
+
+                        <a href="{{ url_for('club_mainpage', club_name=club[0]) }}" class="link">
+
+                            <form method="post" action="">
+                                <input type="hidden" name="club_link" value="{{club[0]}}">
+                            </form>
+
+                            {{club[0]}}
+
+                        </a>
+
+                    </div>
+            </div>
+
             <div class="coordinator-name">
                 {{club[2]}}
                 <br>
             </div>
+            
             <div class="club-description">
                 <p>{{club[1]}}</p>
                 <br>
             </div>
-        {% endfor %}
-    </div>
-    <br>
-    <br>
-    <div class="temp">
-        <a class="button" id ="create-club-button" href="{{ url_for('create_club') }}">create a new club</a>
-       
-    </div>
-    <br>
-    <br>
-    <br>
+
+            {% endfor %}
+
+        </div>
+
+        <br>
+        <br>
+
+        <div class="temp">
+            <a class="button" id ="create-club-button" href="{{ url_for('create_club') }}">create a new club</a>
+        
+        </div>
+
+        <br>
+        <br>
+        <br>
+
     </div>
 </body>
 </html>

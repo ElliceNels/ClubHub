@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS EVENT_ATTENDEES (
 
 CREATE TABLE IF NOT EXISTS EVENTS(
   Event_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  EventTitle VARCHAR(20),
+  EventTitle VARCHAR(20) NOT NULL,
   Description TEXT,
   EventDate DATE,
   EventTime TIMESTAMP,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS EVENTS(
 CREATE TABLE IF NOT EXISTS CLUBS (
     Club_id INTEGER PRIMARY KEY AUTOINCREMENT,
     Club_name VARCHAR(40),
-    Coordinator_id INTEGER,
+    Coordinator_id INTEGER UNIQUE,
     Description TEXT,
     Is_valid INTEGER DEFAULT 1,
     Created DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS CLUBS (
 
 CREATE TABLE IF NOT EXISTS COORDINATORS (
     Coordinator_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    User_id INTEGER,
+    User_id INTEGER UNIQUE NOT NULL,
     Created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     Updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (User_id) REFERENCES USER_DETAILS(User_id) ON DELETE CASCADE
@@ -64,9 +64,9 @@ CREATE TABLE IF NOT EXISTS COORDINATORS (
 
 CREATE TABLE IF NOT EXISTS USER_LOGIN(
   Login_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  User_id INTEGER,
-  Username VARCHAR(50) Unique,
-  Password VARCHAR(70),
+  User_id INTEGER UNIQUE NOT NULL,
+  Username VARCHAR(50) UNIQUE NOT NULL,
+  Password VARCHAR(70) NOT NULL,
   Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
   Created DATETIME DEFAULT CURRENT_TIMESTAMP,
   Is_pending INT(1) DEFAULT 1,
@@ -76,11 +76,11 @@ CREATE TABLE IF NOT EXISTS USER_LOGIN(
  
 
 CREATE TABLE IF NOT EXISTS USER_DETAILS(
-  User_id INTEGER,
-  Firstname VARCHAR (50),
-  Lastname VARCHAR (50),
+  User_id INTEGER UNIQUE NOT NULL,
+  Firstname VARCHAR (50) NOT NULL,
+  Lastname VARCHAR (50) UNIQUE NOT NULL,
   Contact_number INTEGER,
-  Email VARCHAR (80),
+  Email VARCHAR (80) UNIQUE NOT NULL,
   Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
   Created DATETIME DEFAULT CURRENT_TIMESTAMP, 
   Is_pending INT(1) DEFAULT 1,
@@ -88,7 +88,33 @@ CREATE TABLE IF NOT EXISTS USER_DETAILS(
   CONSTRAINT UDPK PRIMARY KEY (User_id)
  ); 
 
+CREATE VIEW IF NOT EXISTS USER_INFORMATION AS
+            SELECT ud.user_id, ud.firstname, ud.lastname, ul.username, ud.email,contact_number
+            FROM USER_DETAILS as ud
+            INNER JOIN USER_LOGIN as ul
+            ON ud.User_id = ul.User_id;
 
+CREATE VIEW IF NOT EXISTS CLUB_AND_MEMBERS AS
+            SELECT
+                c.Club_name,
+                u.User_id,
+                u.Firstname,
+                u.Lastname
+            FROM CLUB_MEMBERSHIP cm
+            INNER JOIN CLUBS c ON cm.Club_id = c.Club_id
+            INNER JOIN USER_DETAILS u ON cm.User_id = u.User_id;
+
+CREATE VIEW IF NOT EXISTS SUB_EVENT_DETAILS AS 
+        SELECT ea.User_id, e.EventTitle, e.EventDate, ea.Is_approved
+        FROM EVENT_ATTENDEES ea INNER JOIN EVENTS e
+        ON e.Event_id = ea.Event_id;
+
+CREATE VIEW IF NOT EXISTS Coord_Event AS SELECT c.Club_id, c.Coordinator_id, e.Event_id
+                FROM CLUBS c JOIN EVENTS e ON c.Club_id = e.Club_id;
+
+CREATE VIEW IF NOT EXISTS user_club_event AS SELECT cm.Club_id , cm.User_id ,e.Event_id, cm.Is_approved
+               FROM  CLUB_MEMBERSHIP cm JOIN EVENTS e ON cm.Club_id = e.Club_id
+                WHERE cm.Is_approved = 1;
 
 
 CREATE TRIGGER IF NOT EXISTS updatelogin AFTER UPDATE ON USER_LOGIN
@@ -145,3 +171,12 @@ BEGIN
     SET Updated = CURRENT_TIMESTAMP
     WHERE User_id = OLD.User_id AND Event_id = OLD.Event_id;
 END; 
+
+CREATE TRIGGER IF NOT EXISTS Prevent_admin_deletion 
+BEFORE DELETE ON USER_DETAILS
+BEGIN
+    SELECT CASE
+        WHEN EXISTS (SELECT 1 FROM USER_LOGIN WHERE user_id = OLD.user_id AND login_id = 1) THEN
+            RAISE(ABORT, 'Admin deletion not allowed');
+    END CASE;
+END;

@@ -47,14 +47,22 @@
         <form method="post">
             <button type="submit" id="eventbutton" > Sign up for event</button>
         </form>
+        <h2>All events are free to attend!!</h2>
     </div>
+    
     
     <div class="Clubinfo">
         <h2> Club :{{club_info_data[0][0]}}</h2>
         <p>Club Description: {{club_info_data[0][1]}}</p>
         <p>Created on: {{club_info_data[0][2]}}</p>
     </div>
-
+    {% if is_coordinator %}
+    <form action="/EventDetails/{{ event_id }}" method="POST"> <!--EventDetails/{{ event_id }} this allows the form to be directed to a specific event detail page with event id in the url-->
+        <input type="hidden" name="delete_event" value="delete"> 
+        <!--hidden input making the button only visile when is_coordinator is true-->
+        <button class="delete_button" type="submit">Delete event</button>
+    </form>
+    {% endif %}
     </div>
     </div>
 </body>

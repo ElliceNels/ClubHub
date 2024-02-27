@@ -29,3 +29,15 @@ h1{
     font-size: 30px;
     grid-area: 6/4/9/8;
 }
+
+ .button {
+            border: 3px solid white;
+            font-family: Signika Negative;
+            font-size: 2.2em;
+            background-color: #FA991C;
+            color: white;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            text-decoration: none;
+
+
+        }
