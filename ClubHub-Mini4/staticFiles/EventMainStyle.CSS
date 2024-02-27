@@ -46,6 +46,7 @@
     display: block;
     text-align: center;
     padding: 15px 60px;
+    font-size: 1.5rem;
 }
 @media screen and (min-width:768px){ /*adjusted for websites*/
     .navbar a{
