@@ -16,7 +16,7 @@ body{
 .header{
     padding-bottom:10px;
     color: #FBF3F2;
-    font-family: "Fjalla-One";
+    font-family: Fjalla-One;
     font-weight: 1000;
     text-decoration: underline;
     margin-top: -100px;
@@ -25,10 +25,11 @@ body{
 }
 .navbar ul{
     list-style-type: none;
-    background-color: #FFB703;
+    background-color: #FA991C ;
     padding: 0;
     margin:0;
     overflow: hidden;
+    font-family: Signika Negative;
 }
 .navbar a{
     color:#FBF3F2;
@@ -36,6 +37,7 @@ body{
     display: block;
     text-align: center;
     padding: 15px 60px;
+    font-size: 1.5rem;
 }
 @media screen and (min-width:768px){ /*adjusted for websites*/
     .navbar a{
@@ -69,7 +71,7 @@ body{
     width:100%;
 }
 .navbar a:hover{
-    background-color: #FA991C;
+    background-color: #FBAD49;
 
 }
 .navbar li{
@@ -82,7 +84,7 @@ div{
 }
 
 label{
-    font-family: 'Signika Negative';
+    font-family: Signika Negative;
     color: #032539;
     margin-right: 10px;
     flex: 1;
@@ -100,7 +102,7 @@ label{
 #createbutton{
     margin-top: 10px;
     background-color: #FA991C;
-    font-family: 'Signika Negative';
+    font-family: Signika Negative;
     color:white;
     border-radius: 10px;
     z-index: 1;
@@ -181,7 +183,7 @@ textarea {
 }
 
 .fa-circle-nodes{
-    color:#8ECAE6;
+    color:#032539;
     
 }
 .logout-button {
