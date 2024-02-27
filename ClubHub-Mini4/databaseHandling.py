@@ -43,10 +43,10 @@ def db_startup():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS EVENTS(
       Event_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      EventTitle VARCHAR(20),
+      EventTitle VARCHAR(20) NOT NULL,
       Description TEXT,
-      EventDate DATE,
-      EventTime TIMESTAMP,
+      EventDate DATE NOT NULL, 
+      EventTime TIMESTAMP NOT NULL,
       Venue VARCHAR(50),
       Club_id INTEGER,
       Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -59,8 +59,8 @@ def db_startup():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS CLUBS (
         Club_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        Club_name VARCHAR(40),
-        Coordinator_id INTEGER,
+        Club_name VARCHAR(40) UNIQUE NOT NULL,
+        Coordinator_id INTEGER UNIQUE,
         Description TEXT,
         Is_valid INTEGER DEFAULT 1,
         Created DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -84,9 +84,9 @@ def db_startup():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS USER_LOGIN(
       Login_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      User_id INTEGER,
+      User_id INTEGER UNIQUE NOT NULL,
       Username VARCHAR(50) UNIQUE NOT NULL,
-      Password VARCHAR(70) UNIQUE NOT NULL,
+      Password VARCHAR(70) NOT NULL,
       Updated DATETIME DEFAULT CURRENT_TIMESTAMP,
       Created DATETIME DEFAULT CURRENT_TIMESTAMP,
       Is_pending INT(1) DEFAULT 1,
@@ -186,13 +186,14 @@ def db_startup():
     print("Update event attendees trigger created successfullly")
 
     cursor.execute('''CREATE TRIGGER IF NOT EXISTS Prevent_admin_deletion 
-    BEFORE DELETE ON USER_DETAILS
-    BEGIN
-        SELECT CASE
-            WHEN EXISTS (SELECT login_id FROM USER_LOGIN WHERE user_id = OLD.user_id AND login_id = 1) THEN
-                RAISE(ABORT, 'Admin deletion not allowed')
-        END;
-    END ;''')
+BEFORE DELETE ON USER_DETAILS
+BEGIN
+    SELECT CASE
+        WHEN EXISTS (SELECT login_id FROM USER_LOGIN WHERE user_id = OLD.user_id AND login_id = 1) THEN
+            RAISE(ABORT, 'Admin deletion not allowed')
+    END;
+END ;
+''')
     conn.commit()
     print(" admin undeleteable trigger created")
 
@@ -247,7 +248,8 @@ def db_startup():
     #Admin account autocreate
     cursor.execute(''' SELECT Login_id FROM USER_LOGIN WHERE Login_id == ? ''', (1, ))
     if not cursor.fetchone():
-        Login_verification.insert_login_and_details(Login_verification, 4121234, "Admincoordinator", 0000000000 , "DefaultPassword123!", "Admin", "Coordinator", "defaultmail@mail.com")
-        Login_verification.insert_coordinator(Login_verification,  4121234)
+        Login_verifier = Login_verification()
+        Login_verifier.insert_login_and_details(4121234, "Admincoordinator", 0000000000 , "DefaultPassword123!", "Admin", "Coordinator", "defaultmail@mail.com")
+        Login_verifier.insert_coordinator(4121234)
     cursor.close()
     conn.close()
