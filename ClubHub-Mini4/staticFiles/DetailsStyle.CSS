@@ -34,16 +34,16 @@
 }
 
 .fa-circle-nodes{
-    color:#8ECAE6;
+    color:#032539;
     
 }
 .navbar ul{
     list-style-type: none;
-    background-color: #FFB703;
+    background-color: #FA991C ;
     padding: 0;
     margin:0;
     overflow: hidden;
-    font-family: 'Signika Negative';
+    font-family: Signika Negative;
 }
 .navbar a{
     color:#FBF3F2;
@@ -87,7 +87,7 @@
 
 }
 .navbar a:hover{
-    background-color: #FA991C;
+    background-color: #FBAD49;
 
 }
 .navbar li{
