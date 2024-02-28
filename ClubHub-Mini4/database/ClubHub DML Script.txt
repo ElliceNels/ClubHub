@@ -1,0 +1,210 @@
+SELECT User_id, Firstname, Lastname 
+FROM USER_DETAILS 
+WHERE Is_pending = ? AND Is_approved = ? AND User_id != ?;
+
+SELECT User_id 
+FROM COORDINATORS Where User_id = ?;
+
+UPDATE USER_LOGIN 
+SET Is_pending = ?, Is_approved = ? 
+WHERE User_id = ?; 
+
+UPDATE USER_DETAILS 
+SET Is_pending = ?, Is_approved = ? 
+WHERE User_id = ?;
+
+SELECT Coordinator_id 
+FROM COORDINATORS 
+WHERE User_id = ?;
+
+SELECT Club_name 
+FROM CLUBS 
+WHERE Club_name = ?;
+
+INSERT INTO CLUBS (Club_name, Coordinator_id, Description) 
+VALUES (?, ?, ?);
+
+SELECT Coordinator_id, Is_valid 
+FROM CLUBS 
+WHERE Coordinator_id = ?;
+
+DELETE 
+FROM CLUBS 
+WHERE Club_id = ?;
+
+SELECT Club_id 
+FROM CLUBS 
+WHERE Coordinator_id = ?;
+
+SELECT cm.User_id, Firstname, Lastname 
+FROM CLUB_MEMBERSHIP cm INNER 
+JOIN USER_DETAILS ud 
+ON cm.User_id = ud.User_id 
+WHERE cm.Is_pending = ? AND cm.Club_id = ?
+
+UPDATE CLUB_MEMBERSHIP 
+SET Is_pending = ?, Is_approved = ? 
+WHERE User_id = ?;
+
+DELETE FROM CLUB_MEMBERSHIP 
+WHERE User_id = ?;
+
+UPDATE CLUB_MEMBERSHIP 
+SET Is_pending = ?, Is_approved = ? 
+WHERE Is_pending = ? AND Is_approved = ?;
+
+SELECT Club_name, Coordinator_id, Description, Is_valid 
+FROM CLUBS;
+
+SELECT User_id 
+FROM COORDINATORS 
+WHERE Coordinator_id = ?;
+
+SELECT Firstname, Lastname, Contact_number 
+FROM USER_DETAILS 
+WHERE User_id = ?;
+
+SELECT Club_id 
+FROM CLUBS 
+WHERE Club_name = ?;
+
+INSERT INTO CLUB_MEMBERSHIP (User_id, Club_id) 
+VALUES (?, ?);
+
+SELECT Club_id 
+FROM CLUB_MEMBERSHIP 
+WHERE User_id = ?;
+
+SELECT User_id 
+FROM CLUB_MEMBERSHIP 
+WHERE Club_id = ? AND Is_approved = ?;
+
+SELECT EventTitle, EventTime, Description, EventDate, Event_id 
+FROM EVENTS;
+
+SELECT e.EventTitle, e.EventTime, e.Description, e.EventDate, e.Venue, e.Club_id, c.Club_name 
+FROM Events e LEFT JOIN CLUBS c 
+ON e.Club_id = c.Club_id 
+WHERE Event_id = ?;
+
+SELECT Club_name, Description, Created 
+FROM CLUBS 
+WHERE Club_id = ?;
+SELECT COUNT(*) 
+FROM user_club_event 
+WHERE Club_id = ? AND User_id = ? AND Event_id = ? AND Is_approved = ?;
+
+SELECT COUNT(*) 
+FROM EVENT_ATTENDEES 
+WHERE User_id = ? AND Event_id = ?;
+
+INSERT INTO EVENT_ATTENDEES (User_id, Event_id, Is_approved, Is_pending) 
+VALUES (?, ?, ?, ?);
+
+INSERT INTO EVENT_ATTENDEES (User_id, Event_id) 
+VALUES (?, ?);
+
+SELECT Event_id 
+FROM EVENTS 
+WHERE Club_id = ?;
+
+SELECT * 
+FROM CLUB_MEMBERSHIP 
+WHERE User_id = ?;
+
+SELECT ea.User_id, ud.Firstname, ud.Lastname 
+FROM EVENT_ATTENDEES ea 
+INNER JOIN USER_DETAILS ud 
+ON ea.User_id = ud.User_id 
+WHERE ea.Is_pending = ? AND ea.Event_id IN (?);
+
+UPDATE EVENT_ATTENDEES 
+SET Is_pending = ?, Is_approved = ? 
+WHERE User_id = ?;
+
+DELETE FROM EVENT_ATTENDEES 
+WHERE User_id = ?;
+
+UPDATE EVENT_ATTENDEES 
+SET Is_pending = ?, Is_approved = ? 
+WHERE Is_pending = ? AND Is_approved = ?;
+
+INSERT INTO EVENTS(EventTitle, Description, EventDate, EventTime, Venue, Club_id ) 
+VALUES (?, ?, ?, ?, ?, ?);
+
+SELECT User_id 
+FROM USER_DETAILS 
+WHERE User_id = ?;
+
+SELECT Username 
+FROM USER_LOGIN 
+WHERE Username = ?;
+
+SELECT Email 
+FROM USER_DETAILS 
+WHERE Email = ?;
+INSERT INTO USER_DETAILS (User_id, Firstname, Lastname, Contact_number, Email) 
+VALUES (?, ?, ?, ?, ?);
+
+INSERT INTO USER_LOGIN (User_id, Username, Password) 
+VALUES (?, ?, ?);
+
+SELECT Login_id 
+FROM USER_LOGIN 
+WHERE User_id = ?;
+
+INSERT INTO COORDINATORS (User_id) 
+VALUES (?);
+
+SELECT Username 
+FROM USER_LOGIN 
+WHERE User_id = ? AND Username = ?;
+
+SELECT Password 
+FROM USER_LOGIN 
+WHERE User_id = ? AND Username = ?;
+
+SELECT User_id 
+FROM USER_LOGIN 
+WHERE Username = ?;
+
+SELECT Is_pending, Is_approved 
+FROM USER_LOGIN 
+WHERE User_id = ?;
+
+SELECT EventTitle, EventDate, Is_approved 
+FROM SUB_EVENT_DETAILS 
+WHERE User_id = ?;
+
+SELECT User_id 
+FROM COORDINATORS 
+WHERE User_id = ?;
+
+SELECT User_id 
+FROM COORDINATORS 
+WHERE User_id = ? AND Coordinator_id = ?;
+
+SELECT ud.Firstname, ud.Lastname, ul.Username, ud.Contact_number, ud.Email 
+FROM USER_DETAILS ud 
+INNER JOIN USER_LOGIN ul 
+ON ud.User_id = ul.User_id 
+WHERE ud.User_id = ?;
+
+SELECT Club_name 
+FROM CLUBS 
+WHERE Coordinator_id = ?;
+
+SELECT c.Club_name 
+FROM CLUB_MEMBERSHIP cm 
+INNER JOIN CLUBS c 
+ON cm.Club_id = c.Club_id 
+WHERE cm.User_id = ? AND Is_approved = ?;
+
+SELECT Coordinator_id 
+FROM COORDINATORS 
+WHERE User_id = ?;
+
+SELECT Club_id 
+FROM CLUBS 
+WHERE Coordinator_id = ?;
+
