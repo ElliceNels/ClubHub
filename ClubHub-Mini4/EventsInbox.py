@@ -12,14 +12,18 @@ class EventsInbox:
 
     def CoordIDtoEventsID(self, coord_id):
         try:
+            # connection to database
             conn = sqlite3.connect(DB_PATH)
             cursor = conn.cursor()
-            print("Coord ID To Event ID:", coord_id, )
+
+            # get club id from coord id then get the event ids
             club_id = ClubInbox.CoordIDtoClubID(ClubInbox, coord_id)
             event_id = cursor.execute('''SELECT Event_id FROM EVENTS WHERE Club_id = ?''', (club_id,))
 
+            # events - all events of this club
             events = event_id.fetchall()
 
+            # tidy list version of the event ids
             ids = []
             for e in events:
                 ids.append(e[0])
@@ -28,52 +32,36 @@ class EventsInbox:
         except sqlite3.Error as e:
             print(f"Error has occurred when getting event id: {e}")
 
-    def isMemberOfClub(self, user_id):
-        try:
-            conn = sqlite3.connect(DB_PATH)
-            cursor = conn.cursor()
-
-            cursor.execute('''SELECT * FROM CLUB_MEMBERSHIP WHERE User_id = ?''', (user_id,))
-            if cursor.fetchall():
-                return True
-            else:
-                return False
-        except sqlite3.Error as e:
-            print(f"Error has occured when checking member status: {e}")
-
     def getEventWaitList(self, user_id, pending_status):
+        # get event ids from user id
         coord_id = Verification.UserIdToCoordId(user_id)
         events = self.CoordIDtoEventsID(coord_id)
 
-        print('Coordid', coord_id)
-        print('event id', events)
         ids = ", ".join([str(id) for id in events])
-        print(ids)
 
         try:
+            # connection to database
             conn = sqlite3.connect(DB_PATH)
             cursor = conn.cursor()
 
+            # get details of people in event attendees who arent approved
             data = cursor.execute(
                 f''' SELECT ea.User_id, Firstname, Lastname FROM EVENT_ATTENDEES ea INNER JOIN USER_DETAILS ud ON 
                 ea.User_id = ud.User_id WHERE ea.Is_pending = ? AND ea.Event_id IN ({ids})''',
                 (pending_status,))
             all_data = data.fetchall()
 
-            for entries in all_data:
+            # store details in event list
+            self.event_list = [list(row) for row in all_data]
 
-                if self.isMemberOfClub(user_id):
-                    print('is a member, auto accept')
-                else:
-                    print('not member, waiting verification')
-                    self.event_list = [list(row) for row in all_data]
-                    print(self.event_list)
-                    for user in self.event_list:
-                        cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
-                        user.append(user[1] + " would like to come to your event")
+            # add description to end
+            for user in self.event_list:
+                user.append(user[1] + " would like to come to your event")
 
             cursor.close()
             conn.close()
+
+            # return null if list is empty
             if not self.event_list:
                 return ''
             else:
@@ -82,9 +70,11 @@ class EventsInbox:
             print(f"Error has occurred when getting event waitlist: {e}")
 
     def massapproveE(self, status):
+        # connection to database
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
+        # if mass approval button is pressed
         if status == 3:
             try:
                 with conn:
@@ -98,4 +88,3 @@ class EventsInbox:
             finally:
                 cursor.close()
                 conn.close()
-
