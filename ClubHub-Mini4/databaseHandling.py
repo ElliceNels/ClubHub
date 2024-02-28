@@ -246,7 +246,7 @@ def db_startup():
         conn.commit()
 
 
-        #Admin account autocreate
+        # admin account autocreate
         cursor.execute(''' SELECT Login_id FROM USER_LOGIN WHERE Login_id == ? ''', (1, ))
         if not cursor.fetchone():
             Login_verifier = Login_verification()
