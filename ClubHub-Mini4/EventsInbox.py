@@ -51,15 +51,17 @@ class EventsInbox:
                 (pending_status,))
             all_data = data.fetchall()
 
-            for entries in all_data:
-                self.event_list = [list(row) for row in all_data]
-                print(self.event_list)
-                for user in self.event_list:
-                    cursor.execute(''' SELECT User_id FROM COORDINATORS Where User_id = ?''', (int(user[0]),))
-                    user.append(user[1] + " would like to come to your event")
+            # store details in event list
+            self.event_list = [list(row) for row in all_data]
+
+            # add description to end
+            for user in self.event_list:
+                user.append(user[1] + " would like to come to your event")
 
             cursor.close()
             conn.close()
+
+            # return null if list is empty
             if not self.event_list:
                 return ''
             else:
@@ -72,6 +74,7 @@ class EventsInbox:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
+        # if mass approval button is pressed
         if status == 3:
             try:
                 with conn:
@@ -85,4 +88,3 @@ class EventsInbox:
             finally:
                 cursor.close()
                 conn.close()
-
